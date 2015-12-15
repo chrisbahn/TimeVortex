@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="app_name">Time Vortex</string>
+    <string name="app_title">Time Vortex</string>
+    <string name="app_subtitle">Navigating the history of <i>Doctor Who</i></string>
+
+    <string name="listitem_title">1: An Unearthly Child/10,000 B.C.</string>
+        <string name="listitem_seasoninfo">Season and episode info goes here</string>
+        <string name="listitem_synopsis">A short description of the episode</string>
+        <string name="listitem_castandcrew">Cast and crew info</string>
+        <string name="listitem_checkbox_seenit">Seen it?</string>
+    <string name="listitem_checkbox_wanttoseeit">Want to see it?</string>
+
+
+
+    <!-- Strings specifically written for TimeVortex program-->
+
+    <string name="mynotes_title_label">My notes</string>
+    <string name="mynotes_edittext_hint">Take notes, or write your own review here!</string>
+    <string name="textview_user_editable_fields_title">User-editable fields</string>
+
+    <string name="textfield_userstarrating_label">My rating</string>
+    <string name="txt_finditon">Find it on...</string>
+    <string name="search_main_label">Find an episode</string>
+    <string name="search_by_title_label">Search for a title</string>
+    <string name="find_all_x_label">Find all appearances of...</string>
+    <string name="search_by_title_button_label">Search</string>
+
+    <!-- Strings from Inspirer program, unchanged -->
+    <string name="add_note">Add Note</string>
+<string name="update_note">Update Note</string>
+<string name="update">Update</string>
+    <string name="search_notes">Search Notes</string>
+    <string name="search_results">Search Results</string>
+    <string name="search">Search</string>
+<string name="add">Add</string>
+<string name="reset">Reset Fields</string>
+<string name="cancel">Cancel</string>
+    <string name="gotomainsearchlist_button_label">See All Episodes</string>
+    <string name="gotosearchpage_button_label">Search Episodes</string>
+    <string name="app_ui_explainer">Click a list item to see full version and modify it.</string>
+
+    <string name="note_id_label">ID#</string>
+    <string name="search_textfield_label">Search TVStory textfields</string>
+    <string name="note_textfield_hint">Enter the text for your TVStory here.</string>
+
+    <string name="search_textfield_hint">Enter the text to search for here.</string>
+    <string name="search_hashtags_field_hint">Enter the hashtag to search for here.</string>
+    <string name="search_hashtags_label">Search hashtags</string>
+    <string name="note_details_label">Details</string>
+    <string name="addnote_header">Add new TVStory</string>
+
+
+    <string name="savenote_button_label">Save Note</string>
+    <string name="deletenote_button_label">Delete Note</string>
+    <string name="search_hashtags_button_label">Search Hashtags</string>
+    <string name="add_hashtags_button_label">Add Hashtags</string>
+    <string name="delete_hashtags_button_label">Delete Hashtags</string>
+    <string name="note_hashtags_label">Hashtags</string>
+    <string name="hashtags_list_label">The complete set of hashtags goes here when this is implemented.</string>
+
+    <string name="note_hashtags_field_hint">Enter hashtags here</string>
+    <string name="note_id_datecreated">Created on X date.</string>
+    <string name="note_id_hasphoto">No photo attached.</string>
+
+
+</resources>

@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tardisblue"
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/timevortexbanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/timevortexbanner"
+        android:layout_alignParentTop="false"
+        android:layout_alignBottom="@+id/app_title_tv" />
+    <TextView
+        android:id="@+id/app_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_title"
+        android:padding="10dp"
+        android:textSize="40dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/app_subtitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_subtitle"
+        android:layout_below="@+id/app_title_tv"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout android:id="@+id/ui_buttons_and_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_below="@+id/app_subtitle_tv"
+        >
+    <LinearLayout android:id="@+id/ui_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/tardisblue"
+        android:layout_centerHorizontal="true">
+        <Button android:id="@+id/gotomainsearchlist_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/gotomainsearchlist_button_label"
+            />
+        <Button android:id="@+id/gotosearchpage_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/gotosearchpage_button_label"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/app_ui_explainer_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_ui_explainer"
+        android:layout_below="@+id/ui_buttons_layout"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:paddingBottom="16dp"
+        android:textStyle="bold"
+        android:textSize="10dp"
+        android:layout_centerHorizontal="true" />
+</LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ui_buttons_and_text_layout"
+        />
+
+</RelativeLayout>

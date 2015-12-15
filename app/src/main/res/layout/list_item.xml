@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/list_item_bg"
+    android:descendantFocusability="blocksDescendants" >
+
+    <RelativeLayout
+        android:id="@+id/image_on_left"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left">
+
+        <ImageView
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:id="@+id/list_item_image"
+            android:src="@drawable/logodoctor01"
+            android:maxHeight="40px"
+            android:maxWidth="40px"
+            android:scaleType="fitStart"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="left"
+            />
+
+    <RelativeLayout
+        android:id="@+id/layout_item"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/list_item_image"
+        >
+
+        <!-- story title, and maybe also storyID -->
+        <TextView
+            android:id="@+id/txt_listitem_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/listitem_title"
+            android:textColor="@color/headline"
+            android:padding="3dp" />
+
+        <!-- era, yearProduced, season, seasonStoryNumber, episode, episodeLength-->
+        <TextView
+            android:id="@+id/txt_listitem_seasoninfo"
+            android:text="@string/listitem_seasoninfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_title"
+            android:padding="3dp" />
+
+        <!-- synopsis -->
+        <TextView
+            android:id="@+id/txt_listitem_synopsis"
+            android:text="@string/listitem_synopsis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_seasoninfo"
+            android:textStyle="italic"
+            android:padding="3dp" />
+
+        <!-- doctor, othercast, crew-->
+        <TextView
+            android:id="@+id/txt_listitem_castandcrew"
+            android:text="@string/listitem_castandcrew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_synopsis"
+            android:textStyle="bold"
+            android:padding="3dp"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/layout_checkboxes"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_castandcrew"
+            >
+
+        <!-- seenIt? -->
+        <CheckBox
+            android:id="@+id/checkBox_listitem_seenit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listitem_checkbox_seenit"
+            android:padding="3dp"
+            />
+
+        <!-- wantToSeeIt? -->
+        <CheckBox
+            android:id="@+id/checkBox_listitem_wanttoseeit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listitem_checkbox_wanttoseeit"
+            android:layout_toRightOf="@+id/checkBox_listitem_seenit"
+            android:padding="3dp"
+            />
+        </LinearLayout>
+
+        <!-- user-generated star rating -->
+        <RatingBar
+            android:id="@+id/UserStarRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_checkboxes"
+            android:padding="3dp"
+            />
+
+        <!-- TODO aggregate star rating -->
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/image_on_left"
+        android:background="@color/view_divider_color" />
+
+</RelativeLayout>

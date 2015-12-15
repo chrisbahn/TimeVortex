@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout android:id="@+id/fullpage_tvstory_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:background="@color/tvstoryfullpagebg"
+        >
+
+
+        <!-- story title, and maybe also storyID -->
+        <TextView
+            android:id="@+id/txt_fullpagetvstory_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/listitem_title"
+            android:textColor="@color/headline"
+            android:padding="6dp" />
+
+
+
+        <LinearLayout
+        android:id="@+id/layout_imageandstoryinfo"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_fullpagetvstory_title"
+        >
+
+            <ImageView
+                android:layout_width="250px"
+                android:layout_height="250px"
+                android:id="@+id/list_item_image"
+                android:src="@drawable/logodoctor01"
+                android:scaleType="fitStart"
+                />
+    <LinearLayout android:id="@+id/layout_storyinfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:background="@color/tvstoryfullpagebg"
+        >
+        <!-- era, yearProduced, season, seasonStoryNumber, episode, episodeLength-->
+        <TextView
+            android:id="@+id/txt_fullpagetvstory_seasoninfo"
+            android:text="@string/listitem_seasoninfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_title"
+            android:padding="6dp" />
+
+        <!-- synopsis -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Synopsis"
+            android:id="@+id/textViewSynopsisHeader"
+            android:layout_gravity="left"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_fullpagetvstory_synopsis"
+            android:text="@string/listitem_synopsis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_seasoninfo"
+            android:textStyle="italic"
+            android:padding="6dp" />
+
+        <!-- doctor, othercast, crew-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Cast and Crew"
+            android:id="@+id/textView"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_fullpagetvstory_castandcrew"
+            android:text="@string/listitem_castandcrew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_synopsis"
+            android:textStyle="bold"
+            android:padding="6dp"
+            />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout android:id="@+id/user_editable_fields_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/usereditablefieldsbg"
+            >
+            <TextView android:id="@+id/textview_user_editable_fields_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_user_editable_fields_title"
+                android:textStyle="bold"
+                />
+
+            <LinearLayout
+            android:id="@+id/layout_checkboxes"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_listitem_castandcrew"
+            >
+
+            <!-- seenIt? -->
+            <CheckBox
+                android:id="@+id/checkBox_listitem_seenit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listitem_checkbox_seenit"
+                android:padding="6dp"
+                />
+
+            <!-- wantToSeeIt? -->
+            <CheckBox
+                android:id="@+id/checkBox_listitem_wanttoseeit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listitem_checkbox_wanttoseeit"
+                android:layout_toRightOf="@+id/checkBox_listitem_seenit"
+                android:padding="6dp"
+                />
+        </LinearLayout>
+
+        <!-- user-generated star rating -->
+        <TextView android:id="@+id/textview_myrating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textfield_userstarrating_label"
+            android:layout_below="@+id/mynotes_edittext"
+            android:textStyle="bold"
+            />
+
+        <RatingBar
+            android:id="@+id/UserStarRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_checkboxes"
+            android:padding="6dp"
+            />
+
+        <!-- TODO aggregate star rating -->
+
+
+        <TextView android:id="@+id/textview_mynotes_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/add_note_layout"
+            android:text="@string/mynotes_title_label"
+            android:textStyle="bold"
+            />
+
+        <EditText android:id="@+id/mynotes_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/textview_mynotes_title"
+            android:nextFocusDown="@+id/note_textfield"
+            android:hint="@string/mynotes_edittext_hint"/>
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/tvstoryfinditonbg"
+            android:orientation="vertical" >
+
+
+            <!--FIND IT ON AMAZON/ITUNES SECTION-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/textViewFindItOn"
+                android:text="@string/txt_finditon"
+                android:textStyle="bold" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/imageButtonAmazon"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:onClick="clickAmazon"
+                    android:background="@null"
+                    android:src="@drawable/amazonlogo"
+                    />
+
+                <ImageButton
+                    android:id="@+id/imageButtonITunes"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:onClick="clickITunes"
+                    android:background="@null"
+                    android:src="@drawable/ituneslogo"
+                    />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageViewTransparent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:src="@drawable/transparentflag"
+                    />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageViewTransparent2"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:src="@drawable/transparentflag"
+                    />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageViewTransparent3"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:src="@drawable/transparentflag"
+                    />
+            </LinearLayout>
+
+
+            <!--ITEM TO SEARCH SECTION-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="If there was an error getting the iTunes data, you'd see a message here"
+                android:id="@+id/textViewErrorITunes" />
+
+
+            <WebView
+                android:id="@+id/amazon_results_webview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/save_delete_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignBottom="@+id/add_note_layout"
+            android:background="@color/addnotebuttonscolor"
+            >
+            <Button android:id="@+id/save_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/savenote_button_label"
+                />
+            <Button android:id="@+id/button_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/cancel"
+                />
+            <Button android:id="@+id/button_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/reset"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

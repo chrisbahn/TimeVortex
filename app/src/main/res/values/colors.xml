@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+
+
+
+    <color name="list_item_bg">#b0d3f2</color>
+    <color name="list_fragment_bg">#102302</color> <!-- TARDIS blue -->
+    <color name="tardisblue">#102372</color> <!-- TARDIS blue -->
+    <color name="white">#ffffff</color> <!-- white -->
+    <color name="view_divider_color">#a1d490</color>
+
+    <color name="headline">#990000</color>
+    <color name="searchbg">#FFeedd</color>
+    <color name="hashtagscolor">#FFddee</color>
+    <color name="searchbuttonscolor">#ffffee</color>
+
+    <color name="tvstoryfullpagebg">#eeffee</color>
+    <color name="usereditablefieldsbg">#ccffcc</color>
+    <color name="tvstoryfinditonbg">#ccddcc</color>
+
+
+
+    <color name="addnotebuttonscolor">#ffeeee</color>
+
+</resources>
