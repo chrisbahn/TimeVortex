@@ -49,7 +49,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX: This needs to become the main display for TVStory objects, all of which have ALREADY BEEN CREATED
 public class TVStoryFullPageFragment extends Fragment implements OnClickListener {
 
 	// UI references
@@ -62,17 +61,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private CheckBox wantToSeeIt;
 	private TextView TVuserStarRatingTitle;
 	private RatingBar userStarRating;
-	// TODO aggregate star rating
+	private float userStarRatingNumber; // app user's rating of the episode
+	// TODO compile and add "professional" ratings based on critical reviews and best-of lists
+
 	private TextView TVMyNotesTitle;
 	private ImageView tvstoryImage;
 	private EditText EdtxtMyNotes;
-	private TextView TVTextfield;
-	private EditText EdtxtEnterTextfield;
-	private TextView TVHashtags;
-	private EditText EdtxtEnterHashtags;
-	private TextView TVDatecreated;
-	private TextView TVHasPhoto;
-	private TextView TVId;
 	private TextView textviewErrorItunes;
 	private String amazonSearchTerm;
 	private String amazonCategory;
@@ -83,7 +77,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private String iTunesCollectionViewUrl;
 
 	private Button saveButton;
-	private Button cancelButton;
+	private Button returnToListButton;
 	private Button resetButton;
 
     OnSaveButtonClickedListener mSaveClicked;
@@ -95,7 +89,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 	private TVStory TVStory;
 	private TVStoryDAO tvstoryDAO;
-	private AddTVStoryTask task; // todo change or get rid of this
+	private UpdateTVStoryTask task;
 
 	public static final String ARG_ITEM_ID = "tvstory_fullpage_fragment";
 
@@ -121,7 +115,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		new RequestITunesSearchResultTask(getActivity()).execute(iTunesTempUrl);
 
 		findViewsById(rootView);
-		submitLayout.setVisibility(View.GONE);
+//		submitLayout.setVisibility(View.GONE);
 
 
 
@@ -179,7 +173,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 
 		setValue();
-
 		setListeners();
 
 		//For orientation change. 
@@ -193,26 +186,20 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	}
 
 	private void setListeners() {
-//		empDobEtxt.setOnClickListener(this);
-//		Calendar newCalendar = Calendar.getInstance();
-//		datePickerDialog = new DatePickerDialog(getActivity(),
-//				new OnDateSetListener() {
-//
-//					public void onDateSet(DatePicker view, int year,
-//							int monthOfYear, int dayOfMonth) {
-//						dateCalendar = Calendar.getInstance();
-//						dateCalendar.set(year, monthOfYear, dayOfMonth);
-//						empDobEtxt.setText(formatter.format(dateCalendar
-//								.getTime()));
-//					}
-//
-//				}, newCalendar.get(Calendar.YEAR),
-//				newCalendar.get(Calendar.MONTH),
-//				newCalendar.get(Calendar.DAY_OF_MONTH));
-
 		saveButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
+		returnToListButton.setOnClickListener(this);
 		resetButton.setOnClickListener(this);
+		seenIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				TVStory.setSeenIt(isChecked);
+			}
+		});
+		wantToSeeIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				TVStory.setWantToSeeIt(isChecked);
+			}
+		});
+		addListenerOnRatingBar();
 	}
 
 	protected void resetAllFields() {
@@ -222,7 +209,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 	}
 
-	private void setTVStory() {
+	private void setTVStory() {// todo this would create a new episode, which we don't want. I should erase this, yes?
 		TVStory = new TVStory();
 //		TVStory.setId(randomUUID());
 //		TVStory.setTitle(EdtxtEnterTitle.getText().toString());
@@ -234,7 +221,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 	@Override
 	public void onResume() {
-		getActivity().setTitle(R.string.add_note);
+//		getActivity().setTitle(R.string.add_note);
 		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 		super.onResume();
 	}
@@ -258,13 +245,13 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		userStarRating = (RatingBar) rootView.findViewById(R.id.UserStarRatingBar);
 		TVMyNotesTitle = (TextView) rootView.findViewById(R.id.textview_mynotes_title);
 		EdtxtMyNotes = (EditText) rootView.findViewById(R.id.mynotes_edittext);
-		submitLayout = (LinearLayout) rootView.findViewById(R.id.save_delete_buttons_layout);
+		submitLayout = (LinearLayout) rootView.findViewById(R.id.save_buttons_layout);
 		textviewErrorItunes = (TextView) rootView.findViewById(R.id.textViewErrorITunes);
 		amazonImageButton = (ImageButton) rootView.findViewById(R.id.imageButtonAmazon);
 		iTunesImageButton = (ImageButton) rootView.findViewById(R.id.imageButtonITunes);
 
-		saveButton = (Button) rootView.findViewById(R.id.save_note);
-        cancelButton = (Button) rootView.findViewById(R.id.button_cancel);
+		saveButton = (Button) rootView.findViewById(R.id.button_save_user_changes);
+        returnToListButton = (Button) rootView.findViewById(R.id.button_return_to_list);
 		resetButton = (Button) rootView.findViewById(R.id.button_reset);
 	}
 
@@ -272,13 +259,17 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	public void onClick(View view) {
 		if (view == resetButton) {
 			resetAllFields();
-		} else if (view == cancelButton||view == saveButton) {
+		} else if (view == returnToListButton||view == saveButton) {
 			if (view == saveButton) {
-				setTVStory(); // todo saves whatever user-editable data was changed - this code here should be whatever it is in the Custom Dialog
-//                        TVStory.setTextField(EdtxtEnterTextfield.getText().toString());
-//                        TVStory.setHashtags(EdtxtEnterHashtags.getText().toString());
-//				task = new AddTVStoryTask(getActivity());
-//				task.execute((Void) null);
+				// this saves whatever user-editable data was changed
+				TVStory.setUserReview(EdtxtMyNotes.getText().toString());
+				TVStory.setUserStarRatingNumber(userStarRating.getRating());
+				TVStory.setSeenIt(seenIt.isChecked());
+				TVStory.setWantToSeeIt(wantToSeeIt.isChecked());
+				TVStory.setUserStarRatingNumber(userStarRating.getRating());
+
+				task = new UpdateTVStoryTask(getActivity());
+				task.execute((Void) null);
 			}
 			MainActivity activity = (MainActivity) getActivity();
             activity.onSaveButtonClicked();
@@ -294,39 +285,23 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 	private void setValue() {
 		if (TVStory != null) {
-			// todo this is what you use to set the values seen on this page to match the TVStory being called
-//			seenIt = (CheckBox) rootView.findViewById(R.id.checkBox_listitem_seenit);
-//			wantToSeeIt = (CheckBox) rootView.findViewById(R.id.checkBox_listitem_wanttoseeit);
-//			userStarRating = (RatingBar) rootView.findViewById(R.id.UserStarRatingBar);
-//			TVMyNotesTitle = (TextView) rootView.findViewById(R.id.textview_mynotes_title);
-//			EdtxtMyNotes = (EditText) rootView.findViewById(R.id.mynotes_edittext);
-
-			tvstoryTitle.setText(TVStory.getStoryID()  + ": " + TVStory.getTitle()); // story title, and maybe also storyID
+			// this method sets the values seen on this page to match the TVStory being called
+			tvstoryTitle.setText(TVStory.getStoryID()  + ": " + TVStory.getTitle()); // story title, and storyID
 			// todo if/then statements to catch singular/plural "episode/episodes"
 			tvstorySeasonInfo.setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + "minutes."); // era, yearProduced, season, seasonStoryNumber, episode, episodeLength
 			tvstorySynopsis.setText(TVStory.getSynopsis());
-			// todo might be good to limit the size of the synopsis, but they're all blank now anyway so this is for later
+			// todo if you want to limit the size of the synopsis in the future, here's the code
 //        if (TVStory.getSynopsis().length() > 100) {
 //            holder.tvstorySynopsis.setText(TVStory.getSynopsis().substring(0, 97) + "...");
 //        }
 			// todo getDoctor should return the text name of the character, not the numeral. getOtherCast should return only shortNames in the ListView. create a toString()?
 			// todo getCrew should return the writer only in the listview.
 			tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
-			// todo make the checkboxes work
 			seenIt.setChecked(TVStory.seenIt());
-			seenIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    holder.seenIt.setSeenIt(isChecked);
-				}
-			});
 			wantToSeeIt.setChecked(TVStory.wantToSeeIt());
-			wantToSeeIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    holder.seenIt.setSeenIt(isChecked);
-				}
-			});
-			// todo make the star rating work
-			userStarRating.setRating(2);
+
+			userStarRating.setRating(TVStory.getUserStarRatingNumber());
+			EdtxtMyNotes.setText(TVStory.getUserReview());
 
 			int whichDoctor = TVStory.getDoctor();
 			whichDoctorIsIt(whichDoctor);
@@ -350,17 +325,17 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
         }
     }
 
-    public class AddTVStoryTask extends AsyncTask<Void, Void, Long> {
+    public class UpdateTVStoryTask extends AsyncTask<Void, Void, Long> {
 
 		private final WeakReference<Activity> activityWeakRef;
 
-		public AddTVStoryTask(Activity context) {
+		public UpdateTVStoryTask(Activity context) {
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
 
 		@Override
 		protected Long doInBackground(Void... arg0) {
-			long result = tvstoryDAO.save(TVStory);
+			long result = tvstoryDAO.update(TVStory);
 			return result;
 		}
 
@@ -373,6 +348,10 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			}
 		}
 	}
+
+
+
+
 
 	public class RequestITunesSearchResultTask extends AsyncTask<String, String, String> {
 
@@ -532,6 +511,16 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			tvstoryCastAndCrew.setText("Twelfth Doctor (Peter Capaldi)");
 			tvstoryImage.setImageResource(R.drawable.logodoctor12);
 		}
+	}
+
+
+	public void addListenerOnRatingBar() {
+		//if rating value is changed, display the current rating value in the result (textview) automatically
+		userStarRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+			public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+				TVStory.setUserStarRatingNumber(rating);
+			}
+		});
 	}
 
 }

@@ -137,8 +137,8 @@ public class TVStoryAddFragment extends Fragment implements OnClickListener {
 		EdtxtEnterTextfield = (EditText) rootView.findViewById(R.id.note_textfield);
 //		EdtxtEnterHashtags = (EditText) rootView.findViewById(R.id.note_hashtag_field);
 
-		saveButton = (Button) rootView.findViewById(R.id.save_note);
-        cancelButton = (Button) rootView.findViewById(R.id.button_cancel);
+//		saveButton = (Button) rootView.findViewById(R.id.save_note);
+//        cancelButton = (Button) rootView.findViewById(R.id.button_cancel);
 		resetButton = (Button) rootView.findViewById(R.id.button_reset);
 	}
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-// DONE???? COMPLETE CONVERSION TO TIMEVORTEX
 public class TimeVortexDBDAO {
 
 	protected SQLiteDatabase database;

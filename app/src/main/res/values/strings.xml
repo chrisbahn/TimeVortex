@@ -26,6 +26,14 @@
     <string name="search_by_title_label">Search for a title</string>
     <string name="find_all_x_label">Find all appearances of...</string>
     <string name="search_by_title_button_label">Search</string>
+    <string name="gotomainsearchlist_button_label">See All Episodes</string>
+    <string name="gotosearchpage_button_label">Search Episodes</string>
+    <string name="app_ui_explainer">Click a list item to see full version.</string>
+    saveButton = (Button) rootView.findViewById(R.id.button_save_user_changes);
+    returnToListButton = (Button) rootView.findViewById(R.id.button_return_to_list);
+    <string name="button_save_user_changeslabel">Save My Changes</string>
+    <string name="button_return_to_list_label">Return To List</string>
+    <string name="reset">Exterminate User Data</string>
 
     <!-- Strings from Inspirer program, unchanged -->
     <string name="add_note">Add Note</string>
@@ -35,11 +43,7 @@
     <string name="search_results">Search Results</string>
     <string name="search">Search</string>
 <string name="add">Add</string>
-<string name="reset">Reset Fields</string>
 <string name="cancel">Cancel</string>
-    <string name="gotomainsearchlist_button_label">See All Episodes</string>
-    <string name="gotosearchpage_button_label">Search Episodes</string>
-    <string name="app_ui_explainer">Click a list item to see full version and modify it.</string>
 
     <string name="note_id_label">ID#</string>
     <string name="search_textfield_label">Search TVStory textfields</string>

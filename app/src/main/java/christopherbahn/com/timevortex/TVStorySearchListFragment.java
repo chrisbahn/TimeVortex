@@ -3,6 +3,8 @@ package christopherbahn.com.timevortex;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,11 +19,11 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // TODO COMPLETE CONVERSION TO TIMEVORTEX - some functions should mirror the changes in TVSToryListFragment, and the searching methodology may need to be altered
 
-public class TVStorySearchListFragment extends Fragment implements OnItemClickListener,
-		OnItemLongClickListener {
+public class TVStorySearchListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
 
 	public static final String ARG_ITEM_ID = "tvstory_search_list";
 
@@ -30,6 +32,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	ArrayList<TVStory> TVStories;
 	String searchField;
 	String searchParameter;
+	private SearchTerm searchTerm;
 	TVStoryListAdapter TVStoryListAdapter;
 	TVStoryDAO tvstoryDAO;
 	OnListItemClickedListener mListItemClicked;
@@ -45,18 +48,14 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		searchField = getArguments().getString("searchField");
-		searchParameter = getArguments().getString("searchParameter");
-		if (searchParameter == null) {
-			searchParameter = "nothing";
-		}
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Bundle bundle = this.getArguments();
+		searchTerm = bundle.getParcelable("searchTerm");
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
 		findViewsById(view);
 
 		task = new GetTVStoryTask(activity);
-		task.execute((String) searchParameter);
+		task.execute(searchTerm);
 
 		tvstorySearchListView.setOnItemClickListener(this);
 		tvstorySearchListView.setOnItemLongClickListener(this);
@@ -121,7 +120,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 		}
 	}
 
-	public class GetTVStoryTask extends AsyncTask<String, Void, ArrayList<TVStory>> {
+	public class GetTVStoryTask extends AsyncTask<SearchTerm, Void, ArrayList<TVStory>> {
 
 		private final WeakReference<Activity> activityWeakRef;
 
@@ -129,9 +128,15 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
 
+//		@Override
+//		protected ArrayList<TVStory> doInBackground(String... params) {
+//			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm);
+//			return TVStoryList;
+//		}
+
 		@Override
-		protected ArrayList<TVStory> doInBackground(String... params) {
-			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchField, searchParameter);
+		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
+			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm);
 			return TVStoryList;
 		}
 
@@ -143,8 +148,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 				TVStories = TVStoryList;
 				if (TVStoryList != null) {
 					if (TVStoryList.size() != 0) {
-						TVStoryListAdapter = new TVStoryListAdapter(activity,
-								TVStoryList);
+						TVStoryListAdapter = new TVStoryListAdapter(activity, TVStoryList);
 						tvstorySearchListView.setAdapter(TVStoryListAdapter);
 					} else {
 						Toast.makeText(activity, "No TVStory Records", Toast.LENGTH_LONG).show();
@@ -163,6 +167,9 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	 */
 	public void updateView() {
 		task = new GetTVStoryTask(activity);
-		task.execute((String) searchParameter);
+		task.execute(searchTerm);
 	}
+
+
+
 }

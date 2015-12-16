@@ -3,6 +3,7 @@ package christopherbahn.com.timevortex;
 import android.os.Parcel;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
+import android.widget.RatingBar;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ import java.util.ArrayList;
  * Created by christopherbahn on 12/9/15.
  */
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX
 
 public class TVStory implements Parcelable {
 	// Adapted/refactored from Note object in Project 2
@@ -27,11 +27,13 @@ public class TVStory implements Parcelable {
 //	private ArrayList<DWCharacter> otherCast; TODO Implement ArrayList and connection to DWCharacter Class; for now, this is being dealt with as a String
     private String otherCast;
 	private String synopsis;
-//	private ArrayList<DWCrew> crew; TODO Implement ArrayList and connection to DWCharacter Class; for now, this is being dealt with as a String
+//	private ArrayList<DWCrew> crew; TODO Implement ArrayList and connection to DWCrew Class; for now, this is being dealt with as a String
     private String crew;
 	private boolean seenIt;
 	private boolean wantToSeeIt;
 	private String ASIN; // A proprietary ID number for Amazon products, in this case individual DVD titles
+	private String userReview; // A space for the app user to write an opinion on the story
+	private float userStarRatingNumber; // app user's rating of the episode
 
 
 	public TVStory() {
@@ -46,7 +48,7 @@ public class TVStory implements Parcelable {
 		this.doctor = Integer.parseInt(in.readString());
 		this.era = in.readString();
 		this.season = in.readString();
-		this.seasonStoryNumber = Integer.parseInt(in.readString());
+		this.seasonStoryNumber = in.readInt();
 		this.episodes = Integer.parseInt(in.readString());
 		this.episodeLength = Integer.parseInt(in.readString());
 		this.yearProduced = Integer.parseInt(in.readString());
@@ -56,6 +58,8 @@ public class TVStory implements Parcelable {
         this.seenIt = Boolean.parseBoolean(in.readString());
         this.wantToSeeIt = Boolean.parseBoolean(in.readString());
 		this.ASIN = in.readString();
+		this.userReview = in.readString();
+		this.userStarRatingNumber = Float.parseFloat(in.readString());
 
 	}
 
@@ -72,9 +76,11 @@ public class TVStory implements Parcelable {
         this.otherCast = null;
         this.synopsis = null;
         this.crew = null;
-        this.seenIt = false;
-		this.wantToSeeIt = false;
+        this.seenIt = seenIt;
+		this.wantToSeeIt = wantToSeeIt;
 		this.ASIN = ASIN;
+		this.userReview = userReview;
+		this.userStarRatingNumber = userStarRatingNumber;
     }
 
 
@@ -198,17 +204,25 @@ public class TVStory implements Parcelable {
 		this.ASIN = ASIN;
 	}
 
+	public String getUserReview() {
+		return userReview;
+	}
+
+	public void setUserReview(String userReview) {
+		this.userReview = userReview;
+	}
+
+	public float getUserStarRatingNumber() {
+		return userStarRatingNumber;
+	}
+
+	public void setUserStarRatingNumber(float userStarRatingNumber) {
+		this.userStarRatingNumber = userStarRatingNumber;
+	}
+
 	@Override
 	public String toString() {
-		// todo fix this
 		return "[" + storyID + ": " + title + "]";
-//        return "Note [id=" + mId +
-//                ", title=" + mTitle +
-//                ", textfield=" + mTextField +
-//                ", datecreated=" + mDateCreated +
-//                ", hasphoto=" + mHasPhoto +
-//                ", hashtags=" + mHashtags +
-//                "]";
 	}
 
 	@Override
@@ -240,7 +254,7 @@ public class TVStory implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		// todo fix this
+		// todo fix this - what is this for, exactly?
 //		parcel.writeString(getId().toString());
 //        new ParcelUuid(getId()).writeToParcel(parcel, flags);
 //        parcel.writeString(getTitle());
@@ -248,7 +262,6 @@ public class TVStory implements Parcelable {
 //        parcel.writeString(String.valueOf(mHasPhoto));
 //        parcel.writeString(mTextField);
 //        parcel.writeString(mHashtags);
-
 	}
 
 	public static final Creator<TVStory> CREATOR = new Creator<TVStory>() {

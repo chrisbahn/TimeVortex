@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX
 // todo Can the ListFragment and SearchListFragment stuff be combined? They're doing a lot of the same work, and you have multiple kinds of searching planned
 
 public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
@@ -73,7 +72,6 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
             holder.tvstorySeasonInfo = (TextView) convertView.findViewById(R.id.txt_listitem_seasoninfo);
             holder.tvstorySynopsis = (TextView) convertView.findViewById(R.id.txt_listitem_synopsis);
             holder.tvstoryCastAndCrew = (TextView) convertView.findViewById(R.id.txt_listitem_castandcrew);
-            // todo do the checkboxes work as they should?
             holder.seenIt = (CheckBox) convertView.findViewById(R.id.checkBox_listitem_seenit);
             holder.wantToSeeIt = (CheckBox) convertView.findViewById(R.id.checkBox_listitem_wanttoseeit);
             holder.userStarRating = (RatingBar) convertView.findViewById(R.id.UserStarRatingBar);

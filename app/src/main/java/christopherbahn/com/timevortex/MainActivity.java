@@ -3,6 +3,7 @@ package christopherbahn.com.timevortex;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 // ADAPTED FROM Project 2: Inspirer
@@ -37,12 +39,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 	private Fragment contentFragment;
 	private TVStoryListFragment TVStoryListFragment;
-    private TVStoryAddFragment TVStoryAddFragment;
+//    private TVStoryAddFragment TVStoryAddFragment;
     private TVStorySearchFragment TVStorySearchFragment;
     private TVStorySearchListFragment TVStorySearchListFragment;
     private TVStoryFullPageFragment TVStoryFullPageFragment;
     private Button gotoMainSearchListButton;
-    private Button searchNotesButton;
+    private Button gotoSearchPageButton;
     private TextView UIExplainer;
     private TVStoryDAO tvstoryDAO;
     private ArrayList<TVStory> tempMatrix = new ArrayList<TVStory>();
@@ -54,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		setContentView(R.layout.activity_main);
 
         gotoMainSearchListButton = (Button) findViewById(R.id.gotomainsearchlist_button);
-        searchNotesButton = (Button) findViewById(R.id.gotosearchpage_button);
+        gotoSearchPageButton = (Button) findViewById(R.id.gotosearchpage_button);
         UIExplainer = (TextView) findViewById(R.id.app_ui_explainer_tv);
         tvstoryDAO = new TVStoryDAO(this);
 
         gotoMainSearchListButton.setOnClickListener(this);
-        searchNotesButton.setOnClickListener(this);
+        gotoSearchPageButton.setOnClickListener(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -102,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TVStoryListFragment = new TVStoryListFragment();
 			setFragmentTitle(R.string.app_name);
 			switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
-//            loadListofAllStoriesTextFile();
 		}
 
         // todo Currently this line is commented out UNLESS a change to the original textfile database occurs and needs to be ported into the program. (Don't forget to change the DATABASE_VERSION number in DatabaseHelper.) How do I make this work so that if the SQL database already exists, this doesn't load in a bunch of new data on top of what's there?
@@ -111,9 +112,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-	protected void onSaveInstanceState(Bundle outState) { // todo addd fullpage here
-        if (contentFragment instanceof TVStoryAddFragment) {
-            outState.putString("content", TVStoryAddFragment.ARG_ITEM_ID);
+	protected void onSaveInstanceState(Bundle outState) {
+        if (contentFragment instanceof TVStoryFullPageFragment) {
+            outState.putString("content", TVStoryFullPageFragment.ARG_ITEM_ID);
         } else if (contentFragment instanceof TVStorySearchFragment) {
             outState.putString("content", TVStorySearchFragment.ARG_ITEM_ID);
         } else if (contentFragment instanceof TVStorySearchListFragment) {
@@ -133,15 +134,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_add: // todo change this fully to searchmainlist
+			case R.id.action_gotomainlist:
                 TVStoryListFragment = new TVStoryListFragment();
                 setFragmentTitle(R.string.app_name);
                 switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
                 return true;
             case R.id.action_search:
-                setFragmentTitle(R.string.search_notes);
+                setFragmentTitle(R.string.gotosearchpage_button_label);
                 TVStorySearchFragment = new TVStorySearchFragment();
-                // todo If you can get it working, send getAllHashtags data in a Bundle via the following three commented-out lines
                 Toast.makeText(this, "Search a TVStory!", Toast.LENGTH_LONG).show();
                 switchContent(TVStorySearchFragment, TVStorySearchFragment.ARG_ITEM_ID);
                 return true;
@@ -155,12 +155,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	 */
 	public void switchContent(Fragment fragment, String tag) {
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		while (fragmentManager.popBackStackImmediate())
-			;
+		while (fragmentManager.popBackStackImmediate());
 
 		if (fragment != null) {
-			FragmentTransaction transaction = fragmentManager
-					.beginTransaction();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			transaction.replace(R.id.content_frame, fragment, tag);
 			//  TVStoryFullPageFragment, TVStorySearchFragment and TVStorySearchListFragment are added to the back stack.
 			if (!(fragment instanceof TVStoryListFragment)) {
@@ -224,20 +222,21 @@ public void onFinishDialog() {
         }
 
     @Override
-    public void onSearchButtonClicked(String searchField, String searchParameter) {
+    public void onSearchButtonClicked(SearchTerm searchTerm) {
         // this method calls up a list of selected episodes based on search criteria
         TVStorySearchListFragment = new TVStorySearchListFragment();
         setFragmentTitle(R.string.search_results);
         Bundle bundle=new Bundle();
-        bundle.putString("searchField", searchField);
-        bundle.putString("searchParameter", searchParameter);
+        bundle.putParcelable("searchTerm", searchTerm);
+//        bundle.putString("searchField", searchField);
+//        bundle.putString("searchParameter", searchParameter);
         TVStorySearchListFragment.setArguments(bundle);
         switchContent(TVStorySearchListFragment, TVStorySearchListFragment.ARG_ITEM_ID);
     }
 
 
     public void onSaveButtonClicked() {
-        // todo this is really a "return to main list of all episodes" button. You could use onSearchButtonClicked or some third similarly-structured alternative to return users to search lists instead of the main.
+        // todo this is really a "return to main list of all episodes" button. You could use onSearchButtonClicked or some third similarly-structured alternative to return users to search lists instead of the main. OR, THIS IS BETTER: Change this method so that it is told what kind of search list it came from. That data is already being passed from one state to another somewhere, so it just means keeping that string going longer.
         TVStoryListFragment = new TVStoryListFragment();
         setFragmentTitle(R.string.app_name);
         switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
@@ -260,7 +259,7 @@ public void onFinishDialog() {
             TVStoryListFragment = new TVStoryListFragment();
             setFragmentTitle(R.string.app_name);
             switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
-        } else if (view == searchNotesButton) {
+        } else if (view == gotoSearchPageButton) {
             setFragmentTitle(R.string.search_notes);
             TVStorySearchFragment = new TVStorySearchFragment();
             switchContent(TVStorySearchFragment, TVStorySearchFragment.ARG_ITEM_ID);
@@ -273,7 +272,6 @@ public void onFinishDialog() {
 
     public void loadListofAllStoriesTextFile() {
         // Imports data from Raw textfile(s) into the SQLite database, via an intermediary ArrayList<String[]>, which then builds TVStory objects, which are then added to the DB,
-        // data is placed into coffeeData, a three-column array
         // Solution partially found here: http://stackoverflow.com/questions/32440604/how-to-read-a-txt-file-line-by-line-with-a-sqlite-script
         ArrayList<String[]> listofAllStoriesData = new ArrayList<String[]>();
 

@@ -8,13 +8,14 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-// TODO DONE??? COMPLETE CONVERSION TO TIMEVORTEX
-
 public class TVStoryDAO extends TimeVortexDBDAO {
-    // Adapted/refactored from EmployeeDAO
 
 	private static final String WHERE_ID_EQUALS = DataBaseHelper.COL_STORYID + " =?";
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -40,6 +41,8 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		values.put(DataBaseHelper.COL_SEENIT, TVStory.seenIt());
 		values.put(DataBaseHelper.COL_WANTTOSEEIT, TVStory.wantToSeeIt());
 		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
+		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
+		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
 		return database.insert(DataBaseHelper.TABLE_TVSTORYS, null, values);
 	}
 
@@ -60,6 +63,8 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		values.put(DataBaseHelper.COL_SEENIT, TVStory.seenIt());
 		values.put(DataBaseHelper.COL_WANTTOSEEIT, TVStory.wantToSeeIt());
 		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
+		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
+		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
 
 		long result = database.update(DataBaseHelper.TABLE_TVSTORYS, values, WHERE_ID_EQUALS, new String[] { String.valueOf(TVStory.getStoryID()) });
 		Log.d("Update Result:", "=" + result);
@@ -91,7 +96,9 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		                DataBaseHelper.COL_CREW,
 		                DataBaseHelper.COL_SEENIT,
 		                DataBaseHelper.COL_WANTTOSEEIT,
-						DataBaseHelper.COL_ASIN
+						DataBaseHelper.COL_ASIN,
+						DataBaseHelper.COL_USERREVIEW,
+						DataBaseHelper.COL_USERSTARRATING
 				}, null, null, null, null, DataBaseHelper.COL_STORYID + " ASC");
 
 		while (cursor.moveToNext()) {
@@ -109,9 +116,19 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setOtherCast(cursor.getString(9));
 			TVStory.setSynopsis(cursor.getString(10));
 			TVStory.setCrew(cursor.getString(11));
-			TVStory.setSeenIt(Boolean.parseBoolean(cursor.getString(12)));
-			TVStory.setWantToSeeIt(Boolean.parseBoolean(cursor.getString(13)));
+			if (Integer.parseInt(cursor.getString(12))==0) {
+				TVStory.setSeenIt(false);
+			} else {
+				TVStory.setSeenIt(true);
+			}
+			if (Integer.parseInt(cursor.getString(12))==0) {
+				TVStory.setWantToSeeIt(false);
+			} else {
+				TVStory.setWantToSeeIt(true);
+			}
 			TVStory.setASIN(cursor.getString(14));
+			TVStory.setUserReview(cursor.getString(15));
+			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
 			TVStories.add(TVStory);
 		}
 		return TVStories;
@@ -139,28 +156,40 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setOtherCast(cursor.getString(9));
 			TVStory.setSynopsis(cursor.getString(10));
 			TVStory.setCrew(cursor.getString(11));
-			TVStory.setSeenIt(Boolean.parseBoolean(cursor.getString(12)));
-			TVStory.setWantToSeeIt(Boolean.parseBoolean(cursor.getString(13)));
+			if (Integer.parseInt(cursor.getString(12))==0) {
+				TVStory.setSeenIt(false);
+			} else {
+				TVStory.setSeenIt(true);
+			}
+			if (Integer.parseInt(cursor.getString(12))==0) {
+				TVStory.setWantToSeeIt(false);
+			} else {
+				TVStory.setWantToSeeIt(true);
+			}
 			TVStory.setASIN(cursor.getString(14));
+			TVStory.setUserReview(cursor.getString(15));
+			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
 		}
 		return TVStory;
 	}
 
-	//Retrieves all TVStories that meet the given search criteria for TVStory Textfields and hashtags
-	public ArrayList<TVStory> getSelectedTVStories(String searchField, String searchParameter) {
+	//Retrieves all TVStories that meet the given search criteria
+	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm) {
 		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
 		TVStory TVStory = null;
 		String sql = null;
-        // TODO Neither of these searches really works - functionality is based on Inspirer and not yet built to TimeVortex specs
-		if (searchField == "searchByTitle") {
-			sql = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE " + DataBaseHelper.COL_TITLE + " LIKE '%" + searchParameter + "%' ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-		} else if (searchField == "searchByDoctor") {
-			sql = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE " + DataBaseHelper.COL_DOCTOR + " IS '" + searchParameter + "' ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-		}
+		String sqlSelectFromTVStorys = null;
+		String sqlWhere = null;
+		String sqlOrderBy = null;
+		String searchField;
+		String searchParameter;
 
 
-		Log.d("searchField:", "=" + searchField);
-		Log.d("searchParameter:", "=" + searchParameter);
+		sqlWhere = constructSQLWhereString(searchTerm);
+
+		sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
+		sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
 
         Cursor cursor = database.rawQuery(sql, null);
 
@@ -178,14 +207,75 @@ public class TVStoryDAO extends TimeVortexDBDAO {
             TVStory.setOtherCast(cursor.getString(9));
             TVStory.setSynopsis(cursor.getString(10));
             TVStory.setCrew(cursor.getString(11));
-            TVStory.setSeenIt(Boolean.parseBoolean(cursor.getString(12)));
-            TVStory.setWantToSeeIt(Boolean.parseBoolean(cursor.getString(13)));
+			if (Integer.parseInt(cursor.getString(12))==0) {
+				TVStory.setSeenIt(false);
+			} else {
+				TVStory.setSeenIt(true);
+			}
+			if (Integer.parseInt(cursor.getString(12))==0) {
+				TVStory.setWantToSeeIt(false);
+			} else {
+				TVStory.setWantToSeeIt(true);
+			}
 			TVStory.setASIN(cursor.getString(14));
+			TVStory.setUserReview(cursor.getString(15));
+			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
 
 			searchResultTVStories.add(TVStory);
 		}
 		return searchResultTVStories;
 	}
+
+	public String constructSQLWhereString(SearchTerm searchTerm) {
+		String sqlWhere = "";
+		ArrayList<String> andAdder = new ArrayList<String>();
+
+		if (searchTerm.getTitle() != null) {
+			sqlWhere = DataBaseHelper.COL_TITLE + " LIKE '%" + searchTerm.getTitle() + "%' ";
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.getDoctor() != 0) { // 0 means no Doctor was selected
+			sqlWhere = DataBaseHelper.COL_DOCTOR + " IS '" + searchTerm.getDoctor() + "' ";
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.getOtherCast() != null) {
+			sqlWhere = DataBaseHelper.COL_OTHERCAST + " LIKE '%" + searchTerm.getOtherCast() + "%' ";
+			System.out.println(searchTerm.getOtherCast());
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.isWantToSeeIt()) {
+			sqlWhere = DataBaseHelper.COL_WANTTOSEEIT + " IS '" + "1" + "' ";
+			andAdder.add(sqlWhere);
+		}
+		//  SeenIt/Haven'tSeenIt/Both ("both" simply doesn't add a limiting search term)
+		if (searchTerm.getSeenIt()=="true") {
+			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "1" + "' ";
+			andAdder.add(sqlWhere);
+		} else if (searchTerm.getSeenIt()=="false") {
+			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "0" + "' ";
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.getUserStarRatingNumber() != 0) {
+			sqlWhere = DataBaseHelper.COL_USERSTARRATING + " is '" + searchTerm.getUserStarRatingNumber() + "' ";
+			andAdder.add(sqlWhere);
+		}
+
+		for (int i = 0; i < andAdder.size(); i++) {
+			if (i == 0) {
+				sqlWhere = andAdder.get(i);
+			} else
+			sqlWhere = sqlWhere + " AND " + andAdder.get(i);
+		}
+
+		// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
+//		sqlWhere.replace(" AND STRINGENDER", " ");
+
+
+
+		return sqlWhere;
+	}
+
+
 
 	//Retrieves all hashtags and compiles them in one ArrayList for display
 	public ArrayList<String> getAllHashtags() {
@@ -207,7 +297,9 @@ public class TVStoryDAO extends TimeVortexDBDAO {
                         DataBaseHelper.COL_CREW,
                         DataBaseHelper.COL_SEENIT,
 						DataBaseHelper.COL_WANTTOSEEIT,
-						DataBaseHelper.COL_ASIN
+						DataBaseHelper.COL_ASIN,
+						DataBaseHelper.COL_USERREVIEW,
+						DataBaseHelper.COL_USERSTARRATING
 				}, null, null, null, null, DataBaseHelper.COL_STORYID + " DESC");
 
 		while (cursor.moveToNext()) {
@@ -215,7 +307,5 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		}
 		return allHashtags;
 	}
-
-
 
 }

@@ -12,8 +12,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,22 +26,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX
-// todo implement text search by title
-// todo implement search by character for 12 Doctors and 6 villains. Wire up everything on this page, then upload new version of textfile with markers for search to catch.
+// TODO Add "reset all search fields" button
+// TODO Add selectors to the ImageButtons so that they visually change when clicked: http://developer.android.com/reference/android/widget/ImageButton.html Too time-consuming to do it now.
+
 
 public class TVStorySearchFragment extends Fragment implements OnClickListener {
 
 	// UI references
-	private TextView TVTextfield;
 	private EditText EdtxtSearchByTitle;
-	private TextView TVHashtags;
-	private TextView TVHashtagsList;
 
 	private Button searchByTitleButton;
-	// todo There is a much better way to structure the various ImageButton searches so they don't repeat the same bits of code over and over, but this is a temporary solution so I can test whether the SQLite searches themselves are working properly.
 	private ImageButton Doctor01ImageButton;
 	private ImageButton Doctor02ImageButton;
 	private ImageButton Doctor03ImageButton;
@@ -56,16 +57,28 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 	private ImageButton SontaransImageButton;
 	private ImageButton MasterImageButton;
 	private ImageButton WeepingAngelsImageButton;
-	private Button resetButton;
 
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
+	private CheckBox checkBoxWantToSeeIt;
+	private RadioGroup radioGroupSeenIt;
+	private RadioButton radioButtonSeenItYes;
+	private RadioButton radioButtonSeenItNo;
+	private RadioButton radioButtonSeenItAll;
+	private RadioGroup radioGroupRatings;
+	private RadioButton radioButtonUnrated;
+	private RadioButton radioButtonRated1;
+	private RadioButton radioButtonRated2;
+	private RadioButton radioButtonRated3;
+	private RadioButton radioButtonRated4;
+	private RadioButton radioButtonRated5;
+;
+	// this is not currently being used, but might be in a later iteration
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 	DatePickerDialog datePickerDialog;
 	Calendar dateCalendar;
 
+	SearchTerm searchTerm = new SearchTerm(); // this collects all the search parameters that tell TVStoryDAO which SQLite fields to search
 	TVStory TVStory = null;
 	private TVStoryDAO tvstoryDAO;
-//    private String allHashtagsString;
     OnSearchButtonClickedListener mSearchClicked;
 
     public static final String ARG_ITEM_ID = "tvstory_search_fragment";
@@ -77,8 +90,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_search_page, container,
 				false);
 
@@ -96,22 +108,6 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 	}
 
 	private void setListeners() {
-//		empDobEtxt.setOnClickListener(this);
-//		Calendar newCalendar = Calendar.getInstance();
-//		datePickerDialog = new DatePickerDialog(getActivity(),
-//				new OnDateSetListener() {
-//
-//					public void onDateSet(DatePicker view, int year,
-//							int monthOfYear, int dayOfMonth) {
-//						dateCalendar = Calendar.getInstance();
-//						dateCalendar.set(year, monthOfYear, dayOfMonth);
-//						empDobEtxt.setText(formatter.format(dateCalendar
-//								.getTime()));
-//					}
-//
-//				}, newCalendar.get(Calendar.YEAR),
-//				newCalendar.get(Calendar.MONTH),
-//				newCalendar.get(Calendar.DAY_OF_MONTH));
 
 		searchByTitleButton.setOnClickListener(this);
 		Doctor01ImageButton.setOnClickListener(this);
@@ -132,19 +128,47 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 		SontaransImageButton.setOnClickListener(this);
 		MasterImageButton.setOnClickListener(this);
 		WeepingAngelsImageButton.setOnClickListener(this);
-//		searchHashtagsButton.setOnClickListener(this);
-//		resetButton.setOnClickListener(this);
+		checkBoxWantToSeeIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				searchTerm.setWantToSeeIt(isChecked);
+			}
+		});
+
+		radioGroupSeenIt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (radioButtonSeenItYes.isChecked()) {
+					searchTerm.setSeenIt("true");
+				} else if (radioButtonSeenItNo.isChecked()) {
+					searchTerm.setSeenIt("false");
+				} else if (radioButtonSeenItAll.isChecked()) {
+					searchTerm.setSeenIt("everything");
+				}
+			}
+		});
+
+
+		radioGroupRatings.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (radioButtonUnrated.isChecked()) {
+					searchTerm.setUserStarRatingNumber(0);
+				} else if (radioButtonRated1.isChecked()) {
+					searchTerm.setUserStarRatingNumber(1);
+				} else if (radioButtonRated2.isChecked()) {
+					searchTerm.setUserStarRatingNumber(2);
+				} else if (radioButtonRated3.isChecked()) {
+					searchTerm.setUserStarRatingNumber(3);
+				} else if (radioButtonRated4.isChecked()) {
+					searchTerm.setUserStarRatingNumber(4);
+				} else if (radioButtonRated5.isChecked()) {
+					searchTerm.setUserStarRatingNumber(5);
+				}
+			}
+		});
     }
-
-    protected void resetAllFields() {
-//		EdtxtSearchTextfield.setText("");
-//		EdtxtSearchHashtags.setText("");
-
-	}
 
 	@Override
 	public void onResume() {
-		getActivity().setTitle(R.string.search_notes);
+		getActivity().setTitle(R.string.search_main_label);
 //		getActivity().getActionBar().setTitle(R.string.add_emp);
 		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 		super.onResume();
@@ -180,117 +204,93 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 		MasterImageButton = (ImageButton) rootView.findViewById(R.id.imageButtonMaster);
 		WeepingAngelsImageButton = (ImageButton) rootView.findViewById(R.id.imageButtonWeepingAngels);
 
-
-
-
-//		searchTextfieldsButton = (Button) rootView.findViewById(R.id.search_textfields);
-//		searchHashtagsButton = (Button) rootView.findViewById(R.id.search_hashtags);
-//		resetButton = (Button) rootView.findViewById(R.id.button_reset);
-
-//		TVHashtagsList = (TextView) rootView.findViewById(R.id.textview_hashtags_list);
-//        TVHashtagsList.setText("Hashtags in use: " + allHashtagsString());
-//        TVHashtagsList.setText(tvstoryDAO.getAllHashtags().get(1));
+		checkBoxWantToSeeIt = (CheckBox) rootView.findViewById(R.id.checkBoxWantToSeeIt);
+		radioGroupSeenIt = (RadioGroup) rootView.findViewById(R.id.radioGroupSeenIt);
+		radioButtonSeenItYes = (RadioButton) rootView.findViewById(R.id.radioButtonSeenItYes);
+		radioButtonSeenItNo = (RadioButton) rootView.findViewById(R.id.radioButtonSeenItNo);
+		radioButtonSeenItAll = (RadioButton) rootView.findViewById(R.id.radioButtonSeenItAll);
+		radioGroupRatings = (RadioGroup) rootView.findViewById(R.id.RadioGroupRatings);
+		radioButtonUnrated = (RadioButton) rootView.findViewById(R.id.RadioButtonUnrated);
+		radioButtonRated1 = (RadioButton) rootView.findViewById(R.id.RadioButtonRated1);
+		radioButtonRated2 = (RadioButton) rootView.findViewById(R.id.RadioButtonRated2);
+		radioButtonRated3 = (RadioButton) rootView.findViewById(R.id.RadioButtonRated3);
+		radioButtonRated4 = (RadioButton) rootView.findViewById(R.id.RadioButtonRated4);
+		radioButtonRated5 = (RadioButton) rootView.findViewById(R.id.RadioButtonRated5);
 
 	}
-
-	public String allHashtagsString() {
-        ArrayList<String> allOfThem = tvstoryDAO.getAllHashtags();
-        String allHashtagsString = new String();
-        for(int i=0; i < allOfThem.size(); i++) {
-            allHashtagsString = allHashtagsString  + " " + allOfThem.get(i);
-        }
-        return allHashtagsString;
-    }
 
 	@Override
 	public void onClick(View view) {
 		if (view == searchByTitleButton) {
-			String searchField = "searchByTitle"; // the "searchField" variable tells TVStoryDAO which SQLite fields to search
-			String searchByTitle = EdtxtSearchByTitle.getText().toString();
-            MainActivity activity = (MainActivity) getActivity();
-            activity.onSearchButtonClicked(searchField, searchByTitle);
-            mSearchClicked.onSearchButtonClicked(searchField, searchByTitle);
-
-		} else if (view == Doctor01ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "1";
+			searchTerm.setTitle(EdtxtSearchByTitle.getText().toString());
+			// The search will ONLY fire when this button is pressed. Everything else should toggle on/off.
 			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor02ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "2";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor03ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "3";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor04ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "4";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor05ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "5";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor06ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "6";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor07ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "7";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor08ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "8";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor09ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "9";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor10ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "10";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor11ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "11";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == Doctor12ImageButton) {
-			String searchField = "searchByDoctor";
-			String searchByDoctor = "12";
-			MainActivity activity = (MainActivity) getActivity();
-			activity.onSearchButtonClicked(searchField, searchByDoctor);
-			mSearchClicked.onSearchButtonClicked(searchField, searchByDoctor);
-		} else if (view == resetButton) {
-			resetAllFields();
+			activity.onSearchButtonClicked(searchTerm);
+			mSearchClicked.onSearchButtonClicked(searchTerm);
+		} if (view == Doctor01ImageButton) {
+			searchTerm.setDoctor(1);
+			Toast.makeText(getActivity(), "You selected: First Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor02ImageButton) {
+			searchTerm.setDoctor(2);
+			Toast.makeText(getActivity(), "You selected: Second Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor03ImageButton) {
+			searchTerm.setDoctor(3);
+			Toast.makeText(getActivity(), "You selected: Third Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor04ImageButton) {
+			searchTerm.setDoctor(4);
+			Toast.makeText(getActivity(), "You selected: Fourth Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor05ImageButton) {
+			searchTerm.setDoctor(5);
+			Toast.makeText(getActivity(), "You selected: Fifth Doctor", Toast.LENGTH_LONG).show();
 		}
+		if (view == Doctor06ImageButton) {
+			searchTerm.setDoctor(6);
+			Toast.makeText(getActivity(), "You selected: Sixth Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor07ImageButton) {
+			searchTerm.setDoctor(7);
+			Toast.makeText(getActivity(), "You selected: Seventh Doctor", Toast.LENGTH_LONG).show();
+		}
+		if (view == Doctor08ImageButton) {
+			searchTerm.setDoctor(8);
+			Toast.makeText(getActivity(), "You selected: Eighth Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor09ImageButton) {
+			searchTerm.setDoctor(9);
+			Toast.makeText(getActivity(), "You selected: Ninth Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor10ImageButton) {
+			searchTerm.setDoctor(10);
+			Toast.makeText(getActivity(), "You selected: Tenth Doctor", Toast.LENGTH_LONG).show();
+		}
+		if (view == Doctor11ImageButton) {
+			searchTerm.setDoctor(11);
+			Toast.makeText(getActivity(), "You selected: Eleventh Doctor", Toast.LENGTH_LONG).show();
+		} if (view == Doctor12ImageButton) {
+			searchTerm.setDoctor(12);
+			Toast.makeText(getActivity(), "You selected: Twelfth Doctor", Toast.LENGTH_LONG).show();
+		} if (view == DaleksImageButton) {
+			searchTerm.setOtherCast("Daleks");
+			Toast.makeText(getActivity(), "You selected: The Daleks", Toast.LENGTH_LONG).show();
+		} if (view == CybermenImageButton) {
+			searchTerm.setOtherCast("Cybermen");
+			Toast.makeText(getActivity(), "You selected: The Cybermen", Toast.LENGTH_LONG).show();
+		} if (view == IceWarriorsImageButton) {
+			searchTerm.setOtherCast("IceWarriors");
+			Toast.makeText(getActivity(), "You selected: The Ice Warriors", Toast.LENGTH_LONG).show();
+		} if (view == SontaransImageButton) {
+			searchTerm.setOtherCast("Sontarans");
+			Toast.makeText(getActivity(), "You selected: The Sontarans", Toast.LENGTH_LONG).show();
+		} if (view == MasterImageButton) {
+			searchTerm.setOtherCast("Master");
+			Toast.makeText(getActivity(), "You selected: The Master", Toast.LENGTH_LONG).show();
+		} if (view == WeepingAngelsImageButton) {
+			searchTerm.setOtherCast("WeepingAngels");
+			Toast.makeText(getActivity(), "You selected: The Weeping Angels", Toast.LENGTH_LONG).show();
+		}
+
 	}
 
     // Container Activity must implement this interface
     public interface OnSearchButtonClickedListener {
-        void onSearchButtonClicked(String searchField, String searchParameter);
+        void onSearchButtonClicked(SearchTerm searchTerm);
     }
 
     @Override
@@ -302,34 +302,9 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
         try {
             mSearchClicked = (OnSearchButtonClickedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnSearchButtonClickedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnSearchButtonClickedListener");
         }
     }
 
 
-
-    public class AddTVStoryTask extends AsyncTask<Void, Void, Long> {
-
-		private final WeakReference<Activity> activityWeakRef;
-
-		public AddTVStoryTask(Activity context) {
-			this.activityWeakRef = new WeakReference<Activity>(context);
-		}
-
-		@Override
-		protected Long doInBackground(Void... arg0) {
-			long result = tvstoryDAO.save(TVStory);
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(Long result) {
-			if (activityWeakRef.get() != null
-					&& !activityWeakRef.get().isFinishing()) {
-				if (result != -1)
-					Toast.makeText(activityWeakRef.get(), "TVStory Saved", Toast.LENGTH_LONG).show();
-			}
-		}
-	}
 }

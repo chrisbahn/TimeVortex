@@ -82,7 +82,7 @@ public class CustomTVStoryDialogFragment extends DialogFragment {
         EdtxtMyNotes = (EditText) customDialogView.findViewById(R.id.mynotes_edittext);
 
 
-		submitLayout = (LinearLayout) customDialogView.findViewById(R.id.save_delete_buttons_layout);
+		submitLayout = (LinearLayout) customDialogView.findViewById(R.id.save_buttons_layout);
 		submitLayout.setVisibility(View.GONE);
 
 		setValue();

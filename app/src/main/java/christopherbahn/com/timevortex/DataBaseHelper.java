@@ -12,22 +12,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX
-// DONE??? full implementation for TABLE_TVSTORYS (that is, with no further changes to the structure of the TVStory object)
-// todo full implementation for TABLE_DWCHARACTERS
-// todo full implementation for TABLE_DWCREW
+// todo implement TABLE_DWCHARACTERS
+// todo implement TABLE_DWCREW
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     protected static final String DATABASE_NAME = "TimeVortex";
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 11;
 
 	static final String KEY_ROWID = "_id";
-	protected static final String TABLE_DWCHARACTERS = "dwcharacters_table";
-	protected static final String TABLE_DWCREW = "dwcrew_table";
+	protected static final String TABLE_DWCHARACTERS = "dwcharacters_table"; // TODO Implement this; currently program uses just a String
+	protected static final String TABLE_DWCREW = "dwcrew_table"; // TODO Implement this; currently program uses just a String
 	protected static final String TABLE_TVSTORYS = "tvstorys_table";
 
-	// these are shared by both Notes and Photos tables
 	protected static final String COL_STORYID = "storyid";
 	protected static final String COL_TITLE = "title";
 	protected static final String COL_DOCTOR = "doctor";
@@ -43,6 +40,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     protected static final String COL_SEENIT = "seenit";
 	protected static final String COL_WANTTOSEEIT = "wanttoseeit";
 	protected static final String COL_ASIN = "asin";
+	protected static final String COL_USERREVIEW = "userreview";
+	protected static final String COL_USERSTARRATING = "userstarrating";
 
 
 
@@ -85,9 +84,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 COL_OTHERCAST + " TEXT, " +
                 COL_SYNOPSIS + " TEXT, " +
                 COL_CREW + " TEXT, " +
-                COL_SEENIT + " TEXT, " +
-				COL_WANTTOSEEIT + " TEXT, " +
-				COL_ASIN + " TEXT);";
+                COL_SEENIT + " BOOLEAN, " +
+				COL_WANTTOSEEIT + " BOOLEAN, " +
+				COL_ASIN + " TEXT, " +
+				COL_USERREVIEW + " TEXT, " +
+				COL_USERSTARRATING + " REAL);";
 		String createDWCharactersTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DWCHARACTERS + " (" +
                 COL_STORYID +" INTEGER PRIMARY KEY, " +
                 COL_TITLE + " TEXT);";

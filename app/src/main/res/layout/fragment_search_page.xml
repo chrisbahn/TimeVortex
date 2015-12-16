@@ -9,8 +9,13 @@
         android:layout_margin="5dp"
         android:orientation="vertical"
         android:background="@color/list_item_bg"
-        >
-
+        android:padding="4dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tardisblue"
+            android:padding="4dp">
         <TextView android:id="@+id/search_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/search_by_title_label"
+            android:textColor="@color/white"
             android:textStyle="bold"
             />
         <EditText android:id="@+id/edittext_search_by_title"
@@ -33,6 +39,7 @@
             android:layout_marginRight="16dp"
             android:layout_below="@+id/textview_search_textfield"
             android:hint="@string/search_textfield_hint"
+            android:textColorHint="@color/white"
             android:layout_marginBottom="16dp" />
         <Button android:id="@+id/search_by_title_button"
             android:layout_width="wrap_content"
@@ -41,15 +48,133 @@
             android:layout_marginRight="16dp"
             android:text="@string/search_by_title_button_label"
             />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/tardisblue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter episodes by ..."
+                android:id="@+id/textViewMyListsHeader"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Shows on my watchlist"
+                android:id="@+id/checkBoxWantToSeeIt" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupSeenIt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Shows I've seen"
+                    android:textColor="@color/white"
+                    android:id="@+id/radioButtonSeenItYes" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Shows I haven't"
+                    android:textColor="@color/white"
+                    android:id="@+id/radioButtonSeenItNo" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="All"
+                    android:textColor="@color/white"
+                    android:id="@+id/radioButtonSeenItAll" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Shows I've rated:"
+                android:textColor="@color/white"
+                android:id="@+id/textViewSwitchUserRatingLabel" />
+
+            <RadioGroup
+                android:id="@+id/RadioGroupRatings"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Unrated"
+                    android:id="@+id/RadioButtonUnrated" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="1"
+                    android:id="@+id/RadioButtonRated1" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="2"
+                    android:id="@+id/RadioButtonRated2" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="3"
+                    android:id="@+id/RadioButtonRated3" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="4"
+                    android:id="@+id/RadioButtonRated4" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="5"
+                    android:id="@+id/RadioButtonRated5" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+
+        <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/tardisblue"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+            android:padding="4dp">
 
-        <TextView android:id="@+id/find_all_x_label"
+        <TextView android:id="@+id/filter_by_x_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/find_all_x_label"
@@ -57,27 +182,35 @@
             android:textColor="@color/white"
             />
 
+            <TextView android:id="@+id/filter_by_doctor_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The 12 (more or less) Doctors"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                />
+
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:columnCount="7">
+            android:columnCount="6">
 
             <ImageButton
                 android:id="@+id/imageButtonDoctor01"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
-                android:background="@null"
+                android:background="@color/white"
                 android:src="@drawable/doctor01"
                 />
             <ImageButton
                 android:id="@+id/imageButtonDoctor02"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -88,7 +221,7 @@
                 android:id="@+id/imageButtonDoctor03"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -99,7 +232,7 @@
                 android:id="@+id/imageButtonDoctor04"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -110,7 +243,7 @@
                 android:id="@+id/imageButtonDoctor05"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -121,7 +254,7 @@
                 android:id="@+id/imageButtonDoctor06"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -132,7 +265,7 @@
                 android:id="@+id/imageButtonDoctor07"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -143,7 +276,7 @@
                 android:id="@+id/imageButtonDoctor08"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -154,7 +287,7 @@
                 android:id="@+id/imageButtonDoctor09"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -165,7 +298,7 @@
                 android:id="@+id/imageButtonDoctor10"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -176,7 +309,7 @@
                 android:id="@+id/imageButtonDoctor11"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -187,18 +320,32 @@
                 android:id="@+id/imageButtonDoctor12"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
                 android:background="@null"
                 android:src="@drawable/doctor12"
                 />
+        </GridLayout>
+
+            <TextView android:id="@+id/filter_by_villains_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Classic villains"
+                android:textColor="@color/white"
+                />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="6">
             <ImageButton
                 android:id="@+id/imageButtonDaleks"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -209,7 +356,7 @@
                 android:id="@+id/imageButtonCybermen"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -220,7 +367,7 @@
                 android:id="@+id/imageButtonIceWarriors"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -231,7 +378,7 @@
                 android:id="@+id/imageButtonSontarans"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -242,7 +389,7 @@
                 android:id="@+id/imageButtonMaster"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
@@ -253,7 +400,7 @@
                 android:id="@+id/imageButtonWeepingAngels"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:padding="2dp"
