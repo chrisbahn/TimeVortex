@@ -167,6 +167,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_gotomainlist:
                 TVStoryListFragment = new TVStoryListFragment();
                 setFragmentTitle(R.string.app_name);
+                SearchTerm searchTerm = new SearchTerm();
+                searchTerm.setCameFromSearchResult(false);
+                Bundle bundle=new Bundle();
+                bundle.putParcelable("searchTerm", searchTerm);
+                TVStoryListFragment.setArguments(bundle);
                 switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
                 return true;
             case R.id.action_search:
@@ -179,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setFragmentTitle(R.string.getrandom_button_label);
                 Random randomizer = new Random();
                 TVStory tvStory = tvstoryDAO.getTVStory(randomizer.nextInt(tvstoryDAO.getAllTVStories().size()));
-                SearchTerm searchTerm = new SearchTerm();
+                searchTerm = new SearchTerm();
                 searchTerm.setCameFromSearchResult(false);
                 Toast.makeText(this, "Get a random episode (and beware the Black Guardian!)", Toast.LENGTH_LONG).show();
                 onListItemClicked(tvStory, searchTerm);
@@ -273,9 +278,13 @@ public void onFinishDialog() {
 
 
     public void onSaveButtonClicked() {
-        // todo this is really a "return to main list of all episodes" button. You could use onSearchButtonClicked or some third similarly-structured alternative to return users to search lists instead of the main. OR, THIS IS BETTER: Change this method so that it is told what kind of search list it came from. That data is already being passed from one state to another somewhere, so it just means keeping that string going longer.
         TVStoryListFragment = new TVStoryListFragment();
         setFragmentTitle(R.string.app_name);
+        SearchTerm searchTerm = new SearchTerm();
+        searchTerm.setCameFromSearchResult(false);
+        Bundle bundle=new Bundle();
+        bundle.putParcelable("searchTerm", searchTerm);
+        TVStoryListFragment.setArguments(bundle);
         switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
     }
 
@@ -306,6 +315,11 @@ public void onFinishDialog() {
         if (view == gotoMainSearchListButton) {
             TVStoryListFragment = new TVStoryListFragment();
             setFragmentTitle(R.string.app_name);
+            SearchTerm searchTerm = new SearchTerm();
+            searchTerm.setCameFromSearchResult(false);
+            Bundle bundle=new Bundle();
+            bundle.putParcelable("searchTerm", searchTerm);
+            TVStoryListFragment.setArguments(bundle);
             switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
         } else if (view == gotoSearchPageButton) {
             setFragmentTitle(R.string.gotosearchpage_button_label);
