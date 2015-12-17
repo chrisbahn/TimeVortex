@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollIndicators="bottom|top">
+
+
+    <LinearLayout android:id="@+id/search_page_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:background="@color/list_item_bg"
+        android:padding="4dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tardisblue"
+            android:padding="4dp">
+            <TextView
+                android:id="@+id/txt_fullpagetvstory_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/aboutdoctorwho_title"
+                android:textColor="@color/headline"
+                android:padding="6dp" />
+            <!-- synopsis -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="250px"
+                    android:layout_height="250px"
+                    android:id="@+id/imageView"
+                    android:src="@drawable/logodoctor08"
+                    android:scaleType="fitStart" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="A short history of the series"
+                        android:id="@+id/textViewHistoryOfTheSeriesHeader"
+                        android:layout_gravity="left"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_aboutdoctorwho_history"
+                        android:text="@string/aboutdoctorwho_history_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:padding="6dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- doctor, othercast, crew-->
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/tardisblue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Where To Start?"
+                android:id="@+id/textViewWhereToStartHeader"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_aboutdoctorwho_beginnersrecommendations"
+                android:text="@string/aboutdoctorwho_beginnersrecommendations_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_below="@+id/txt_listitem_synopsis"
+                android:padding="6dp"
+                />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/tardisblue"
+                android:layout_centerHorizontal="true" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/medialogodwm2009"
+                        android:id="@+id/imageViewmedialogodwm2009"
+                        android:layout_gravity="center" />
+                    <Button
+                        android:id="@+id/buttonBestOfDWM2009"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/bestof_button_label_dwm2009"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:src="@drawable/medialogobbc"
+                        android:id="@+id/imageViewmedialogobbc"
+                        android:layout_gravity="center" />
+                   <Button
+                        android:id="@+id/buttonBestOfBBCAmerica"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/bestof_button_label_bbcamerica"
+                       android:layout_gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:src="@drawable/medialogoavclub"
+                        android:id="@+id/imageViewmedialogoavclub"
+                        android:layout_gravity="center" />
+                    <Button
+                        android:id="@+id/buttonBestOfAVCTVC10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/bestof_button_label_avctvc10"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="77dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/medialogodwm2014"
+                        android:id="@+id/imageViewmedialogodwm2014"
+                        android:layout_gravity="center" />
+                <Button
+                    android:id="@+id/buttonBestOfDWM2014"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/bestof_button_label_dwm2014"
+                    android:layout_gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:layout_width="78dp"
+                        android:layout_height="78dp"
+                        android:src="@drawable/medialogoio9"
+                        android:id="@+id/medialogoio9"
+                        android:layout_gravity="center" />
+
+                    <Button
+                        android:id="@+id/buttonBestOfIo9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/bestof_button_label_io9"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/tardisblue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Read More About It"
+                android:id="@+id/textView2"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView_aboutdoctorwho_otherreading"
+                android:text="@string/aboutdoctorwho_otherreading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_below="@+id/txt_listitem_synopsis"
+                android:padding="6dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</ScrollView>

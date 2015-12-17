@@ -17,7 +17,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX
+// NOTE: This class is a leftover from the previous version I did for Project 2. It's not being used here right now, but I haven't deleted it because I want to keep the dialog functionality if I find a use for it in a later iteration.
+
 public class CustomTVStoryDialogFragment extends DialogFragment {
 
 	// UI references
@@ -87,7 +88,7 @@ public class CustomTVStoryDialogFragment extends DialogFragment {
 
 		setValue();
 
-		builder.setTitle(R.string.update_note);
+		builder.setTitle(R.string.update);
 		builder.setCancelable(false);
 		builder.setPositiveButton(R.string.update,
 				new DialogInterface.OnClickListener() {

@@ -22,29 +22,36 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+
+
+
+// todo  DWCharacter and DWCrew objects which represent people who worked on the series. Used to populate cast lists, character profiles, and implement certain kinds of search
+// todo add images. Picture thumbnail on all TVStory, DWCharacter and DWCrew objects.
+// todo Ranked lists of episodes. 1) DIY one made by user. Ideally, this would be a drag-and-drop list of titles that the user can move a selected item up and down. 2) "Professional" rankings: DWMagazine, io9, etc., all of which get pulled into an aggregate best-of list.
 
 
 // ADAPTED FROM Project 2: Inspirer
-
-// todo  DWCharacter and DWCrew objects which represent people who worked on the series. Used to populate cast lists, character profiles, and implement certain kinds of search
-// todo customizable sorted episode lists
-// todo add images. Picture thumbnail on all TVStory, DWCharacter and DWCrew objects.
-// todo Ranked lists of episodes. 1) DIY one made by user. Ideally, this would be a drag-and-drop list of titles that the user can move a selected item up and down. 2) "Professional" rankings: DWMagazine, io9, etc., all of which get pulled into an aggregate best-of list.
-// todo build episode database, based off the TVStory functionality from Inspirer. Difference: No need for the dialog popup. Clicking entry on list should go directly to what is now "TVStoryAddFragment." TVStoryAddFragment should become the display page for an individual episode. The user can ONLY edit certain things like the star rating and the boolean seenIt/wantToSeeIt
-// TODO COMPLETE CONVERSION TO TIMEVORTEX
-
-
 // Code to close a fragment adapted from this page: http://stackoverflow.com/a/18110614
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CustomTVStoryDialogFragment.TVStoryDialogFragmentListener, TVStorySearchFragment.OnSearchButtonClickedListener, TVStoryAddFragment.OnSaveButtonClickedListener, TVStoryFullPageFragment.OnSaveButtonClickedListener, TVStoryListFragment.OnListItemClickedListener, TVStorySearchListFragment.OnListItemClickedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        CustomTVStoryDialogFragment.TVStoryDialogFragmentListener,
+        AboutDoctorWhoFragment.OnSearchButtonClickedListener,
+        TVStoryFullPageFragment.OnSaveButtonClickedListener,
+        TVStoryFullPageFragment.OnSearchButtonClickedListener,
+        TVStoryListFragment.OnListItemClickedListener,
+        TVStorySearchFragment.OnSearchButtonClickedListener,
+        TVStorySearchListFragment.onSearchListItemClickedListener {
 
 	private Fragment contentFragment;
 	private TVStoryListFragment TVStoryListFragment;
-//    private TVStoryAddFragment TVStoryAddFragment;
     private TVStorySearchFragment TVStorySearchFragment;
     private TVStorySearchListFragment TVStorySearchListFragment;
     private TVStoryFullPageFragment TVStoryFullPageFragment;
+    private AboutDoctorWhoFragment AboutDoctorWhoFragment;
     private Button gotoMainSearchListButton;
     private Button gotoSearchPageButton;
+    private Button getRandomEpisodeButton;
+    private Button AboutDoctorWhoButton;
     private TextView UIExplainer;
     private TVStoryDAO tvstoryDAO;
     private ArrayList<TVStory> tempMatrix = new ArrayList<TVStory>();
@@ -57,56 +64,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         gotoMainSearchListButton = (Button) findViewById(R.id.gotomainsearchlist_button);
         gotoSearchPageButton = (Button) findViewById(R.id.gotosearchpage_button);
+        getRandomEpisodeButton = (Button) findViewById(R.id.getrandom_button);
+        AboutDoctorWhoButton = (Button) findViewById(R.id.aboutdoctorwho_button);
         UIExplainer = (TextView) findViewById(R.id.app_ui_explainer_tv);
         tvstoryDAO = new TVStoryDAO(this);
+        SearchTerm searchTerm = new SearchTerm();
+        searchTerm.setCameFromSearchResult(false);
 
         gotoMainSearchListButton.setOnClickListener(this);
         gotoSearchPageButton.setOnClickListener(this);
+        getRandomEpisodeButton.setOnClickListener(this);
+        AboutDoctorWhoButton.setOnClickListener(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-		// todo put this in a method of its own, to get it out of the way?
 		/*
 		 * This is called when orientation is changed.
 		 */
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey("content")) {
 				String content = savedInstanceState.getString("content");
-                if (content.equals(TVStoryAddFragment.ARG_ITEM_ID)) {
-                    if (fragmentManager.findFragmentByTag(TVStoryAddFragment.ARG_ITEM_ID) != null) {
-                        setFragmentTitle(R.string.add_note);
-                        contentFragment = fragmentManager.findFragmentByTag(TVStoryAddFragment.ARG_ITEM_ID);
-                    }
-                }
-                else if (content.equals(TVStorySearchFragment.ARG_ITEM_ID)) {
+                if (content.equals(TVStorySearchFragment.ARG_ITEM_ID)) {
                     if (fragmentManager.findFragmentByTag(TVStorySearchFragment.ARG_ITEM_ID) != null) {
-                        setFragmentTitle(R.string.search_notes);
+                        setFragmentTitle(R.string.search_tvstories);
                         contentFragment = fragmentManager.findFragmentByTag(TVStorySearchFragment.ARG_ITEM_ID);
+                        UIExplainer.setVisibility(View.GONE);
                     }
                 }
                 else if (content.equals(TVStorySearchListFragment.ARG_ITEM_ID)) {
                     if (fragmentManager.findFragmentByTag(TVStorySearchListFragment.ARG_ITEM_ID) != null) {
                         setFragmentTitle(R.string.search_results);
                         contentFragment = fragmentManager.findFragmentByTag(TVStorySearchListFragment.ARG_ITEM_ID);
+                        UIExplainer.setVisibility(View.VISIBLE);
                     }
                 } else if (content.equals(TVStoryFullPageFragment.ARG_ITEM_ID)) {
-                    if (fragmentManager.findFragmentByTag(TVStoryFullPageFragment.ARG_ITEM_ID) != null) {
-                        setFragmentTitle(R.string.search_notes);
-                        contentFragment = fragmentManager.findFragmentByTag(TVStoryFullPageFragment.ARG_ITEM_ID);
+                    if (fragmentManager.findFragmentByTag(TVStorySearchListFragment.ARG_ITEM_ID) != null) {
+                        setFragmentTitle(R.string.search_results);
+                        contentFragment = fragmentManager.findFragmentByTag(TVStorySearchListFragment.ARG_ITEM_ID);
+                        UIExplainer.setVisibility(View.GONE);
+                    }
+                } else if (content.equals(AboutDoctorWhoFragment.ARG_ITEM_ID)) {
+                    if (fragmentManager.findFragmentByTag(AboutDoctorWhoFragment.ARG_ITEM_ID) != null) {
+                        setFragmentTitle(R.string.aboutdoctorwho_title);
+                        contentFragment = fragmentManager.findFragmentByTag(AboutDoctorWhoFragment.ARG_ITEM_ID);
+                        UIExplainer.setVisibility(View.GONE);
                     }
                 }
             }
 			if (fragmentManager.findFragmentByTag(TVStoryListFragment.ARG_ITEM_ID) != null) {
                 TVStoryListFragment = (TVStoryListFragment) fragmentManager.findFragmentByTag(TVStoryListFragment.ARG_ITEM_ID);
 				contentFragment = TVStoryListFragment;
+                UIExplainer.setVisibility(View.VISIBLE);
 			}
 		} else {
             TVStoryListFragment = new TVStoryListFragment();
 			setFragmentTitle(R.string.app_name);
+//            SearchTerm searchTerm = new SearchTerm();
+            searchTerm.setCameFromSearchResult(false);
+            Bundle bundle=new Bundle();
+            bundle.putParcelable("searchTerm", searchTerm);
+            TVStoryListFragment.setArguments(bundle);
 			switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
+            UIExplainer.setVisibility(View.VISIBLE);
 		}
 
-        // todo Currently this line is commented out UNLESS a change to the original textfile database occurs and needs to be ported into the program. (Don't forget to change the DATABASE_VERSION number in DatabaseHelper.) How do I make this work so that if the SQL database already exists, this doesn't load in a bunch of new data on top of what's there?
+        // todo Currently this line is commented out UNLESS a change to the original textfile database occurs and needs to be ported into the program. (Don't forget to change the DATABASE_VERSION number in DatabaseHelper.) How do I make this work so that if the SQL database already exists, this doesn't try to load in a bunch of new data on top of what's there?
 //        loadListofAllStoriesTextFile();
 
     }
@@ -115,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	protected void onSaveInstanceState(Bundle outState) {
         if (contentFragment instanceof TVStoryFullPageFragment) {
             outState.putString("content", TVStoryFullPageFragment.ARG_ITEM_ID);
+        } else if (contentFragment instanceof AboutDoctorWhoFragment) {
+            outState.putString("content", AboutDoctorWhoFragment.ARG_ITEM_ID);
         } else if (contentFragment instanceof TVStorySearchFragment) {
             outState.putString("content", TVStorySearchFragment.ARG_ITEM_ID);
         } else if (contentFragment instanceof TVStorySearchListFragment) {
@@ -134,7 +158,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_gotomainlist:
+            case R.id.action_aboutdoctorwho:
+                setFragmentTitle(R.string.aboutdoctorwho_button_label);
+                AboutDoctorWhoFragment = new AboutDoctorWhoFragment();
+                switchContent(AboutDoctorWhoFragment, AboutDoctorWhoFragment.ARG_ITEM_ID);
+                Toast.makeText(this, "What is Doctor Who and where to start watching it!", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_gotomainlist:
                 TVStoryListFragment = new TVStoryListFragment();
                 setFragmentTitle(R.string.app_name);
                 switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
@@ -144,6 +174,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TVStorySearchFragment = new TVStorySearchFragment();
                 Toast.makeText(this, "Search a TVStory!", Toast.LENGTH_LONG).show();
                 switchContent(TVStorySearchFragment, TVStorySearchFragment.ARG_ITEM_ID);
+                return true;
+            case R.id.action_random:
+                setFragmentTitle(R.string.getrandom_button_label);
+                Random randomizer = new Random();
+                TVStory tvStory = tvstoryDAO.getTVStory(randomizer.nextInt(tvstoryDAO.getAllTVStories().size()));
+                SearchTerm searchTerm = new SearchTerm();
+                searchTerm.setCameFromSearchResult(false);
+                Toast.makeText(this, "Get a random episode (and beware the Black Guardian!)", Toast.LENGTH_LONG).show();
+                onListItemClicked(tvStory, searchTerm);
                 return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -228,8 +267,6 @@ public void onFinishDialog() {
         setFragmentTitle(R.string.search_results);
         Bundle bundle=new Bundle();
         bundle.putParcelable("searchTerm", searchTerm);
-//        bundle.putString("searchField", searchField);
-//        bundle.putString("searchParameter", searchParameter);
         TVStorySearchListFragment.setArguments(bundle);
         switchContent(TVStorySearchListFragment, TVStorySearchListFragment.ARG_ITEM_ID);
     }
@@ -243,15 +280,26 @@ public void onFinishDialog() {
     }
 
     // helps move from the primary all-episodes list to a single-page view of one story
-    public void onListItemClicked(TVStory tvStory) {
+    public void onListItemClicked(TVStory tvStory, SearchTerm searchTerm) {
         TVStoryFullPageFragment = new TVStoryFullPageFragment();
         setFragmentTitle(R.string.app_name);
         Bundle bundle=new Bundle();
         bundle.putParcelable("selectedTVStory", tvStory);
+        bundle.putParcelable("searchTerm", searchTerm);
         TVStoryFullPageFragment.setArguments(bundle);
         switchContent(TVStoryFullPageFragment, TVStoryFullPageFragment.ARG_ITEM_ID);
     }
 
+    // helps move from the primary all-episodes list to a single-page view of one story
+    public void onSearchListItemClicked(TVStory tvStory, SearchTerm searchTerm) {
+        TVStoryFullPageFragment = new TVStoryFullPageFragment();
+        setFragmentTitle(R.string.app_name);
+        Bundle bundle=new Bundle();
+        bundle.putParcelable("selectedTVStory", tvStory);
+        bundle.putParcelable("searchTerm", searchTerm);
+        TVStoryFullPageFragment.setArguments(bundle);
+        switchContent(TVStoryFullPageFragment, TVStoryFullPageFragment.ARG_ITEM_ID);
+    }
 
     @Override
     public void onClick(View view) {
@@ -260,10 +308,23 @@ public void onFinishDialog() {
             setFragmentTitle(R.string.app_name);
             switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
         } else if (view == gotoSearchPageButton) {
-            setFragmentTitle(R.string.search_notes);
+            setFragmentTitle(R.string.gotosearchpage_button_label);
             TVStorySearchFragment = new TVStorySearchFragment();
             switchContent(TVStorySearchFragment, TVStorySearchFragment.ARG_ITEM_ID);
             Toast.makeText(this, "Search a TVStory!", Toast.LENGTH_LONG).show();
+        } else if (view == getRandomEpisodeButton) {
+            setFragmentTitle(R.string.getrandom_button_label);
+            Random randomizer = new Random();
+            TVStory tvStory = tvstoryDAO.getTVStory(randomizer.nextInt(tvstoryDAO.getAllTVStories().size()));
+            SearchTerm searchTerm = new SearchTerm();
+            searchTerm.setCameFromSearchResult(false);
+            Toast.makeText(this, "Get a random episode (and beware the Black Guardian!)", Toast.LENGTH_LONG).show();
+            onListItemClicked(tvStory, searchTerm);
+        } else if (view == AboutDoctorWhoButton) {
+            setFragmentTitle(R.string.aboutdoctorwho_button_label);
+            AboutDoctorWhoFragment = new AboutDoctorWhoFragment();
+            switchContent(AboutDoctorWhoFragment, AboutDoctorWhoFragment.ARG_ITEM_ID);
+            Toast.makeText(this, "What is Doctor Who and where to start watching it!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -308,6 +369,11 @@ public void onFinishDialog() {
 //                            story.setSeenIt(Boolean.parseBoolean(matrixFile[12]));
 //                            story.setWantToSeeIt(Boolean.parseBoolean(matrixFile[13]));
                             story.setASIN(matrixFile[12]);
+                            story.setBestOfBBCAmerica(Integer.parseInt(matrixFile[13]));
+                            story.setBestOfDWM2009(Integer.parseInt(matrixFile[14]));
+                            story.setBestOfDWM2014(Integer.parseInt(matrixFile[15]));
+                            story.setBestOfAVCTVC10(Integer.parseInt(matrixFile[16]));
+                            story.setBestOfIo9(Integer.parseInt(matrixFile[17]));
                             tempMatrix.add(story);
                             System.out.println("tempMatrix:" + story);
                         }

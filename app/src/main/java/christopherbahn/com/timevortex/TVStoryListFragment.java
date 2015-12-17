@@ -18,8 +18,6 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-// TODO DONE? COMPLETE CONVERSION TO TIMEVORTEX
-// todo longclick has no functionality, since I don't want the user to be able to delete an item. Can it be used for something else?
 
 public class TVStoryListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
 
@@ -34,6 +32,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 	private GetTVStoryTask task;
 	OnListItemClickedListener mListItemClicked;
+	private SearchTerm searchTerm;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +42,18 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Bundle bundle = this.getArguments();
+		searchTerm = bundle.getParcelable("searchTerm");
+//		searchTerm.setCameFromSearchResult(false);
+
+		System.out.println("48: cameFromSearchResult???? " + searchTerm.cameFromSearchResult());
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
 		findViewsById(view);
 
 		task = new GetTVStoryTask(activity);
-		task.execute((Void) null);
+//		task.execute((Void) null);
+		task.execute(searchTerm);
 
 		tvstoryListView.setOnItemClickListener(this);
 		tvstoryListView.setOnItemLongClickListener(this);
@@ -77,10 +81,12 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 		if (TVStory != null) {
 			Bundle arguments = new Bundle();
+			System.out.println("82: cameFromSearchResult???? " + searchTerm.cameFromSearchResult());
 			arguments.putParcelable("selectedTVStory", TVStory);
+			arguments.putParcelable("searchTerm", searchTerm);
 			MainActivity activity = (MainActivity) getActivity();
-			activity.onListItemClicked(TVStory);
-			mListItemClicked.onListItemClicked(TVStory); // todo do you actually need both these lines, or is only one of them doing the actual work?
+			activity.onListItemClicked(TVStory, searchTerm);
+			mListItemClicked.onListItemClicked(TVStory, searchTerm); // todo do you actually need both these lines, or is only one of them doing the actual work?
 		}
 	}
 
@@ -97,7 +103,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 	// Container Activity must implement this interface
 	public interface OnListItemClickedListener {
-		void onListItemClicked(TVStory tvStory);
+		void onListItemClicked(TVStory tvStory, SearchTerm searchTerm);
 	}
 
 
@@ -117,7 +123,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 
 
-	public class GetTVStoryTask extends AsyncTask<Void, Void, ArrayList<TVStory>> {
+	public class GetTVStoryTask extends AsyncTask<SearchTerm, Void, ArrayList<TVStory>> {
 
 		private final WeakReference<Activity> activityWeakRef;
 
@@ -126,7 +132,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		}
 
 		@Override
-		protected ArrayList<TVStory> doInBackground(Void... arg0) {
+		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
 			ArrayList<TVStory> TVStoryList = tvstoryDAO.getAllTVStories();
 			return TVStoryList;
 		}
@@ -157,7 +163,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 	 */
 	public void updateView() {
 		task = new GetTVStoryTask(activity);
-		task.execute((Void) null);
+		task.execute(searchTerm);
 	}
 
 

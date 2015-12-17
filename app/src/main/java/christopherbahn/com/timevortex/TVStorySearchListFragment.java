@@ -19,9 +19,7 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-// TODO COMPLETE CONVERSION TO TIMEVORTEX - some functions should mirror the changes in TVSToryListFragment, and the searching methodology may need to be altered
 
 public class TVStorySearchListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
 
@@ -30,12 +28,10 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	Activity activity;
 	ListView tvstorySearchListView;
 	ArrayList<TVStory> TVStories;
-	String searchField;
-	String searchParameter;
 	private SearchTerm searchTerm;
 	TVStoryListAdapter TVStoryListAdapter;
 	TVStoryDAO tvstoryDAO;
-	OnListItemClickedListener mListItemClicked;
+	onSearchListItemClickedListener mListItemClicked;
 
 	private GetTVStoryTask task;
 
@@ -51,6 +47,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Bundle bundle = this.getArguments();
 		searchTerm = bundle.getParcelable("searchTerm");
+		searchTerm.setCameFromSearchResult(true);
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
 		findViewsById(view);
 
@@ -84,9 +81,10 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 		if (TVStory != null) {
 			Bundle arguments = new Bundle();
 			arguments.putParcelable("selectedTVStory", TVStory);
+			arguments.putParcelable("searchTerm", searchTerm);
 			MainActivity activity = (MainActivity) getActivity();
-			activity.onListItemClicked(TVStory);
-			mListItemClicked.onListItemClicked(TVStory);
+			activity.onSearchListItemClicked(TVStory, searchTerm);
+			mListItemClicked.onSearchListItemClicked(TVStory, searchTerm);
 		}
 	}
 
@@ -102,8 +100,8 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	}
 
 	// Container Activity must implement this interface
-	public interface OnListItemClickedListener {
-		void onListItemClicked(TVStory tvStory);
+	public interface onSearchListItemClickedListener {
+		void onSearchListItemClicked(TVStory tvStory, SearchTerm searchTerm);
 	}
 
 
@@ -114,9 +112,9 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 		// This makes sure that the container activity has implemented
 		// the callback interface. If not, it throws an exception
 		try {
-			mListItemClicked = (OnListItemClickedListener) activity;
+			mListItemClicked = (onSearchListItemClickedListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement OnListItemClickedListener");
+			throw new ClassCastException(activity.toString() + " must implement onSearchListItemClickedListener");
 		}
 	}
 

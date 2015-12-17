@@ -9,8 +9,9 @@
     <color name="tardisblue">#102372</color> <!-- TARDIS blue -->
     <color name="white">#ffffff</color> <!-- white -->
     <color name="view_divider_color">#a1d490</color>
+    <color name="lightertardisblue">#214BFC</color>
 
-    <color name="headline">#990000</color>
+    <color name="headline">#cc0000</color>
     <color name="searchbg">#FFeedd</color>
     <color name="hashtagscolor">#FFddee</color>
     <color name="searchbuttonscolor">#ffffee</color>

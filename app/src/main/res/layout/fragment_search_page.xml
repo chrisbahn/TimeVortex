@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/search_page_layout"
             android:text="@string/search_main_label"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/headline"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
@@ -31,23 +31,17 @@
             android:text="@string/search_by_title_label"
             android:textColor="@color/white"
             android:textStyle="bold"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
         <EditText android:id="@+id/edittext_search_by_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_below="@+id/textview_search_textfield"
-            android:hint="@string/search_textfield_hint"
+            android:hint="@string/search_by_title_hint"
             android:textColorHint="@color/white"
+            android:textColor="@color/white"
             android:layout_marginBottom="16dp" />
-        <Button android:id="@+id/search_by_title_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/search_by_title_button_label"
-            />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -65,11 +59,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Filter episodes by ..."
+                android:text="Lists I&apos;ve made:"
                 android:id="@+id/textViewMyListsHeader"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -177,18 +171,17 @@
         <TextView android:id="@+id/filter_by_x_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/find_all_x_label"
+            android:text="Search by character:"
             android:textStyle="bold"
             android:textColor="@color/white"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView android:id="@+id/filter_by_doctor_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="The 12 (more or less) Doctors"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                />
+                android:textColor="@color/white" />
 
         <GridLayout
             android:layout_width="match_parent"
@@ -202,8 +195,8 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
-                android:background="@color/white"
+                android:padding="4dp"
+                android:background="@null"
                 android:src="@drawable/doctor01"
                 />
             <ImageButton
@@ -213,7 +206,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor02"
                 />
@@ -224,7 +217,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor03"
                 />
@@ -235,7 +228,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor04"
                 />
@@ -246,7 +239,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor05"
                 />
@@ -257,7 +250,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor06"
                 />
@@ -268,7 +261,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor07"
                 />
@@ -279,7 +272,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor08"
                 />
@@ -290,7 +283,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor09"
                 />
@@ -301,7 +294,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor10"
                 />
@@ -312,7 +305,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor11"
                 />
@@ -323,7 +316,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/doctor12"
                 />
@@ -348,7 +341,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/icondaleks"
                 />
@@ -359,7 +352,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/iconcyberman"
                 />
@@ -370,7 +363,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/iconicewarrior"
                 />
@@ -381,7 +374,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/iconsontaran"
                 />
@@ -392,7 +385,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/iconmaster"
                 />
@@ -403,7 +396,7 @@
                 android:layout_gravity="center_vertical|left"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:background="@null"
                 android:src="@drawable/iconweepingangels"
                 />
@@ -412,6 +405,26 @@
     </LinearLayout>
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tardisblue"
+            android:padding="4dp">
+
+            <Button android:id="@+id/search_by_title_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/search_by_title_button_label"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

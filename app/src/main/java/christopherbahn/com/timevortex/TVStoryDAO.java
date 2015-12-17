@@ -43,6 +43,12 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
 		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
 		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
+		values.put(DataBaseHelper.COL_BESTOFBBCAMERICA, TVStory.getBestOfBBCAmerica());
+		values.put(DataBaseHelper.COL_BESTOFDWM2009, TVStory.getBestOfDWM2009());
+		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
+		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
+		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
+
 		return database.insert(DataBaseHelper.TABLE_TVSTORYS, null, values);
 	}
 
@@ -65,6 +71,11 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
 		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
 		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
+		values.put(DataBaseHelper.COL_BESTOFBBCAMERICA, TVStory.getBestOfBBCAmerica());
+		values.put(DataBaseHelper.COL_BESTOFDWM2009, TVStory.getBestOfDWM2009());
+		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
+		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
+		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
 
 		long result = database.update(DataBaseHelper.TABLE_TVSTORYS, values, WHERE_ID_EQUALS, new String[] { String.valueOf(TVStory.getStoryID()) });
 		Log.d("Update Result:", "=" + result);
@@ -98,7 +109,12 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		                DataBaseHelper.COL_WANTTOSEEIT,
 						DataBaseHelper.COL_ASIN,
 						DataBaseHelper.COL_USERREVIEW,
-						DataBaseHelper.COL_USERSTARRATING
+						DataBaseHelper.COL_USERSTARRATING,
+						DataBaseHelper.COL_BESTOFBBCAMERICA,
+						DataBaseHelper.COL_BESTOFDWM2009,
+						DataBaseHelper.COL_BESTOFDWM2014,
+						DataBaseHelper.COL_BESTOFAVCTVC10,
+						DataBaseHelper.COL_BESTOFIO9
 				}, null, null, null, null, DataBaseHelper.COL_STORYID + " ASC");
 
 		while (cursor.moveToNext()) {
@@ -129,6 +145,11 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setASIN(cursor.getString(14));
 			TVStory.setUserReview(cursor.getString(15));
 			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
+			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
+			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
+			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
+			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
+			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
 			TVStories.add(TVStory);
 		}
 		return TVStories;
@@ -169,6 +190,11 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setASIN(cursor.getString(14));
 			TVStory.setUserReview(cursor.getString(15));
 			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
+			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
+			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
+			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
+			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
+			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
 		}
 		return TVStory;
 	}
@@ -181,14 +207,35 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		String sqlSelectFromTVStorys = null;
 		String sqlWhere = null;
 		String sqlOrderBy = null;
-		String searchField;
-		String searchParameter;
 
-
-		sqlWhere = constructSQLWhereString(searchTerm);
+		// todo: Add search/sort functionality for BestOfLists: BBCAmerica DWM2009 DWM2014 AVCTVC10
 
 		sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
-		sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+
+		if (searchTerm.getBestOfLists() != null) {
+			if (searchTerm.getBestOfLists() == "BBCAmerica") {
+				sqlWhere = DataBaseHelper.COL_BESTOFBBCAMERICA + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBBCAMERICA + " ASC";
+			} else if (searchTerm.getBestOfLists() == "DWM2009") {
+				sqlWhere = DataBaseHelper.COL_BESTOFDWM2009 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2009 + " ASC";
+			} else if (searchTerm.getBestOfLists() == "DWM2014") {
+				sqlWhere = DataBaseHelper.COL_BESTOFDWM2014 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2014 + " ASC";
+			} else if (searchTerm.getBestOfLists() == "AVCTVC10") {
+				sqlWhere = DataBaseHelper.COL_BESTOFAVCTVC10 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+			} else if (searchTerm.getBestOfLists() == "Io9") {
+				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
+			}
+		} else {
+			sqlWhere = constructSQLWhereString(searchTerm);
+			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+		}
+
+
+
 		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
 
         Cursor cursor = database.rawQuery(sql, null);
@@ -220,6 +267,10 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setASIN(cursor.getString(14));
 			TVStory.setUserReview(cursor.getString(15));
 			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
+			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
+			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
+			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
+			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
 
 			searchResultTVStories.add(TVStory);
 		}

@@ -53,6 +53,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 	// UI references
 	private LinearLayout submitLayout;
+	private LinearLayout layoutAllBestOf;
+	private LinearLayout layoutBestOfBBCAmerica;
+	private LinearLayout layoutBestOfDWM2009;
+	private LinearLayout layoutBestOfDWM2014;
+	private LinearLayout layoutBestOfAVCTVC10;
+	private LinearLayout layoutBestOfIo9;
 	private TextView tvstoryTitle;
 	private TextView tvstorySeasonInfo;
 	private TextView tvstorySynopsis;
@@ -67,6 +73,19 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private TextView TVMyNotesTitle;
 	private ImageView tvstoryImage;
 	private EditText EdtxtMyNotes;
+
+
+	private TextView textviewBestOfBBCAmerica;
+	private TextView textviewBestOfDWM2009;
+	private TextView textviewBestOfDWM2014;
+	private TextView textviewBestOfAVCTVC10;
+	private TextView textviewBestOfIo9;
+	private ImageButton imageButtonBestOfBBCAmerica;
+	private ImageButton imageButtonButtonBestOfDWM2009;
+	private ImageButton imageButtonButtonBestOfDWM2014;
+	private ImageButton imageButtonButtonBestOfAVCTVC10;
+	private ImageButton imageButtonButtonBestOfIo9;
+
 	private TextView textviewErrorItunes;
 	private String amazonSearchTerm;
 	private String amazonCategory;
@@ -74,6 +93,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private ImageButton iTunesImageButton;
 	private String asin = null;
 	private static final String TAG = "TimeVortex";
+
 	private String iTunesCollectionViewUrl;
 
 	private Button saveButton;
@@ -88,17 +108,21 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	Calendar dateCalendar;
 
 	private TVStory TVStory;
+	private SearchTerm searchTerm;
 	private TVStoryDAO tvstoryDAO;
 	private UpdateTVStoryTask task;
+	OnSearchButtonClickedListener mSearchClicked;
 
 	public static final String ARG_ITEM_ID = "tvstory_fullpage_fragment";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+//		searchTerm.setCameFromSearchResult(false); // automatically flips to true if the user came from anything but the all-episodes list, via SearchListFragment rather than ListFragment
 		tvstoryDAO = new TVStoryDAO(getActivity());
 		Bundle bundle = this.getArguments();
 		TVStory = bundle.getParcelable("selectedTVStory");
+		searchTerm = bundle.getParcelable("searchTerm");
 	}
 
 	@Override
@@ -116,6 +140,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 		findViewsById(rootView);
 //		submitLayout.setVisibility(View.GONE);
+		resetButton.setVisibility(View.GONE);
+
+		getRatings();
+
+
+
 
 
 
@@ -123,14 +153,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 		textviewErrorItunes.setVisibility(View.GONE);
 
-		//---STORE TO SEARCH IMAGEBUTTONS---
-		// todo this if statement is not successfully changing the ASIN variable. But I have confirmed that searching by ASIN does work, so this may not be a big deal since you'll be pulling that number via a different method in the real program
+		//todo move to its own method, or to listener ---STORE TO SEARCH IMAGEBUTTONS---
 			asin = TVStory.getASIN();
 
 		amazonImageButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// todo Is this popping open a new page because it needs to be placed in the WebView field? either a) fix this so it does, or b) verify that the MainActivity nav won't go away when Amazon page opens, which will allow you to return to main program
 				amazonCategory = "MoviesAndTV"; // this category covers both DVDs and downloadable media on Amazon. Streaming is not searchable. Future iterations of this program may also want to search by categories like KindleStore, Books, etc. More info here https://developer.amazon.com/public/apis/earn/mobile-associates/docs/available-search-categories
 				if (asin != null) {
 					OpenProductPageRequest request = new OpenProductPageRequest(asin);
@@ -157,7 +185,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		iTunesImageButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// intent to launch browser here // todo this broke when you moved the JSON request: iTunesCollectionViewUrl is not catching the variable
+				// intent to launch browser here
 				Uri searchUri = Uri.parse(iTunesCollectionViewUrl);
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, searchUri);
 				startActivity(browserIntent);
@@ -200,6 +228,11 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			}
 		});
 		addListenerOnRatingBar();
+		imageButtonBestOfBBCAmerica.setOnClickListener(this);
+		imageButtonButtonBestOfDWM2009.setOnClickListener(this);
+		imageButtonButtonBestOfDWM2014.setOnClickListener(this);
+		imageButtonButtonBestOfAVCTVC10.setOnClickListener(this);
+		imageButtonButtonBestOfIo9.setOnClickListener(this);
 	}
 
 	protected void resetAllFields() {
@@ -245,6 +278,24 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		userStarRating = (RatingBar) rootView.findViewById(R.id.UserStarRatingBar);
 		TVMyNotesTitle = (TextView) rootView.findViewById(R.id.textview_mynotes_title);
 		EdtxtMyNotes = (EditText) rootView.findViewById(R.id.mynotes_edittext);
+
+		imageButtonBestOfBBCAmerica = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogobbc);
+		imageButtonButtonBestOfDWM2009 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogodwm2009);
+		imageButtonButtonBestOfDWM2014 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogodwm2014);
+		imageButtonButtonBestOfAVCTVC10 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoavclub);
+		imageButtonButtonBestOfIo9 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoio9);
+		textviewBestOfBBCAmerica = (TextView) rootView.findViewById(R.id.textviewBestOfBBCAmerica);
+		textviewBestOfDWM2009 = (TextView) rootView.findViewById(R.id.textviewBestOfDWM2009);
+		textviewBestOfDWM2014 = (TextView) rootView.findViewById(R.id.textviewBestOfDWM2014);
+		textviewBestOfAVCTVC10 = (TextView) rootView.findViewById(R.id.textviewBestOfAVCTVC10);
+		textviewBestOfIo9 = (TextView) rootView.findViewById(R.id.textviewBestOfIo9);
+		layoutAllBestOf = (LinearLayout) rootView.findViewById(R.id.layoutAllBestOf);
+		layoutBestOfBBCAmerica = (LinearLayout) rootView.findViewById(R.id.layoutBestOfBBCAmerica);
+		layoutBestOfDWM2009 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfDWM2009);
+		layoutBestOfDWM2014 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfDWM2014);
+		layoutBestOfAVCTVC10 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfAVCTVC10);
+		layoutBestOfIo9 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfIo9);
+
 		submitLayout = (LinearLayout) rootView.findViewById(R.id.save_buttons_layout);
 		textviewErrorItunes = (TextView) rootView.findViewById(R.id.textViewErrorITunes);
 		amazonImageButton = (ImageButton) rootView.findViewById(R.id.imageButtonAmazon);
@@ -257,24 +308,50 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 	@Override
 	public void onClick(View view) {
-		if (view == resetButton) {
-			resetAllFields();
-		} else if (view == returnToListButton||view == saveButton) {
-			if (view == saveButton) {
-				// this saves whatever user-editable data was changed
-				TVStory.setUserReview(EdtxtMyNotes.getText().toString());
-				TVStory.setUserStarRatingNumber(userStarRating.getRating());
-				TVStory.setSeenIt(seenIt.isChecked());
-				TVStory.setWantToSeeIt(wantToSeeIt.isChecked());
-				TVStory.setUserStarRatingNumber(userStarRating.getRating());
-
-				task = new UpdateTVStoryTask(getActivity());
-				task.execute((Void) null);
-			}
-			MainActivity activity = (MainActivity) getActivity();
-            activity.onSaveButtonClicked();
-            mSaveClicked.onSaveButtonClicked();
+//		if (view == resetButton) {
+//			resetAllFields();
+//			}
+		if (view == imageButtonBestOfBBCAmerica) {
+			searchTerm.setBestOfLists("BBCAmerica");
 		}
+		else if (view == imageButtonButtonBestOfDWM2009) {
+			searchTerm.setBestOfLists("DWM2009");
+		}
+		else if (view == imageButtonButtonBestOfDWM2014) {
+			searchTerm.setBestOfLists("DWM2014");
+		}
+		else if (view == imageButtonButtonBestOfAVCTVC10) {
+			searchTerm.setBestOfLists("AVCTVC10");
+		}
+		else if (view == imageButtonButtonBestOfIo9) {
+			searchTerm.setBestOfLists("Io9");
+		}
+		else if (view == returnToListButton||view == saveButton) {
+				if (view == saveButton) {
+					// this saves whatever user-editable data was changed
+					TVStory.setUserReview(EdtxtMyNotes.getText().toString());
+					TVStory.setUserStarRatingNumber(userStarRating.getRating());
+					TVStory.setSeenIt(seenIt.isChecked());
+					TVStory.setWantToSeeIt(wantToSeeIt.isChecked());
+					TVStory.setUserStarRatingNumber(userStarRating.getRating());
+
+					task = new UpdateTVStoryTask(getActivity());
+					task.execute((Void) null);
+					}
+				}
+
+		// goes back to list of all stories
+		if (searchTerm.cameFromSearchResult()==false)
+		{ MainActivity activity = (MainActivity) getActivity();
+			activity.onSaveButtonClicked();
+			mSaveClicked.onSaveButtonClicked();
+		} else if (searchTerm.cameFromSearchResult())
+		{ // goes back to previously called search result
+			MainActivity activity = (MainActivity) getActivity();
+			activity.onSearchButtonClicked(searchTerm);
+			mSearchClicked.onSearchButtonClicked(searchTerm);
+		}
+
 	}
 
 
@@ -282,6 +359,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
     public interface OnSaveButtonClickedListener {
         void onSaveButtonClicked();
     }
+	// Container Activity must implement this interface
+	public interface OnSearchButtonClickedListener {
+		void onSearchButtonClicked(SearchTerm searchTerm);
+	}
+
+
 
 	private void setValue() {
 		if (TVStory != null) {
@@ -320,9 +403,13 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
         try {
             mSaveClicked = (OnSaveButtonClickedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement onSaveButtonClickedListener");
+            throw new ClassCastException(activity.toString() + " must implement onSaveButtonClickedListener");
         }
+		try {
+			mSearchClicked = (OnSearchButtonClickedListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement OnSearchButtonClickedListener");
+		}
     }
 
     public class UpdateTVStoryTask extends AsyncTask<Void, Void, Long> {
@@ -348,10 +435,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			}
 		}
 	}
-
-
-
-
 
 	public class RequestITunesSearchResultTask extends AsyncTask<String, String, String> {
 
@@ -423,7 +506,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		}
 	}
 
-	// todo shouldn't you need to add all four amazon keys? Only one is listed below. And yet the searching still works!
 	//gets the key from the raw file.
 	private String getKeyFromRawResource(String requestedKey) {
 		InputStream keyStream = null;
@@ -446,7 +528,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		}
 	}
 
-
+	// used for Amazon Mobile Associates
 	private class MAAWebViewClient extends WebViewClient {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -522,5 +604,47 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			}
 		});
 	}
+
+	protected void getRatings() {
+		int somebodyLikesMe = 0;
+		if (TVStory.getBestOfBBCAmerica()>0) {
+			layoutBestOfBBCAmerica.setVisibility(View.VISIBLE);
+			textviewBestOfBBCAmerica.setText("BBC Critics\nPoll 2013: #" + TVStory.getBestOfBBCAmerica());
+			somebodyLikesMe++;
+		} else {
+		}
+		if (TVStory.getBestOfDWM2009()>0) {
+			layoutBestOfDWM2009.setVisibility(View.VISIBLE);
+			textviewBestOfDWM2009.setText("Doctor Who Magazine\n2009 readers poll: #" + TVStory.getBestOfDWM2009());
+			somebodyLikesMe++;
+		} else {
+			layoutBestOfDWM2009.setVisibility(View.GONE);
+		}
+		if (TVStory.getBestOfDWM2014()>0) {
+			layoutBestOfDWM2014.setVisibility(View.VISIBLE);
+			textviewBestOfDWM2014.setText("Doctor Who Magazine\n2014 readers poll: #" + TVStory.getBestOfDWM2014());
+			somebodyLikesMe++;
+		} else {
+			layoutBestOfDWM2014.setVisibility(View.GONE);
+		}
+		if (TVStory.getBestOfAVCTVC10()>0) {
+			layoutBestOfAVCTVC10.setVisibility(View.VISIBLE);
+			textviewBestOfAVCTVC10.setText("Recommended by\nChristopher Bahn");
+			somebodyLikesMe++;
+		} else {
+			layoutBestOfAVCTVC10.setVisibility(View.GONE);
+		}
+		if (TVStory.getBestOfIo9()>0) {
+			layoutBestOfIo9.setVisibility(View.VISIBLE);
+			textviewBestOfIo9.setText("IO9 all-episode\nranking, 2013: #" + TVStory.getBestOfIo9());
+			somebodyLikesMe++;
+		} else {
+			layoutBestOfIo9.setVisibility(View.GONE);
+		}
+		if (somebodyLikesMe==0) {
+			layoutAllBestOf.setVisibility(View.GONE);
+		}
+	}
+
 
 }

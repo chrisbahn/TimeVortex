@@ -34,6 +34,11 @@ public class TVStory implements Parcelable {
 	private String ASIN; // A proprietary ID number for Amazon products, in this case individual DVD titles
 	private String userReview; // A space for the app user to write an opinion on the story
 	private float userStarRatingNumber; // app user's rating of the episode
+	private int bestOfBBCAmerica;
+	private int bestOfDWM2009;
+	private int bestOfDWM2014;
+	private int bestOfAVCTVC10;
+	private int bestOfIo9;
 
 
 	public TVStory() {
@@ -60,6 +65,11 @@ public class TVStory implements Parcelable {
 		this.ASIN = in.readString();
 		this.userReview = in.readString();
 		this.userStarRatingNumber = Float.parseFloat(in.readString());
+		this.bestOfBBCAmerica = Integer.parseInt(in.readString());
+		this.bestOfDWM2009 = Integer.parseInt(in.readString());
+		this.bestOfDWM2014 = Integer.parseInt(in.readString());
+		this.bestOfAVCTVC10 = Integer.parseInt(in.readString());
+		this.bestOfIo9 = Integer.parseInt(in.readString());
 
 	}
 
@@ -81,6 +91,11 @@ public class TVStory implements Parcelable {
 		this.ASIN = ASIN;
 		this.userReview = userReview;
 		this.userStarRatingNumber = userStarRatingNumber;
+		this.bestOfBBCAmerica = bestOfBBCAmerica;
+		this.bestOfDWM2009 = bestOfDWM2009;
+		this.bestOfDWM2014 = bestOfDWM2014;
+		this.bestOfAVCTVC10 = bestOfAVCTVC10;
+		this.bestOfIo9 = bestOfIo9;
     }
 
 
@@ -218,6 +233,46 @@ public class TVStory implements Parcelable {
 
 	public void setUserStarRatingNumber(float userStarRatingNumber) {
 		this.userStarRatingNumber = userStarRatingNumber;
+	}
+
+	public int getBestOfBBCAmerica() {
+		return bestOfBBCAmerica;
+	}
+
+	public void setBestOfBBCAmerica(int bestOfBBCAmerica) {
+		this.bestOfBBCAmerica = bestOfBBCAmerica;
+	}
+
+	public int getBestOfDWM2009() {
+		return bestOfDWM2009;
+	}
+
+	public void setBestOfDWM2009(int bestOfDWM2009) {
+		this.bestOfDWM2009 = bestOfDWM2009;
+	}
+
+	public int getBestOfDWM2014() {
+		return bestOfDWM2014;
+	}
+
+	public void setBestOfDWM2014(int bestOfDWM2014) {
+		this.bestOfDWM2014 = bestOfDWM2014;
+	}
+
+	public int getBestOfAVCTVC10() {
+		return bestOfAVCTVC10;
+	}
+
+	public void setBestOfAVCTVC10(int bestOfAVCTVC10) {
+		this.bestOfAVCTVC10 = bestOfAVCTVC10;
+	}
+
+	public int getBestOfIo9() {
+		return bestOfIo9;
+	}
+
+	public void setBestOfIo9(int bestOfIo9) {
+		this.bestOfIo9 = bestOfIo9;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package christopherbahn.com.timevortex;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -91,8 +92,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_search_page, container,
-				false);
+		View rootView = inflater.inflate(R.layout.fragment_search_page, container, false);
 
 		findViewsById(rootView);
 		setListeners();
@@ -145,7 +145,6 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 				}
 			}
 		});
-
 
 		radioGroupRatings.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -227,64 +226,178 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 			MainActivity activity = (MainActivity) getActivity();
 			activity.onSearchButtonClicked(searchTerm);
 			mSearchClicked.onSearchButtonClicked(searchTerm);
-		} if (view == Doctor01ImageButton) {
-			searchTerm.setDoctor(1);
-			Toast.makeText(getActivity(), "You selected: First Doctor", Toast.LENGTH_LONG).show();
+		}
+
+
+
+		// todo put the handling of ImageButtons in a method? it's very repetitive
+		if (view == Doctor01ImageButton) {
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=1) {
+				searchTerm.setDoctor(1);
+				Doctor01ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor02ImageButton) {
-			searchTerm.setDoctor(2);
-			Toast.makeText(getActivity(), "You selected: Second Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=2) {
+				searchTerm.setDoctor(2);
+				Doctor02ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor03ImageButton) {
-			searchTerm.setDoctor(3);
-			Toast.makeText(getActivity(), "You selected: Third Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=3) {
+				searchTerm.setDoctor(3);
+				Doctor03ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor04ImageButton) {
-			searchTerm.setDoctor(4);
-			Toast.makeText(getActivity(), "You selected: Fourth Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=4) {
+				searchTerm.setDoctor(4);
+				Doctor04ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor05ImageButton) {
-			searchTerm.setDoctor(5);
-			Toast.makeText(getActivity(), "You selected: Fifth Doctor", Toast.LENGTH_LONG).show();
-		}
-		if (view == Doctor06ImageButton) {
-			searchTerm.setDoctor(6);
-			Toast.makeText(getActivity(), "You selected: Sixth Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=5) {
+				searchTerm.setDoctor(5);
+				Doctor05ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
+		} if (view == Doctor06ImageButton) {
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=6) {
+				searchTerm.setDoctor(6);
+				Doctor06ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor07ImageButton) {
-			searchTerm.setDoctor(7);
-			Toast.makeText(getActivity(), "You selected: Seventh Doctor", Toast.LENGTH_LONG).show();
-		}
-		if (view == Doctor08ImageButton) {
-			searchTerm.setDoctor(8);
-			Toast.makeText(getActivity(), "You selected: Eighth Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=7) {
+				searchTerm.setDoctor(7);
+				Doctor07ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
+		} if (view == Doctor08ImageButton) {
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=8) {
+				searchTerm.setDoctor(8);
+				Doctor08ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor09ImageButton) {
-			searchTerm.setDoctor(9);
-			Toast.makeText(getActivity(), "You selected: Ninth Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=9) {
+				searchTerm.setDoctor(9);
+				Doctor09ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor10ImageButton) {
-			searchTerm.setDoctor(10);
-			Toast.makeText(getActivity(), "You selected: Tenth Doctor", Toast.LENGTH_LONG).show();
-		}
-		if (view == Doctor11ImageButton) {
-			searchTerm.setDoctor(11);
-			Toast.makeText(getActivity(), "You selected: Eleventh Doctor", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=10) {
+				searchTerm.setDoctor(10);
+				Doctor10ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
+		} if (view == Doctor11ImageButton) {
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=11) {
+				searchTerm.setDoctor(11);
+				Doctor11ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		} if (view == Doctor12ImageButton) {
-			searchTerm.setDoctor(12);
-			Toast.makeText(getActivity(), "You selected: Twelfth Doctor", Toast.LENGTH_LONG).show();
-		} if (view == DaleksImageButton) {
-			searchTerm.setOtherCast("Daleks");
-			Toast.makeText(getActivity(), "You selected: The Daleks", Toast.LENGTH_LONG).show();
-		} if (view == CybermenImageButton) {
-			searchTerm.setOtherCast("Cybermen");
-			Toast.makeText(getActivity(), "You selected: The Cybermen", Toast.LENGTH_LONG).show();
-		} if (view == IceWarriorsImageButton) {
-			searchTerm.setOtherCast("IceWarriors");
-			Toast.makeText(getActivity(), "You selected: The Ice Warriors", Toast.LENGTH_LONG).show();
-		} if (view == SontaransImageButton) {
-			searchTerm.setOtherCast("Sontarans");
-			Toast.makeText(getActivity(), "You selected: The Sontarans", Toast.LENGTH_LONG).show();
-		} if (view == MasterImageButton) {
-			searchTerm.setOtherCast("Master");
-			Toast.makeText(getActivity(), "You selected: The Master", Toast.LENGTH_LONG).show();
-		} if (view == WeepingAngelsImageButton) {
-			searchTerm.setOtherCast("WeepingAngels");
-			Toast.makeText(getActivity(), "You selected: The Weeping Angels", Toast.LENGTH_LONG).show();
+			clearDoctorImageButtons();
+			if (searchTerm.getDoctor()!=12) {
+				searchTerm.setDoctor(12);
+				Doctor12ImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: Doctor No. " + searchTerm.getDoctor(), Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setDoctor(0);
+			}
 		}
+		if (view == DaleksImageButton) {
+			clearOtherCastImageButtons();
+			if (searchTerm.getOtherCast()!="Daleks") {
+				searchTerm.setOtherCast("Daleks");
+				DaleksImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: The Daleks", Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setOtherCast("");
+			}
+		} if (view == CybermenImageButton) {
+			clearOtherCastImageButtons();
+			if (searchTerm.getOtherCast()!="Cybermen") {
+				searchTerm.setOtherCast("Cybermen");
+				CybermenImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: The Cybermen", Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setOtherCast("");
+			}
+		} if (view == IceWarriorsImageButton) {
+			clearOtherCastImageButtons();
+			if (searchTerm.getOtherCast()!="IceWarriors") {
+				searchTerm.setOtherCast("IceWarriors");
+				IceWarriorsImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: The Ice Warriors", Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setOtherCast("");
+			}
+		} if (view == SontaransImageButton) {
+			clearOtherCastImageButtons();
+			if (searchTerm.getOtherCast()!="Sontarans") {
+				searchTerm.setOtherCast("Sontarans");
+				SontaransImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: The Sontarans", Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setOtherCast("");
+			}
+		} if (view == MasterImageButton) {
+			clearOtherCastImageButtons();
+			if (searchTerm.getOtherCast()!="Master") {
+				searchTerm.setOtherCast("Master");
+				MasterImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: The Master", Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setOtherCast("");
+			}
+		} if (view == WeepingAngelsImageButton) {
+			clearOtherCastImageButtons();
+			if (searchTerm.getOtherCast()!="WeepingAngels") {
+				searchTerm.setOtherCast("WeepingAngels");
+				WeepingAngelsImageButton.setBackgroundColor(Color.YELLOW);
+				Toast.makeText(getActivity(), "You selected: The Weeping Angels", Toast.LENGTH_LONG).show();
+			} else {
+				searchTerm.setOtherCast("");
+			}
+		}
+
+
+
 
 	}
 
@@ -306,5 +419,29 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
         }
     }
 
+	public void clearDoctorImageButtons() {
+		Doctor01ImageButton.setBackgroundColor(Color.rgb(10, 23, 72));
+		Doctor02ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor03ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor04ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor05ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor06ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor07ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor08ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor09ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor10ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor11ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		Doctor12ImageButton.setBackgroundColor(Color.rgb(10,23,72));
+	}
+
+
+	public void clearOtherCastImageButtons() {
+		DaleksImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		CybermenImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		IceWarriorsImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		SontaransImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		MasterImageButton.setBackgroundColor(Color.rgb(10,23,72));
+		WeepingAngelsImageButton.setBackgroundColor(Color.rgb(10, 23, 72));
+	}
 
 }

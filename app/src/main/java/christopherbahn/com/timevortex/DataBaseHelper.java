@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     protected static final String DATABASE_NAME = "TimeVortex";
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 13;
 
 	static final String KEY_ROWID = "_id";
 	protected static final String TABLE_DWCHARACTERS = "dwcharacters_table"; // TODO Implement this; currently program uses just a String
@@ -42,6 +42,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	protected static final String COL_ASIN = "asin";
 	protected static final String COL_USERREVIEW = "userreview";
 	protected static final String COL_USERSTARRATING = "userstarrating";
+	protected static final String COL_BESTOFBBCAMERICA = "bestofbbcamerica";
+	protected static final String COL_BESTOFDWM2009 = "bestofdwm2009";
+	protected static final String COL_BESTOFDWM2014 = "bestofdwm2014";
+	protected static final String COL_BESTOFAVCTVC10 = "bestofavctvc10";
+	protected static final String COL_BESTOFIO9 = "bestofio9";
 
 
 
@@ -88,7 +93,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 				COL_WANTTOSEEIT + " BOOLEAN, " +
 				COL_ASIN + " TEXT, " +
 				COL_USERREVIEW + " TEXT, " +
-				COL_USERSTARRATING + " REAL);";
+				COL_USERSTARRATING + " REAL, " +
+				COL_BESTOFBBCAMERICA + " INTEGER, " +
+				COL_BESTOFDWM2009 + " INTEGER, " +
+				COL_BESTOFDWM2014 + " INTEGER, " +
+				COL_BESTOFAVCTVC10 + " INTEGER, " +
+				COL_BESTOFIO9 + " INTEGER);";
 		String createDWCharactersTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DWCHARACTERS + " (" +
                 COL_STORYID +" INTEGER PRIMARY KEY, " +
                 COL_TITLE + " TEXT);";

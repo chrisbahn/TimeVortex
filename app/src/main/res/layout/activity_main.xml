@@ -49,19 +49,33 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/tardisblue"
         android:layout_centerHorizontal="true">
+        <Button android:id="@+id/aboutdoctorwho_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/aboutdoctorwho_button_label"
+            />
         <Button android:id="@+id/gotomainsearchlist_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/gotomainsearchlist_button_label"
             />
         <Button android:id="@+id/gotosearchpage_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/gotosearchpage_button_label"
+            />
+        <Button android:id="@+id/getrandom_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/getrandom_button_label"
             />
     </LinearLayout>
     <TextView

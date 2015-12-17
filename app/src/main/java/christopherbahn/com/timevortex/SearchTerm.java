@@ -9,6 +9,7 @@ import android.os.Parcelable;
 public class SearchTerm implements Parcelable {
 
     private int storyID;
+    private boolean cameFromSearchResult; // On TVStoryFullPageFragment, this differentiates between whether user came to the page from the all-episode list or one limited by search terms, and if the latter, sends back to that search result when leaving the page
     private String title;
     private int doctor;
     private String era;
@@ -22,7 +23,7 @@ public class SearchTerm implements Parcelable {
     private boolean wantToSeeIt;
     private String userReview; // A space for the app user to write an opinion on the story
     private float userStarRatingNumber; // app user's rating of the episode
-
+    private String bestOfLists;
 
     public SearchTerm() {
         super();
@@ -32,6 +33,7 @@ public class SearchTerm implements Parcelable {
         super();
 
         this.storyID = Integer.parseInt(in.readString());
+        this.cameFromSearchResult = Boolean.parseBoolean(in.readString());
         this.title = in.readString();
         this.doctor = Integer.parseInt(in.readString());
         this.era = in.readString();
@@ -45,11 +47,13 @@ public class SearchTerm implements Parcelable {
         this.wantToSeeIt = Boolean.parseBoolean(in.readString());
         this.userReview = in.readString();
         this.userStarRatingNumber = Float.parseFloat(in.readString());
+        this.bestOfLists = in.readString();
 
     }
 
     public SearchTerm(int storyID, String title, int doctor, String era, String season, int seasonStoryNumber, int episodes, int episodeLength, int yearProduced) {
         this.storyID = storyID;
+        this.cameFromSearchResult = cameFromSearchResult;
         this.title = title;
         this.doctor = doctor;
         this.era = era;
@@ -63,6 +67,7 @@ public class SearchTerm implements Parcelable {
         this.wantToSeeIt = wantToSeeIt;
         this.userReview = userReview;
         this.userStarRatingNumber = userStarRatingNumber;
+        this.bestOfLists = bestOfLists;
     }
 
     public int getStoryID() {
@@ -71,6 +76,14 @@ public class SearchTerm implements Parcelable {
 
     public void setStoryID(int storyID) {
         this.storyID = storyID;
+    }
+
+    public boolean cameFromSearchResult() {
+        return cameFromSearchResult;
+    }
+
+    public void setCameFromSearchResult(boolean cameFromSearchResult) {
+        this.cameFromSearchResult = cameFromSearchResult;
     }
 
     public String getTitle() {
@@ -175,6 +188,14 @@ public class SearchTerm implements Parcelable {
 
     public void setUserStarRatingNumber(float userStarRatingNumber) {
         this.userStarRatingNumber = userStarRatingNumber;
+    }
+
+    public String getBestOfLists() {
+        return bestOfLists;
+    }
+
+    public void setBestOfLists(String bestOfLists) {
+        this.bestOfLists = bestOfLists;
     }
 
     @Override

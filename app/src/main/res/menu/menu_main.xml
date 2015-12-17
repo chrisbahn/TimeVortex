@@ -1,17 +1,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/action_aboutdoctorwho"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/aboutdoctorwho_button_label"/>
+    <item
         android:id="@+id/action_gotomainlist"
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="100"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/add_note"/>
+        android:title="@string/gotomainsearchlist_button_label"/>
 
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="100"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/search_notes"/>
+        android:title="@string/gotosearchpage_button_label"/>
+
+    <item
+        android:id="@+id/action_random"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/getrandom_button_label"/>
 
 </menu>
