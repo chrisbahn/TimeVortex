@@ -2,6 +2,9 @@ package christopherbahn.com.timevortex;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +20,15 @@ import java.util.List;
 import java.util.Locale;
 
 // todo Can the ListFragment and SearchListFragment stuff be combined? They're doing a lot of the same work, and you have multiple kinds of searching planned
+//
+// todo I wonder if most of the text here should be jettisoned in favor of the photo and title only... Most of the details are better placed on the episode pages themselves, and if you want to allow ratings/checkboxes in the list phase, might be better to give a longclick popup than clutter up the list with 300 ratings.
 
 public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 
 	private Context context;
 	List<TVStory> TVStories;
+	int[] doctorImages = {R.drawable.doctor01, R.drawable.doctor02, R.drawable.doctor03, R.drawable.doctor04, R.drawable.doctor05, R.drawable.doctor06, R.drawable.doctor07, R.drawable.doctor08, R.drawable.doctor09, R.drawable.doctor10, R.drawable.doctor11, R.drawable.doctor12};
+	int[] logoImages = {R.drawable.logodoctor01, R.drawable.logodoctor02, R.drawable.logodoctor03, R.drawable.logodoctor04, R.drawable.logodoctor05, R.drawable.logodoctor06, R.drawable.logodoctor07, R.drawable.logodoctor08, R.drawable.logodoctor09, R.drawable.logodoctor10, R.drawable.logodoctor11, R.drawable.logodoctor12};
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
@@ -32,6 +39,7 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 	}
 
 	private class ViewHolder {
+		ImageView doctorImage;
 		ImageView tvstoryImage;
         TextView tvstoryTitle;
         TextView tvstorySeasonInfo;
@@ -67,7 +75,8 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 			convertView = inflater.inflate(R.layout.list_item, null);
 			holder = new ViewHolder();
 
-			holder.tvstoryImage = (ImageView) convertView.findViewById(R.id.list_item_image);
+			holder.doctorImage = (ImageView) convertView.findViewById(R.id.list_item_doctor_image);
+			holder.tvstoryImage = (ImageView) convertView.findViewById(R.id.list_item_story_image);
 			holder.tvstoryTitle = (TextView) convertView.findViewById(R.id.txt_listitem_title);
             holder.tvstorySeasonInfo = (TextView) convertView.findViewById(R.id.txt_listitem_seasoninfo);
             holder.tvstorySynopsis = (TextView) convertView.findViewById(R.id.txt_listitem_synopsis);
@@ -83,7 +92,7 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 		TVStory TVStory = (TVStory) getItem(position);
         holder.tvstoryTitle.setText(TVStory.getStoryID()  + ": " + TVStory.getTitle()); // story title, and maybe also storyID
         // todo if/then statements to catch singular/plural "episode/episodes"
-        holder.tvstorySeasonInfo.setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + "minutes."); // era, yearProduced, season, seasonStoryNumber, episode, episodeLength
+        holder.tvstorySeasonInfo.setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + " minutes."); // era, yearProduced, season, seasonStoryNumber, episode, episodeLength
         holder.tvstorySynopsis.setText(TVStory.getSynopsis());
 		holder.tvstorySynopsis.setVisibility(View.GONE); // not visible in main (all-items) list
         // todo might be good to limit the size of the synopsis, but they're all blank now anyway so this is for later
@@ -92,8 +101,9 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 //        }
         // todo getDoctor should return the text name of the character, not the numeral. getOtherCast should return only shortNames in the ListView. create a toString()?
         // todo getCrew should return the writer only in the listview.
-        holder.tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
-        // todo make the checkboxes work
+		holder.tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
+		holder.tvstoryCastAndCrew.setVisibility(View.GONE); // not visible in main (all-items) list
+
         holder.seenIt.setChecked(TVStory.seenIt());
 		holder.seenIt.setVisibility(View.GONE); // not visible in main (all-items) list
 		holder.seenIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -108,16 +118,22 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 //                    holder.seenIt.setSeenIt(isChecked);
 			}
 		});
-		// todo make the star rating work
         holder.userStarRating.setRating(2);
 		holder.userStarRating.setVisibility(View.GONE); // not visible in main (all-items) list
 
-		int whichDoctor = TVStory.getDoctor();
-		whichDoctorIsIt(holder, whichDoctor);
+		holder.doctorImage.setImageResource(doctorImages[TVStory.getDoctor()-1]);
+
+// This gets the image for each TVStory.
+		Resources res = getContext().getResources();
+		TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
+		Drawable drawable = tvstoryImages.getDrawable(TVStory.getStoryID()-1);
+		holder.tvstoryImage.setImageDrawable(drawable);
+
 
         return convertView;
 	}
 
+	// Note: Not using the add and remove methods now that I am putting the episode info in via a textfile.
 	@Override
 	public void add(TVStory TVStory) {
 		TVStories.add(TVStory);
@@ -125,66 +141,13 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 		super.add(TVStory);
 	}
 
+	// Note: Not using the add and remove methods now that I am putting the episode info in via a textfile.
 	@Override
 	public void remove(TVStory TVStory) {
 		TVStories.remove(TVStory);
 		notifyDataSetChanged();
 		super.remove(TVStory);
 	}
-
-	// todo A kludgy and temporary way to change the image and cast info. Will be rewritten!
-	private void whichDoctorIsIt(ViewHolder holder, int whichDoctor){
-		if (whichDoctor==1) {
-			holder.tvstoryCastAndCrew.setText("First Doctor (William Hartnell)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor01);
-		}
-		if (whichDoctor==2) {
-			holder.tvstoryCastAndCrew.setText("Second Doctor (Patrick Troughton)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor02);
-		}
-		if (whichDoctor==3) {
-			holder.tvstoryCastAndCrew.setText("Third Doctor (Jon Pertwee)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor03);
-		}
-		if (whichDoctor==4) {
-			holder.tvstoryCastAndCrew.setText("Fourth Doctor (Tom Baker)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor04);
-		}
-		if (whichDoctor==5) {
-			holder.tvstoryCastAndCrew.setText("Fifth Doctor (Peter Davison)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor05);
-		}
-		if (whichDoctor==6) {
-			holder.tvstoryCastAndCrew.setText("Sixth Doctor (Colin Baker)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor06);
-		}
-		if (whichDoctor==7) {
-			holder.tvstoryCastAndCrew.setText("Seventh Doctor (Sylvester McCoy)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor07);
-		}
-		if (whichDoctor==8) {
-			holder.tvstoryCastAndCrew.setText("Eighth Doctor (Paul McGann)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor08);
-		}
-		if (whichDoctor==9) {
-			holder.tvstoryCastAndCrew.setText("Ninth Doctor (Christopher Ecclestone)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor09);
-		}
-		if (whichDoctor==10) {
-			holder.tvstoryCastAndCrew.setText("Tenth Doctor (David Tennant)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor10);
-		}
-		if (whichDoctor==11) {
-			holder.tvstoryCastAndCrew.setText("Eleventh Doctor (Matt Smith)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor11);
-		}
-		if (whichDoctor==12) {
-			holder.tvstoryCastAndCrew.setText("Twelfth Doctor (Peter Capaldi)");
-			holder.tvstoryImage.setImageResource(R.drawable.logodoctor12);
-		}
-	}
-
-
 
 
 }

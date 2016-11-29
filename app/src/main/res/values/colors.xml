@@ -2,8 +2,6 @@
 <resources>
     <color name="transparent">#00000000</color>
 
-
-
     <color name="list_item_bg">#b0d3f2</color>
     <color name="list_fragment_bg">#102302</color> <!-- TARDIS blue -->
     <color name="tardisblue">#102372</color> <!-- TARDIS blue -->
@@ -19,8 +17,6 @@
     <color name="tvstoryfullpagebg">#eeffee</color>
     <color name="usereditablefieldsbg">#ccffcc</color>
     <color name="tvstoryfinditonbg">#ccddcc</color>
-
-
 
     <color name="addnotebuttonscolor">#ffeeee</color>
 

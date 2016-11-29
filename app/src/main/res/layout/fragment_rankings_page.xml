@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout android:id="@+id/rankings_page_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:background="@color/list_item_bg"
+        android:padding="4dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tardisblue"
+            android:padding="4dp">
+        <TextView android:id="@+id/rankings_main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/rankings_page_layout"
+            android:text="@string/rankings_main_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/headline"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/tardisblue"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Get rankings of..."
+                android:textColor="@color/white"
+                android:id="@+id/textViewRankingsHowManyLabel" />
+
+            <RadioGroup
+                android:id="@+id/RadioGroupRankingNumber"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Top 10"
+                    android:id="@+id/RadioButtonTop10" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Bottom 10"
+                    android:id="@+id/RadioButtonBottom10" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="All"
+                    android:id="@+id/RadioButtonAll" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/tardisblue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="From these sources..."
+                android:textColor="@color/white"
+                android:id="@+id/textViewCriticRankingsLabel" />
+
+            <RadioGroup
+                android:id="@+id/RadioGroupCriticLists"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Aggregate Ranking of ALL critic and fan lists"
+                    android:id="@+id/RadioButtonAggregateRanking" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Time Vortex editors' ranking"
+                    android:id="@+id/RadioButtonTimeVortexRanking" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Doctor Who Magazine 2009"
+                    android:id="@+id/RadioButtonDWMag2009" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="BBC Critics Top 10 2013"
+                    android:id="@+id/RadioButtonBBC2013" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="AV Club 2013"
+                    android:id="@+id/RadioButtonAVC2013" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Doctor Who Magazine 2014"
+                    android:id="@+id/RadioButtonDWMag2014" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="io9 2014"
+                    android:id="@+id/RadioButtonio92014" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="L.M. Myles 2014"
+                    android:id="@+id/RadioButtonLMMyles2014" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="My Time Vortex rankings"
+                    android:id="@+id/RadioButtonUserRankings" />
+
+            </RadioGroup>
+
+
+
+        </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="4dp"></LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/tardisblue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show only:"
+                android:id="@+id/textViewMyListsHeader"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Shows on my watchlist"
+                android:id="@+id/checkBoxWantToSeeIt" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupSeenIt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Shows I've seen"
+                    android:textColor="@color/white"
+                    android:id="@+id/radioButtonSeenItYes" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Shows I haven't"
+                    android:textColor="@color/white"
+                    android:id="@+id/radioButtonSeenItNo" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="All"
+                    android:textColor="@color/white"
+                    android:id="@+id/radioButtonSeenItAll" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+
+        <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/tardisblue"
+        android:orientation="vertical"
+            android:padding="4dp">
+
+        <TextView android:id="@+id/filter_by_x_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filter by character:"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView android:id="@+id/filter_by_doctor_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The 12 (more or less) Doctors"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="6">
+
+            <ImageButton
+                android:id="@+id/imageButtonDoctor01"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor01"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor02"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor02"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor03"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor03"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor04"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor04"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor05"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor05"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor06"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor06"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor07"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor07"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor08"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor08"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor09"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor09"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor10"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor10"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor11"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor11"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonDoctor12"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/doctor12"
+                />
+        </GridLayout>
+
+            <TextView android:id="@+id/filter_by_villains_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Classic villains"
+                android:textColor="@color/white"
+                />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="6">
+            <ImageButton
+                android:id="@+id/imageButtonDaleks"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/icondaleks"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonCybermen"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/iconcyberman"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonIceWarriors"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/iconicewarrior"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonSontarans"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/iconsontaran"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonMaster"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/iconmaster"
+                />
+            <ImageButton
+                android:id="@+id/imageButtonWeepingAngels"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|left"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:background="@null"
+                android:src="@drawable/iconweepingangels"
+                />
+
+        </GridLayout>
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"></LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tardisblue"
+            android:padding="4dp">
+
+            <Button android:id="@+id/search_by_title_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/search_by_title_button_label"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

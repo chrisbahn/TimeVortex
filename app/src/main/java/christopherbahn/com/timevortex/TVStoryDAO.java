@@ -5,6 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +54,9 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
 		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
 		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
+		values.put(DataBaseHelper.COL_BESTOFLMMYLES, TVStory.getBestOfLMMyles());
+		values.put(DataBaseHelper.COL_BESTOFBAHN, TVStory.getBestOfBahn());
+//		values.put(DataBaseHelper.COL_TVSTORYIMAGE, TVStory.getTvstoryImage());
 
 		return database.insert(DataBaseHelper.TABLE_TVSTORYS, null, values);
 	}
@@ -76,6 +85,9 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
 		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
 		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
+		values.put(DataBaseHelper.COL_BESTOFLMMYLES, TVStory.getBestOfLMMyles());
+		values.put(DataBaseHelper.COL_BESTOFBAHN, TVStory.getBestOfBahn());
+		values.put(DataBaseHelper.COL_TVSTORYIMAGE, TVStory.getTvstoryImage());
 
 		long result = database.update(DataBaseHelper.TABLE_TVSTORYS, values, WHERE_ID_EQUALS, new String[] { String.valueOf(TVStory.getStoryID()) });
 		Log.d("Update Result:", "=" + result);
@@ -114,12 +126,13 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 						DataBaseHelper.COL_BESTOFDWM2009,
 						DataBaseHelper.COL_BESTOFDWM2014,
 						DataBaseHelper.COL_BESTOFAVCTVC10,
-						DataBaseHelper.COL_BESTOFIO9
+						DataBaseHelper.COL_BESTOFIO9,
+						DataBaseHelper.COL_BESTOFLMMYLES,
+						DataBaseHelper.COL_BESTOFBAHN,
+						DataBaseHelper.COL_TVSTORYIMAGE
 				}, null, null, null, null, DataBaseHelper.COL_STORYID + " ASC");
-
 		while (cursor.moveToNext()) {
 			TVStory TVStory = new TVStory();
-
 			TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
 			TVStory.setTitle(cursor.getString(1));
 			TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
@@ -137,7 +150,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			} else {
 				TVStory.setSeenIt(true);
 			}
-			if (Integer.parseInt(cursor.getString(12))==0) {
+			if (Integer.parseInt(cursor.getString(13))==0) {
 				TVStory.setWantToSeeIt(false);
 			} else {
 				TVStory.setWantToSeeIt(true);
@@ -150,7 +163,14 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
 			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
 			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
+			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
+			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
+			TVStory.setTvstoryImage(cursor.getString(24));
 			TVStories.add(TVStory);
+			// TODO the following code would aid in sort/ordering within the Java environment, without using either SQL (which is being replaced) or Firebase (which has awful search capability).
+//			if (TVStory.getDoctor()==12) {
+//				TVStories.add(TVStory);
+//			}
 		}
 		return TVStories;
 	}
@@ -182,7 +202,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			} else {
 				TVStory.setSeenIt(true);
 			}
-			if (Integer.parseInt(cursor.getString(12))==0) {
+			if (Integer.parseInt(cursor.getString(13))==0) {
 				TVStory.setWantToSeeIt(false);
 			} else {
 				TVStory.setWantToSeeIt(true);
@@ -195,6 +215,9 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
 			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
 			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
+			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
+			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
+			TVStory.setTvstoryImage(cursor.getString(24));
 		}
 		return TVStory;
 	}
@@ -207,8 +230,6 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		String sqlSelectFromTVStorys = null;
 		String sqlWhere = null;
 		String sqlOrderBy = null;
-
-		// todo: Add search/sort functionality for BestOfLists: BBCAmerica DWM2009 DWM2014 AVCTVC10
 
 		sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
 
@@ -228,13 +249,17 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			} else if (searchTerm.getBestOfLists() == "Io9") {
 				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
 				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
+			} else if (searchTerm.getBestOfLists() == "LMMyles") {
+				sqlWhere = DataBaseHelper.COL_BESTOFLMMYLES + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFLMMYLES + " ASC";
+			} else if (searchTerm.getBestOfLists() == "Bahn") {
+				sqlWhere = DataBaseHelper.COL_BESTOFBAHN + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBAHN + " ASC";
 			}
 		} else {
 			sqlWhere = constructSQLWhereString(searchTerm);
 			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
 		}
-
-
 
 		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
 
@@ -259,7 +284,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			} else {
 				TVStory.setSeenIt(true);
 			}
-			if (Integer.parseInt(cursor.getString(12))==0) {
+			if (Integer.parseInt(cursor.getString(13))==0) {
 				TVStory.setWantToSeeIt(false);
 			} else {
 				TVStory.setWantToSeeIt(true);
@@ -271,6 +296,10 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
 			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
 			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
+			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
+			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
+			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
+			TVStory.setTvstoryImage(cursor.getString(24));
 
 			searchResultTVStories.add(TVStory);
 		}
@@ -320,8 +349,6 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 		// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
 //		sqlWhere.replace(" AND STRINGENDER", " ");
-
-
 
 		return sqlWhere;
 	}

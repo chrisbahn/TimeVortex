@@ -75,57 +75,6 @@
             android:textStyle="italic"
             android:padding="1dp" />
 
-        <!-- doctor, othercast, crew-->
-        <TextView
-            android:id="@+id/txt_listitem_castandcrew"
-            android:text="@string/listitem_castandcrew"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_listitem_synopsis"
-            android:textStyle="bold"
-            android:padding="1dp"
-            />
-
-
-        <LinearLayout
-            android:id="@+id/layout_checkboxes"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_listitem_castandcrew"
-            >
-
-        <!-- seenIt? -->
-        <CheckBox
-            android:id="@+id/checkBox_listitem_seenit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/listitem_checkbox_seenit"
-            android:padding="1dp"
-            />
-
-        <!-- wantToSeeIt? -->
-        <CheckBox
-            android:id="@+id/checkBox_listitem_wanttoseeit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/listitem_checkbox_wanttoseeit"
-            android:layout_toRightOf="@+id/checkBox_listitem_seenit"
-            android:padding="1dp"
-            />
-        </LinearLayout>
-
-        <!-- user-generated star rating -->
-        <RatingBar
-            android:id="@+id/UserStarRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_checkboxes"
-            android:padding="1dp"
-            />
-
-        <!-- TODO aggregate star rating -->
-
     </RelativeLayout>
     </LinearLayout>
 

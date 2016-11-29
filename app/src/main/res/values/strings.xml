@@ -42,16 +42,22 @@
     <string name="aboutdoctorwho_history_text">Text goes here.</string>
     <string name="aboutdoctorwho_beginnersrecommendations_text">Text goes here.</string>
     <string name="aboutdoctorwho_otherreading_text">Text goes here.</string>
+    <string name="rankings_main_label">Text goes here.</string>
+
     <string name="bestof_button_label_bbcamerica">BBC Critics \nTop 10 2013</string>
     <string name="bestof_button_label_dwm2009">Doctor Who \nMagazine 2009</string>
     <string name="bestof_button_label_dwm2014">Doctor Who \nMagazine 2014</string>
     <string name="bestof_button_label_avctvc10">AV Club \n2013</string>
     <string name="bestof_button_label_io9">io9 \n2014</string>
+    <string name="bestof_button_label_lmmyles">L.M. Myles \n2014</string>
+    <string name="bestof_button_label_bahn">Time Vortex \nranking</string>
     <string name="textviewBestOfBBCAmerica">BBC Critics \nTop 10 2013</string>
     <string name="textviewBestOfDWM2009">Doctor Who \nMagazine 2009</string>
     <string name="textviewBestOfDWM2014">Doctor Who \nMagazine 2014</string>
     <string name="textviewBestOfAVCTVC10">AV Club \n2013</string>
     <string name="textviewBestOfIo9">io9 \n2014</string>
+    <string name="textviewBestOfLMMyles">L.M. Myles \n2014</string>
+    <string name="textviewBestOfBahn">Time Vortex \nranking</string>
 
     <!-- Strings from Inspirer program, unchanged -->
 <string name="update">Update</string>
@@ -60,6 +66,8 @@
 <string name="add">Add</string>
 <string name="cancel">Cancel</string>
 
-
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>

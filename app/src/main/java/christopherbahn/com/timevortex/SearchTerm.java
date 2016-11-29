@@ -24,6 +24,8 @@ public class SearchTerm implements Parcelable {
     private String userReview; // A space for the app user to write an opinion on the story
     private float userStarRatingNumber; // app user's rating of the episode
     private String bestOfLists;
+    private String rankingsHowMany;
+    private String rankingsCriticLists;
 
     public SearchTerm() {
         super();
@@ -48,6 +50,8 @@ public class SearchTerm implements Parcelable {
         this.userReview = in.readString();
         this.userStarRatingNumber = Float.parseFloat(in.readString());
         this.bestOfLists = in.readString();
+        this.rankingsHowMany = in.readString();
+        this.rankingsCriticLists = in.readString();
 
     }
 
@@ -68,6 +72,8 @@ public class SearchTerm implements Parcelable {
         this.userReview = userReview;
         this.userStarRatingNumber = userStarRatingNumber;
         this.bestOfLists = bestOfLists;
+        this.rankingsHowMany = rankingsHowMany;
+        this.rankingsCriticLists = rankingsCriticLists;
     }
 
     public int getStoryID() {
@@ -196,6 +202,22 @@ public class SearchTerm implements Parcelable {
 
     public void setBestOfLists(String bestOfLists) {
         this.bestOfLists = bestOfLists;
+    }
+
+    public String getRankingsHowMany() {
+        return rankingsHowMany;
+    }
+
+    public void setRankingsHowMany(String rankingsHowMany) {
+        this.rankingsHowMany = rankingsHowMany;
+    }
+
+    public String getRankingsCriticLists() {
+        return rankingsCriticLists;
+    }
+
+    public void setRankingsCriticLists(String rankingsCriticLists) {
+        this.rankingsCriticLists = rankingsCriticLists;
     }
 
     @Override

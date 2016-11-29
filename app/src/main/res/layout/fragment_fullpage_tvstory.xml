@@ -266,30 +266,54 @@
             android:background="@color/tardisblue"
             android:layout_centerHorizontal="true" >
 
-            <LinearLayout
-                android:id="@+id/layoutBestOfDWM2009"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-                <ImageButton
-                    android:layout_width="70dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/medialogodwm2009"
-                    android:id="@+id/imageButtonMedialogodwm2009"
-                    android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:background="@color/tardisblue" />
-                <TextView
-                    android:id="@+id/textviewBestOfDWM2009"
+                <LinearLayout
+                    android:id="@+id/layoutBestOfBahn"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textColor="@color/white"
-                    android:text="@string/textviewBestOfDWM2009"
-                    android:layout_gravity="center" />
-            </LinearLayout>
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:layout_width="70dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/medialogobahn"
+                        android:id="@+id/imageButtonMedialogoBahn"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:background="@color/tardisblue" />
+                    <TextView
+                        android:id="@+id/textviewBestOfBahn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textColor="@color/white"
+                        android:text="@string/textviewBestOfBahn"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layoutBestOfDWM2009"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:layout_width="70dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/medialogodwm2009"
+                        android:id="@+id/imageButtonMedialogodwm2009"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:background="@color/tardisblue" />
+                    <TextView
+                        android:id="@+id/textviewBestOfDWM2009"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textColor="@color/white"
+                        android:text="@string/textviewBestOfDWM2009"
+                        android:layout_gravity="center" />
+                </LinearLayout>
             <LinearLayout
                 android:id="@+id/layoutBestOfBBCAmerica"
                 android:orientation="vertical"
@@ -385,8 +409,31 @@
                     android:text="@string/textviewBestOfIo9"
                     android:layout_gravity="center"
                     android:textColor="@color/white" />
-
             </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layoutBestOfLMMyles"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:layout_width="78dp"
+                        android:layout_height="78dp"
+                        android:src="@drawable/medialogolmmyles"
+                        android:id="@+id/imageButtonMedialogoLMMyles"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:background="@color/tardisblue" />
+                    <TextView
+                        android:id="@+id/textviewBestOfLMMyles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/textviewBestOfLMMyles"
+                        android:layout_gravity="center"
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
         </LinearLayout>
 

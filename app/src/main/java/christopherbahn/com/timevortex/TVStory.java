@@ -39,6 +39,9 @@ public class TVStory implements Parcelable {
 	private int bestOfDWM2014;
 	private int bestOfAVCTVC10;
 	private int bestOfIo9;
+	private int bestOfLMMyles;
+	private int bestOfBahn;
+	private String tvstoryImage;
 
 
 	public TVStory() {
@@ -70,6 +73,9 @@ public class TVStory implements Parcelable {
 		this.bestOfDWM2014 = Integer.parseInt(in.readString());
 		this.bestOfAVCTVC10 = Integer.parseInt(in.readString());
 		this.bestOfIo9 = Integer.parseInt(in.readString());
+		this.bestOfLMMyles = Integer.parseInt(in.readString());
+		this.bestOfBahn = Integer.parseInt(in.readString());
+		this.tvstoryImage = in.readString();
 
 	}
 
@@ -96,6 +102,9 @@ public class TVStory implements Parcelable {
 		this.bestOfDWM2014 = bestOfDWM2014;
 		this.bestOfAVCTVC10 = bestOfAVCTVC10;
 		this.bestOfIo9 = bestOfIo9;
+		this.bestOfLMMyles = bestOfLMMyles;
+		this.bestOfBahn = bestOfBahn;
+		this.tvstoryImage = tvstoryImage;
     }
 
 
@@ -273,6 +282,30 @@ public class TVStory implements Parcelable {
 
 	public void setBestOfIo9(int bestOfIo9) {
 		this.bestOfIo9 = bestOfIo9;
+	}
+
+	public int getBestOfLMMyles() {
+		return bestOfLMMyles;
+	}
+
+	public void setBestOfLMMyles(int bestOfLMMyles) {
+		this.bestOfLMMyles = bestOfLMMyles;
+	}
+
+	public int getBestOfBahn() {
+		return bestOfBahn;
+	}
+
+	public void setBestOfBahn(int bestOfBahn) {
+		this.bestOfBahn = bestOfBahn;
+	}
+
+	public String getTvstoryImage() {
+				return tvstoryImage;
+	}
+
+	public void setTvstoryImage(String tvstoryImage) {
+		this.tvstoryImage = tvstoryImage;
 	}
 
 	@Override

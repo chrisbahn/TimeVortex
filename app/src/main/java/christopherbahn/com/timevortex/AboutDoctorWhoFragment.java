@@ -34,11 +34,13 @@ public class AboutDoctorWhoFragment extends Fragment implements OnClickListener 
 	TextView ADWHistory; // txt_aboutdoctorwho_history;
 	TextView ADWWhereToStart; // txt_aboutdoctorwho_beginnersrecommendations;
 	TextView ADWOtherReading; // textView_aboutdoctorwho_otherreading;
+	Button buttonBestOfBahn;
 	Button buttonBestOfBBCAmerica;
 	Button buttonBestOfDWM2009;
 	Button buttonBestOfDWM2014;
 	Button buttonBestOfAVCTVC10;
 	Button buttonBestOfIo9;
+	Button buttonBestOfLMMyles;
 	OnSearchButtonClickedListener mSearchClicked;
 	SearchTerm searchTerm = new SearchTerm(); // this collects all the search parameters that tell TVStoryDAO which SQLite fields to search
 
@@ -63,7 +65,7 @@ public class AboutDoctorWhoFragment extends Fragment implements OnClickListener 
 		findViewsById(rootView);
 		setListeners();
 
-		ADWHistory.setText("The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.");
+		ADWHistory.setText("An icon of modern British culture and the longest-running science-fiction TV show in history, Doctor Who debuted on Nov. 23, 1963. It follows the adventures of a mysterious, eccentric time-traveling alien known as the Doctor, who battles evil and visits strange planets in his timeship, the TARDIS.");
 		ADWWhereToStart.setText("The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.");
 		ADWOtherReading.setText("The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.");
 
@@ -72,11 +74,13 @@ public class AboutDoctorWhoFragment extends Fragment implements OnClickListener 
 	}
 
 	private void setListeners() {
+		buttonBestOfBahn.setOnClickListener(this);
 		buttonBestOfBBCAmerica.setOnClickListener(this);
 		buttonBestOfDWM2009.setOnClickListener(this);
 		buttonBestOfDWM2014.setOnClickListener(this);
 		buttonBestOfAVCTVC10.setOnClickListener(this);
 		buttonBestOfIo9.setOnClickListener(this);
+		buttonBestOfLMMyles.setOnClickListener(this);
 
     }
 
@@ -99,16 +103,21 @@ public class AboutDoctorWhoFragment extends Fragment implements OnClickListener 
 		ADWOtherReading = (TextView) rootView.findViewById(R.id.textView_aboutdoctorwho_otherreading);
 
 
+		buttonBestOfBahn = (Button) rootView.findViewById(R.id.buttonBestOfBahn);
 		buttonBestOfBBCAmerica = (Button) rootView.findViewById(R.id.buttonBestOfBBCAmerica);
 		buttonBestOfDWM2009 = (Button) rootView.findViewById(R.id.buttonBestOfDWM2009);
 		buttonBestOfDWM2014 = (Button) rootView.findViewById(R.id.buttonBestOfDWM2014);
 		buttonBestOfAVCTVC10 = (Button) rootView.findViewById(R.id.buttonBestOfAVCTVC10);
 		buttonBestOfIo9 = (Button) rootView.findViewById(R.id.buttonBestOfIo9);
+		buttonBestOfLMMyles = (Button) rootView.findViewById(R.id.buttonBestOfLMMyles);
 
 	}
 
 	@Override
 	public void onClick(View view) {
+		if (view == buttonBestOfBahn) {
+			searchTerm.setBestOfLists("Bahn");
+		}
 		if (view == buttonBestOfBBCAmerica) {
 			searchTerm.setBestOfLists("BBCAmerica");
 		}
@@ -123,6 +132,9 @@ public class AboutDoctorWhoFragment extends Fragment implements OnClickListener 
 		}
 		if (view == buttonBestOfIo9) {
 			searchTerm.setBestOfLists("Io9");
+		}
+		if (view == buttonBestOfLMMyles) {
+			searchTerm.setBestOfLists("LMMyles");
 		}
 		MainActivity activity = (MainActivity) getActivity();
 		activity.onSearchButtonClicked(searchTerm);

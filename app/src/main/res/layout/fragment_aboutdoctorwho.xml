@@ -119,6 +119,26 @@
                     <ImageView
                         android:layout_width="70dp"
                         android:layout_height="100dp"
+                        android:src="@drawable/medialogobahn"
+                        android:id="@+id/imageViewmedialogobahn"
+                        android:layout_gravity="center" />
+                    <Button
+                        android:id="@+id/buttonBestOfBahn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/bestof_button_label_bahn"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/medialogodwm2009"
                         android:id="@+id/imageViewmedialogodwm2009"
                         android:layout_gravity="center" />
@@ -195,14 +215,12 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
-
                     <ImageView
                         android:layout_width="78dp"
                         android:layout_height="78dp"
                         android:src="@drawable/medialogoio9"
                         android:id="@+id/medialogoio9"
                         android:layout_gravity="center" />
-
                     <Button
                         android:id="@+id/buttonBestOfIo9"
                         android:layout_width="wrap_content"
@@ -211,7 +229,26 @@
                         android:layout_marginRight="8dp"
                         android:text="@string/bestof_button_label_io9"
                         android:layout_gravity="center" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+                    <ImageView
+                        android:layout_width="78dp"
+                        android:layout_height="78dp"
+                        android:src="@drawable/medialogolmmyles"
+                        android:id="@+id/medialogolmmyles"
+                        android:layout_gravity="center" />
+                    <Button
+                        android:id="@+id/buttonBestOfLMMyles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/bestof_button_label_lmmyles"
+                        android:layout_gravity="center" />
                 </LinearLayout>
 
             </LinearLayout>

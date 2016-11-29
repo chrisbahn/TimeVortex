@@ -18,13 +18,14 @@ import java.util.ArrayList;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     protected static final String DATABASE_NAME = "TimeVortex";
-	private static final int DATABASE_VERSION = 13;
+	private static final int DATABASE_VERSION = 17;
 
 	static final String KEY_ROWID = "_id";
 	protected static final String TABLE_DWCHARACTERS = "dwcharacters_table"; // TODO Implement this; currently program uses just a String
 	protected static final String TABLE_DWCREW = "dwcrew_table"; // TODO Implement this; currently program uses just a String
 	protected static final String TABLE_TVSTORYS = "tvstorys_table";
 
+	// TVSTORYS database
 	protected static final String COL_STORYID = "storyid";
 	protected static final String COL_TITLE = "title";
 	protected static final String COL_DOCTOR = "doctor";
@@ -47,7 +48,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	protected static final String COL_BESTOFDWM2014 = "bestofdwm2014";
 	protected static final String COL_BESTOFAVCTVC10 = "bestofavctvc10";
 	protected static final String COL_BESTOFIO9 = "bestofio9";
+	protected static final String COL_BESTOFLMMYLES = "bestoflmmyles";
+	protected static final String COL_BESTOFBAHN = "bestofbahn";
+	protected static final String COL_TVSTORYIMAGE = "tvstoryimage";
 
+	// DWCHARACTERS database
+	protected static final String COL_CHARACTERID = "character";
+	protected static final String COL_NAME = "name";
+	protected static final String COL_SHORTNAME = "shortname";
+	protected static final String COL_CHARACTERTYPE = "charactertype";
+	protected static final String COL_ACTOR = "actor";
+	protected static final String COL_BIO = "bio";
 
 
     private static final String DBTAG = "DatabaseManager" ;
@@ -98,10 +109,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 				COL_BESTOFDWM2009 + " INTEGER, " +
 				COL_BESTOFDWM2014 + " INTEGER, " +
 				COL_BESTOFAVCTVC10 + " INTEGER, " +
-				COL_BESTOFIO9 + " INTEGER);";
+				COL_BESTOFIO9 + " INTEGER, " +
+				COL_BESTOFLMMYLES + " INTEGER, " +
+				COL_BESTOFBAHN + " INTEGER, " +
+				COL_TVSTORYIMAGE + " INTEGER);";
 		String createDWCharactersTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DWCHARACTERS + " (" +
-                COL_STORYID +" INTEGER PRIMARY KEY, " +
-                COL_TITLE + " TEXT);";
+                COL_CHARACTERID +" INTEGER PRIMARY KEY, " +
+				COL_NAME + " TEXT" +
+				COL_SHORTNAME + " TEXT" +
+				COL_CHARACTERTYPE + " TEXT" +
+				COL_ACTOR + " TEXT" +
+				COL_BIO + " TEXT" +
+				");";
 		String createDWCrewTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DWCREW + " (" +
                 COL_STORYID +" INTEGER PRIMARY KEY, " +
                 COL_TITLE + " TEXT);";

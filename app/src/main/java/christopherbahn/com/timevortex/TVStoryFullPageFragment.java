@@ -3,6 +3,9 @@ package christopherbahn.com.timevortex;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,6 +62,8 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private LinearLayout layoutBestOfDWM2014;
 	private LinearLayout layoutBestOfAVCTVC10;
 	private LinearLayout layoutBestOfIo9;
+	private LinearLayout layoutBestOfLMMyles;
+	private LinearLayout layoutBestOfBahn;
 	private TextView tvstoryTitle;
 	private TextView tvstorySeasonInfo;
 	private TextView tvstorySynopsis;
@@ -80,11 +85,15 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private TextView textviewBestOfDWM2014;
 	private TextView textviewBestOfAVCTVC10;
 	private TextView textviewBestOfIo9;
+	private TextView textviewBestOfLMMyles;
+	private TextView textviewBestOfBahn;
 	private ImageButton imageButtonBestOfBBCAmerica;
-	private ImageButton imageButtonButtonBestOfDWM2009;
-	private ImageButton imageButtonButtonBestOfDWM2014;
-	private ImageButton imageButtonButtonBestOfAVCTVC10;
-	private ImageButton imageButtonButtonBestOfIo9;
+	private ImageButton imageButtonBestOfDWM2009;
+	private ImageButton imageButtonBestOfDWM2014;
+	private ImageButton imageButtonBestOfAVCTVC10;
+	private ImageButton imageButtonBestOfIo9;
+	private ImageButton imageButtonBestOfLMMyles;
+	private ImageButton imageButtonBestOfBahn;
 
 	private TextView textviewErrorItunes;
 	private String amazonSearchTerm;
@@ -112,6 +121,8 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private TVStoryDAO tvstoryDAO;
 	private UpdateTVStoryTask task;
 	OnSearchButtonClickedListener mSearchClicked;
+	int[] doctorImages = {R.drawable.doctor01, R.drawable.doctor02, R.drawable.doctor03, R.drawable.doctor04, R.drawable.doctor05, R.drawable.doctor06, R.drawable.doctor07, R.drawable.doctor08, R.drawable.doctor09, R.drawable.doctor10, R.drawable.doctor11, R.drawable.doctor12};
+	int[] logoImages = {R.drawable.logodoctor01, R.drawable.logodoctor02, R.drawable.logodoctor03, R.drawable.logodoctor04, R.drawable.logodoctor05, R.drawable.logodoctor06, R.drawable.logodoctor07, R.drawable.logodoctor08, R.drawable.logodoctor09, R.drawable.logodoctor10, R.drawable.logodoctor11, R.drawable.logodoctor12};
 
 	public static final String ARG_ITEM_ID = "tvstory_fullpage_fragment";
 
@@ -229,10 +240,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		});
 		addListenerOnRatingBar();
 		imageButtonBestOfBBCAmerica.setOnClickListener(this);
-		imageButtonButtonBestOfDWM2009.setOnClickListener(this);
-		imageButtonButtonBestOfDWM2014.setOnClickListener(this);
-		imageButtonButtonBestOfAVCTVC10.setOnClickListener(this);
-		imageButtonButtonBestOfIo9.setOnClickListener(this);
+		imageButtonBestOfDWM2009.setOnClickListener(this);
+		imageButtonBestOfDWM2014.setOnClickListener(this);
+		imageButtonBestOfAVCTVC10.setOnClickListener(this);
+		imageButtonBestOfIo9.setOnClickListener(this);
+		imageButtonBestOfLMMyles.setOnClickListener(this);
+		imageButtonBestOfBahn.setOnClickListener(this);
 	}
 
 	protected void resetAllFields() {
@@ -280,21 +293,27 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		EdtxtMyNotes = (EditText) rootView.findViewById(R.id.mynotes_edittext);
 
 		imageButtonBestOfBBCAmerica = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogobbc);
-		imageButtonButtonBestOfDWM2009 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogodwm2009);
-		imageButtonButtonBestOfDWM2014 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogodwm2014);
-		imageButtonButtonBestOfAVCTVC10 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoavclub);
-		imageButtonButtonBestOfIo9 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoio9);
+		imageButtonBestOfDWM2009 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogodwm2009);
+		imageButtonBestOfDWM2014 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogodwm2014);
+		imageButtonBestOfAVCTVC10 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoavclub);
+		imageButtonBestOfIo9 = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoio9);
+		imageButtonBestOfLMMyles = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoLMMyles);
+		imageButtonBestOfBahn = (ImageButton) rootView.findViewById(R.id.imageButtonMedialogoBahn);
 		textviewBestOfBBCAmerica = (TextView) rootView.findViewById(R.id.textviewBestOfBBCAmerica);
 		textviewBestOfDWM2009 = (TextView) rootView.findViewById(R.id.textviewBestOfDWM2009);
 		textviewBestOfDWM2014 = (TextView) rootView.findViewById(R.id.textviewBestOfDWM2014);
 		textviewBestOfAVCTVC10 = (TextView) rootView.findViewById(R.id.textviewBestOfAVCTVC10);
 		textviewBestOfIo9 = (TextView) rootView.findViewById(R.id.textviewBestOfIo9);
+		textviewBestOfLMMyles = (TextView) rootView.findViewById(R.id.textviewBestOfLMMyles);
+		textviewBestOfBahn = (TextView) rootView.findViewById(R.id.textviewBestOfBahn);
 		layoutAllBestOf = (LinearLayout) rootView.findViewById(R.id.layoutAllBestOf);
 		layoutBestOfBBCAmerica = (LinearLayout) rootView.findViewById(R.id.layoutBestOfBBCAmerica);
 		layoutBestOfDWM2009 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfDWM2009);
 		layoutBestOfDWM2014 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfDWM2014);
 		layoutBestOfAVCTVC10 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfAVCTVC10);
 		layoutBestOfIo9 = (LinearLayout) rootView.findViewById(R.id.layoutBestOfIo9);
+		layoutBestOfLMMyles = (LinearLayout) rootView.findViewById(R.id.layoutBestOfLMMyles);
+		layoutBestOfBahn = (LinearLayout) rootView.findViewById(R.id.layoutBestOfBahn);
 
 		submitLayout = (LinearLayout) rootView.findViewById(R.id.save_buttons_layout);
 		textviewErrorItunes = (TextView) rootView.findViewById(R.id.textViewErrorITunes);
@@ -311,20 +330,33 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 //		if (view == resetButton) {
 //			resetAllFields();
 //			}
-		if (view == imageButtonBestOfBBCAmerica) {
+		if (view == imageButtonBestOfBahn) {
+			searchTerm.setBestOfLists("Bahn");
+			searchTerm.setCameFromSearchResult(true);
+		}
+		else if (view == imageButtonBestOfBBCAmerica) {
 			searchTerm.setBestOfLists("BBCAmerica");
+			searchTerm.setCameFromSearchResult(true);
 		}
-		else if (view == imageButtonButtonBestOfDWM2009) {
+		else if (view == imageButtonBestOfDWM2009) {
 			searchTerm.setBestOfLists("DWM2009");
+			searchTerm.setCameFromSearchResult(true);
 		}
-		else if (view == imageButtonButtonBestOfDWM2014) {
+		else if (view == imageButtonBestOfDWM2014) {
 			searchTerm.setBestOfLists("DWM2014");
+			searchTerm.setCameFromSearchResult(true);
 		}
-		else if (view == imageButtonButtonBestOfAVCTVC10) {
+		else if (view == imageButtonBestOfAVCTVC10) {
 			searchTerm.setBestOfLists("AVCTVC10");
+			searchTerm.setCameFromSearchResult(true);
 		}
-		else if (view == imageButtonButtonBestOfIo9) {
+		else if (view == imageButtonBestOfIo9) {
 			searchTerm.setBestOfLists("Io9");
+			searchTerm.setCameFromSearchResult(true);
+		}
+		else if (view == imageButtonBestOfLMMyles) {
+			searchTerm.setBestOfLists("LMMyles");
+			searchTerm.setCameFromSearchResult(true);
 		}
 		else if (view == returnToListButton||view == saveButton) {
 				if (view == saveButton) {
@@ -342,11 +374,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 		// goes back to list of all stories
 		if (searchTerm.cameFromSearchResult()==false)
-		{ MainActivity activity = (MainActivity) getActivity();
+		{ // goes back to the consecutive chronological all-episodes list
+			MainActivity activity = (MainActivity) getActivity();
 			activity.onSaveButtonClicked();
 			mSaveClicked.onSaveButtonClicked();
 		} else if (searchTerm.cameFromSearchResult())
-		{ // goes back to previously called search result
+		{ // goes back to previously called search result OR to a nonconsecutive list such as a best-of list
 			MainActivity activity = (MainActivity) getActivity();
 			activity.onSearchButtonClicked(searchTerm);
 			mSearchClicked.onSearchButtonClicked(searchTerm);
@@ -386,8 +419,18 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			userStarRating.setRating(TVStory.getUserStarRatingNumber());
 			EdtxtMyNotes.setText(TVStory.getUserReview());
 
-			int whichDoctor = TVStory.getDoctor();
+			int whichDoctor = TVStory.getDoctor(); // todo These two lines plus the whichDoctor() method sets mention of Doctor in cast list. Will not be needed when DWCast is implemented
 			whichDoctorIsIt(whichDoctor);
+
+//			if (Integer.parseInt(TVStory.getTvstoryImage())==0) {
+//				tvstoryImage.setImageResource(logoImages[TVStory.getDoctor()-1]);
+//			} else {
+//				tvstoryImage.setImageResource(Integer.parseInt(TVStory.getTvstoryImage()));
+//			}
+			Resources res = getContext().getResources();
+			TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
+			Drawable drawable = tvstoryImages.getDrawable(TVStory.getStoryID() - 1);
+			tvstoryImage.setImageDrawable(drawable);
 
 
 
@@ -543,55 +586,43 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	}
 
 
-	// todo A kludgy and temporary way to change the image and cast info. Will be rewritten!
+	// todo A kludgy and temporary way to change the cast info. Will be rewritten!
 	private void whichDoctorIsIt(int whichDoctor){
 		if (whichDoctor==1) {
 			tvstoryCastAndCrew.setText("First Doctor (William Hartnell)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor01);
 		}
 		if (whichDoctor==2) {
 			tvstoryCastAndCrew.setText("Second Doctor (Patrick Troughton)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor02);
 		}
 		if (whichDoctor==3) {
 			tvstoryCastAndCrew.setText("Third Doctor (Jon Pertwee)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor03);
 		}
 		if (whichDoctor==4) {
 			tvstoryCastAndCrew.setText("Fourth Doctor (Tom Baker)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor04);
 		}
 		if (whichDoctor==5) {
 			tvstoryCastAndCrew.setText("Fifth Doctor (Peter Davison)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor05);
 		}
 		if (whichDoctor==6) {
 			tvstoryCastAndCrew.setText("Sixth Doctor (Colin Baker)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor06);
 		}
 		if (whichDoctor==7) {
 			tvstoryCastAndCrew.setText("Seventh Doctor (Sylvester McCoy)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor07);
 		}
 		if (whichDoctor==8) {
 			tvstoryCastAndCrew.setText("Eighth Doctor (Paul McGann)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor08);
 		}
 		if (whichDoctor==9) {
 			tvstoryCastAndCrew.setText("Ninth Doctor (Christopher Ecclestone)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor09);
 		}
 		if (whichDoctor==10) {
 			tvstoryCastAndCrew.setText("Tenth Doctor (David Tennant)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor10);
 		}
 		if (whichDoctor==11) {
 			tvstoryCastAndCrew.setText("Eleventh Doctor (Matt Smith)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor11);
 		}
 		if (whichDoctor==12) {
 			tvstoryCastAndCrew.setText("Twelfth Doctor (Peter Capaldi)");
-			tvstoryImage.setImageResource(R.drawable.logodoctor12);
 		}
 	}
 
@@ -606,12 +637,21 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	}
 
 	protected void getRatings() {
+		// somebodyLikesMe variable governs whether the ratings are visible: If nobody ranked this episode, no rankings show up!
 		int somebodyLikesMe = 0;
+		if (TVStory.getBestOfBahn()>0) {
+			layoutBestOfBahn.setVisibility(View.VISIBLE);
+			textviewBestOfBahn.setText("Time Vortex\nranking: #" + TVStory.getBestOfBahn());
+			somebodyLikesMe++;
+		} else {
+			layoutBestOfBBCAmerica.setVisibility(View.GONE);
+		}
 		if (TVStory.getBestOfBBCAmerica()>0) {
 			layoutBestOfBBCAmerica.setVisibility(View.VISIBLE);
 			textviewBestOfBBCAmerica.setText("BBC Critics\nPoll 2013: #" + TVStory.getBestOfBBCAmerica());
 			somebodyLikesMe++;
 		} else {
+			layoutBestOfBBCAmerica.setVisibility(View.GONE);
 		}
 		if (TVStory.getBestOfDWM2009()>0) {
 			layoutBestOfDWM2009.setVisibility(View.VISIBLE);
@@ -640,6 +680,13 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			somebodyLikesMe++;
 		} else {
 			layoutBestOfIo9.setVisibility(View.GONE);
+		}
+		if (TVStory.getBestOfLMMyles()>0) {
+			layoutBestOfLMMyles.setVisibility(View.VISIBLE);
+			textviewBestOfLMMyles.setText("L.M. Myles all-episode\nranking, 2014: #" + TVStory.getBestOfLMMyles());
+			somebodyLikesMe++;
+		} else {
+			layoutBestOfLMMyles.setVisibility(View.GONE);
 		}
 		if (somebodyLikesMe==0) {
 			layoutAllBestOf.setVisibility(View.GONE);

@@ -126,12 +126,6 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
 
-//		@Override
-//		protected ArrayList<TVStory> doInBackground(String... params) {
-//			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm);
-//			return TVStoryList;
-//		}
-
 		@Override
 		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
 			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm);
