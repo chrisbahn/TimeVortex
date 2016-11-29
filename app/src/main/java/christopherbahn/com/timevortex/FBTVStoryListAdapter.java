@@ -68,7 +68,7 @@ public class FBTVStoryListAdapter extends FirebaseListAdapter<TVStory> {
         ((TextView)view.findViewById(R.id.txt_listitem_title)).setText(TVStory.getStoryID()  + ": " + TVStory.getTitle());
         ((TextView)view.findViewById(R.id.txt_listitem_seasoninfo)).setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + " minutes.");
         ((TextView)view.findViewById(R.id.txt_listitem_synopsis)).setText(TVStory.getSynopsis());
-        tvstorySynopsis.setVisibility(View.GONE); // not visible in main (all-items) list
+//        tvstorySynopsis.setVisibility(View.GONE); // not visible in main (all-items) list
 
 
         // Map a Chat object to an entry in our listview

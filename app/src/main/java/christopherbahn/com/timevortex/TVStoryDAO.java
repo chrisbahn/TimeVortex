@@ -32,67 +32,68 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 	public long save(TVStory TVStory) {
 		ContentValues values = new ContentValues();
-		values.put(DataBaseHelper.COL_STORYID, TVStory.getStoryID());
-		values.put(DataBaseHelper.COL_TITLE, TVStory.getTitle());
-		values.put(DataBaseHelper.COL_DOCTOR, TVStory.getDoctor());
-		values.put(DataBaseHelper.COL_ERA, TVStory.getEra());
-		values.put(DataBaseHelper.COL_SEASON, TVStory.getSeason());
-		values.put(DataBaseHelper.COL_SEASONSTORYNUMBER, TVStory.getSeasonStoryNumber());
-		values.put(DataBaseHelper.COL_EPISODES, TVStory.getEpisodes());
-		values.put(DataBaseHelper.COL_EPISODELENGTH, TVStory.getEpisodeLength());
-		values.put(DataBaseHelper.COL_YEARPRODUCED, TVStory.getYearProduced());
-		values.put(DataBaseHelper.COL_OTHERCAST, TVStory.getOtherCast());
-		values.put(DataBaseHelper.COL_SYNOPSIS, TVStory.getSynopsis());
-		values.put(DataBaseHelper.COL_CREW, TVStory.getCrew());
-		values.put(DataBaseHelper.COL_SEENIT, TVStory.seenIt());
-		values.put(DataBaseHelper.COL_WANTTOSEEIT, TVStory.wantToSeeIt());
-		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
-		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
-		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
-		values.put(DataBaseHelper.COL_BESTOFBBCAMERICA, TVStory.getBestOfBBCAmerica());
-		values.put(DataBaseHelper.COL_BESTOFDWM2009, TVStory.getBestOfDWM2009());
-		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
-		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
-		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
-		values.put(DataBaseHelper.COL_BESTOFLMMYLES, TVStory.getBestOfLMMyles());
-		values.put(DataBaseHelper.COL_BESTOFBAHN, TVStory.getBestOfBahn());
+//		values.put(DataBaseHelper.COL_STORYID, TVStory.getStoryID());
+//		values.put(DataBaseHelper.COL_TITLE, TVStory.getTitle());
+//		values.put(DataBaseHelper.COL_DOCTOR, TVStory.getDoctor());
+//		values.put(DataBaseHelper.COL_ERA, TVStory.getEra());
+//		values.put(DataBaseHelper.COL_SEASON, TVStory.getSeason());
+//		values.put(DataBaseHelper.COL_SEASONSTORYNUMBER, TVStory.getSeasonStoryNumber());
+//		values.put(DataBaseHelper.COL_EPISODES, TVStory.getEpisodes());
+//		values.put(DataBaseHelper.COL_EPISODELENGTH, TVStory.getEpisodeLength());
+//		values.put(DataBaseHelper.COL_YEARPRODUCED, TVStory.getYearProduced());
+//		values.put(DataBaseHelper.COL_OTHERCAST, TVStory.getOtherCast());
+//		values.put(DataBaseHelper.COL_SYNOPSIS, TVStory.getSynopsis());
+//		values.put(DataBaseHelper.COL_CREW, TVStory.getCrew());
+//		values.put(DataBaseHelper.COL_SEENIT, TVStory.seenIt());
+//		values.put(DataBaseHelper.COL_WANTTOSEEIT, TVStory.wantToSeeIt());
+//		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
+//		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
+//		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
+//		values.put(DataBaseHelper.COL_BESTOFBBCAMERICA, TVStory.getBestOfBBCAmerica());
+//		values.put(DataBaseHelper.COL_BESTOFDWM2009, TVStory.getBestOfDWM2009());
+//		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
+//		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
+//		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
+//		values.put(DataBaseHelper.COL_BESTOFLMMYLES, TVStory.getBestOfLMMyles());
+//		values.put(DataBaseHelper.COL_BESTOFBAHN, TVStory.getBestOfBahn());
 //		values.put(DataBaseHelper.COL_TVSTORYIMAGE, TVStory.getTvstoryImage());
-
-		return database.insert(DataBaseHelper.TABLE_TVSTORYS, null, values);
+//
+//		return database.insert(DataBaseHelper.TABLE_TVSTORYS, null, values);
+		return '0';
 	}
 
 	public long update(TVStory TVStory) {
-		ContentValues values = new ContentValues();
-		values.put(DataBaseHelper.COL_STORYID, TVStory.getStoryID());
-		values.put(DataBaseHelper.COL_TITLE, TVStory.getTitle());
-		values.put(DataBaseHelper.COL_DOCTOR, TVStory.getDoctor());
-		values.put(DataBaseHelper.COL_ERA, TVStory.getEra());
-		values.put(DataBaseHelper.COL_SEASON, TVStory.getSeason());
-		values.put(DataBaseHelper.COL_SEASONSTORYNUMBER, TVStory.getSeasonStoryNumber());
-		values.put(DataBaseHelper.COL_EPISODES, TVStory.getEpisodes());
-		values.put(DataBaseHelper.COL_EPISODELENGTH, TVStory.getEpisodeLength());
-		values.put(DataBaseHelper.COL_YEARPRODUCED, TVStory.getYearProduced());
-		values.put(DataBaseHelper.COL_OTHERCAST, TVStory.getOtherCast());
-		values.put(DataBaseHelper.COL_SYNOPSIS, TVStory.getSynopsis());
-		values.put(DataBaseHelper.COL_CREW, TVStory.getCrew());
-		values.put(DataBaseHelper.COL_SEENIT, TVStory.seenIt());
-		values.put(DataBaseHelper.COL_WANTTOSEEIT, TVStory.wantToSeeIt());
-		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
-		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
-		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
-		values.put(DataBaseHelper.COL_BESTOFBBCAMERICA, TVStory.getBestOfBBCAmerica());
-		values.put(DataBaseHelper.COL_BESTOFDWM2009, TVStory.getBestOfDWM2009());
-		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
-		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
-		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
-		values.put(DataBaseHelper.COL_BESTOFLMMYLES, TVStory.getBestOfLMMyles());
-		values.put(DataBaseHelper.COL_BESTOFBAHN, TVStory.getBestOfBahn());
-		values.put(DataBaseHelper.COL_TVSTORYIMAGE, TVStory.getTvstoryImage());
-
-		long result = database.update(DataBaseHelper.TABLE_TVSTORYS, values, WHERE_ID_EQUALS, new String[] { String.valueOf(TVStory.getStoryID()) });
-		Log.d("Update Result:", "=" + result);
-		return result;
-
+//		ContentValues values = new ContentValues();
+//		values.put(DataBaseHelper.COL_STORYID, TVStory.getStoryID());
+//		values.put(DataBaseHelper.COL_TITLE, TVStory.getTitle());
+//		values.put(DataBaseHelper.COL_DOCTOR, TVStory.getDoctor());
+//		values.put(DataBaseHelper.COL_ERA, TVStory.getEra());
+//		values.put(DataBaseHelper.COL_SEASON, TVStory.getSeason());
+//		values.put(DataBaseHelper.COL_SEASONSTORYNUMBER, TVStory.getSeasonStoryNumber());
+//		values.put(DataBaseHelper.COL_EPISODES, TVStory.getEpisodes());
+//		values.put(DataBaseHelper.COL_EPISODELENGTH, TVStory.getEpisodeLength());
+//		values.put(DataBaseHelper.COL_YEARPRODUCED, TVStory.getYearProduced());
+//		values.put(DataBaseHelper.COL_OTHERCAST, TVStory.getOtherCast());
+//		values.put(DataBaseHelper.COL_SYNOPSIS, TVStory.getSynopsis());
+//		values.put(DataBaseHelper.COL_CREW, TVStory.getCrew());
+//		values.put(DataBaseHelper.COL_SEENIT, TVStory.seenIt());
+//		values.put(DataBaseHelper.COL_WANTTOSEEIT, TVStory.wantToSeeIt());
+//		values.put(DataBaseHelper.COL_ASIN, TVStory.getASIN());
+//		values.put(DataBaseHelper.COL_USERREVIEW, TVStory.getUserReview());
+//		values.put(DataBaseHelper.COL_USERSTARRATING, TVStory.getUserStarRatingNumber());
+//		values.put(DataBaseHelper.COL_BESTOFBBCAMERICA, TVStory.getBestOfBBCAmerica());
+//		values.put(DataBaseHelper.COL_BESTOFDWM2009, TVStory.getBestOfDWM2009());
+//		values.put(DataBaseHelper.COL_BESTOFDWM2014, TVStory.getBestOfDWM2014());
+//		values.put(DataBaseHelper.COL_BESTOFAVCTVC10, TVStory.getBestOfAVCTVC10());
+//		values.put(DataBaseHelper.COL_BESTOFIO9, TVStory.getBestOfIo9());
+//		values.put(DataBaseHelper.COL_BESTOFLMMYLES, TVStory.getBestOfLMMyles());
+//		values.put(DataBaseHelper.COL_BESTOFBAHN, TVStory.getBestOfBahn());
+//		values.put(DataBaseHelper.COL_TVSTORYIMAGE, TVStory.getTvstoryImage());
+//
+//		long result = database.update(DataBaseHelper.TABLE_TVSTORYS, values, WHERE_ID_EQUALS, new String[] { String.valueOf(TVStory.getStoryID()) });
+//		Log.d("Update Result:", "=" + result);
+//		return result;
+		return '0';
 	}
 
 	public int delete(TVStory TVStory) {
@@ -103,75 +104,75 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 	public ArrayList<TVStory> getAllTVStories() {
 		ArrayList<TVStory> TVStories = new ArrayList<TVStory>();
 
-		Cursor cursor = database.query(DataBaseHelper.TABLE_TVSTORYS,
-				new String[] {
-						DataBaseHelper.COL_STORYID,
-		                DataBaseHelper.COL_TITLE,
-                		DataBaseHelper.COL_DOCTOR,
-		                DataBaseHelper.COL_ERA,
-		                DataBaseHelper.COL_SEASON,
-		                DataBaseHelper.COL_SEASONSTORYNUMBER,
-		                DataBaseHelper.COL_EPISODES,
-		                DataBaseHelper.COL_EPISODELENGTH,
-		                DataBaseHelper.COL_YEARPRODUCED,
-		                DataBaseHelper.COL_OTHERCAST,
-		                DataBaseHelper.COL_SYNOPSIS,
-		                DataBaseHelper.COL_CREW,
-		                DataBaseHelper.COL_SEENIT,
-		                DataBaseHelper.COL_WANTTOSEEIT,
-						DataBaseHelper.COL_ASIN,
-						DataBaseHelper.COL_USERREVIEW,
-						DataBaseHelper.COL_USERSTARRATING,
-						DataBaseHelper.COL_BESTOFBBCAMERICA,
-						DataBaseHelper.COL_BESTOFDWM2009,
-						DataBaseHelper.COL_BESTOFDWM2014,
-						DataBaseHelper.COL_BESTOFAVCTVC10,
-						DataBaseHelper.COL_BESTOFIO9,
-						DataBaseHelper.COL_BESTOFLMMYLES,
-						DataBaseHelper.COL_BESTOFBAHN,
-						DataBaseHelper.COL_TVSTORYIMAGE
-				}, null, null, null, null, DataBaseHelper.COL_STORYID + " ASC");
-		while (cursor.moveToNext()) {
-			TVStory TVStory = new TVStory();
-			TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
-			TVStory.setTitle(cursor.getString(1));
-			TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
-			TVStory.setEra(cursor.getString(3));
-			TVStory.setSeason(cursor.getString(4));
-			TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
-			TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
-			TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
-			TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
-			TVStory.setOtherCast(cursor.getString(9));
-			TVStory.setSynopsis(cursor.getString(10));
-			TVStory.setCrew(cursor.getString(11));
-			if (Integer.parseInt(cursor.getString(12))==0) {
-				TVStory.setSeenIt(false);
-			} else {
-				TVStory.setSeenIt(true);
-			}
-			if (Integer.parseInt(cursor.getString(13))==0) {
-				TVStory.setWantToSeeIt(false);
-			} else {
-				TVStory.setWantToSeeIt(true);
-			}
-			TVStory.setASIN(cursor.getString(14));
-			TVStory.setUserReview(cursor.getString(15));
-			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
-			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
-			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
-			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
-			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
-			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
-			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
-			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
-			TVStory.setTvstoryImage(cursor.getString(24));
-			TVStories.add(TVStory);
-			// TODO the following code would aid in sort/ordering within the Java environment, without using either SQL (which is being replaced) or Firebase (which has awful search capability).
-//			if (TVStory.getDoctor()==12) {
-//				TVStories.add(TVStory);
+//		Cursor cursor = database.query(DataBaseHelper.TABLE_TVSTORYS,
+//				new String[] {
+//						DataBaseHelper.COL_STORYID,
+//		                DataBaseHelper.COL_TITLE,
+//                		DataBaseHelper.COL_DOCTOR,
+//		                DataBaseHelper.COL_ERA,
+//		                DataBaseHelper.COL_SEASON,
+//		                DataBaseHelper.COL_SEASONSTORYNUMBER,
+//		                DataBaseHelper.COL_EPISODES,
+//		                DataBaseHelper.COL_EPISODELENGTH,
+//		                DataBaseHelper.COL_YEARPRODUCED,
+//		                DataBaseHelper.COL_OTHERCAST,
+//		                DataBaseHelper.COL_SYNOPSIS,
+//		                DataBaseHelper.COL_CREW,
+//		                DataBaseHelper.COL_SEENIT,
+//		                DataBaseHelper.COL_WANTTOSEEIT,
+//						DataBaseHelper.COL_ASIN,
+//						DataBaseHelper.COL_USERREVIEW,
+//						DataBaseHelper.COL_USERSTARRATING,
+//						DataBaseHelper.COL_BESTOFBBCAMERICA,
+//						DataBaseHelper.COL_BESTOFDWM2009,
+//						DataBaseHelper.COL_BESTOFDWM2014,
+//						DataBaseHelper.COL_BESTOFAVCTVC10,
+//						DataBaseHelper.COL_BESTOFIO9,
+//						DataBaseHelper.COL_BESTOFLMMYLES,
+//						DataBaseHelper.COL_BESTOFBAHN,
+//						DataBaseHelper.COL_TVSTORYIMAGE
+//				}, null, null, null, null, DataBaseHelper.COL_STORYID + " ASC");
+//		while (cursor.moveToNext()) {
+//			TVStory TVStory = new TVStory();
+//			TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
+//			TVStory.setTitle(cursor.getString(1));
+//			TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
+//			TVStory.setEra(cursor.getString(3));
+//			TVStory.setSeason(cursor.getString(4));
+//			TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
+//			TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
+//			TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
+//			TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
+//			TVStory.setOtherCast(cursor.getString(9));
+//			TVStory.setSynopsis(cursor.getString(10));
+//			TVStory.setCrew(cursor.getString(11));
+//			if (Integer.parseInt(cursor.getString(12))==0) {
+//				TVStory.setSeenIt(false);
+//			} else {
+//				TVStory.setSeenIt(true);
 //			}
-		}
+//			if (Integer.parseInt(cursor.getString(13))==0) {
+//				TVStory.setWantToSeeIt(false);
+//			} else {
+//				TVStory.setWantToSeeIt(true);
+//			}
+//			TVStory.setASIN(cursor.getString(14));
+//			TVStory.setUserReview(cursor.getString(15));
+//			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
+//			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
+//			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
+//			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
+//			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
+//			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
+//			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
+//			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
+//			TVStory.setTvstoryImage(cursor.getString(24));
+//			TVStories.add(TVStory);
+//			// TODO the following code would aid in sort/ordering within the Java environment, without using either SQL (which is being replaced) or Firebase (which has awful search capability).
+////			if (TVStory.getDoctor()==12) {
+////				TVStories.add(TVStory);
+////			}
+//		}
 		return TVStories;
 	}
 
@@ -181,44 +182,44 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 		String sql = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE " + DataBaseHelper.COL_STORYID + " = ?";
 
-		Cursor cursor = database.rawQuery(sql, new String[] { id + "" });
-
-		if (cursor.moveToNext()) {
-			TVStory = new TVStory();
-			TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
-			TVStory.setTitle(cursor.getString(1));
-			TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
-			TVStory.setEra(cursor.getString(3));
-			TVStory.setSeason(cursor.getString(4));
-			TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
-			TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
-			TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
-			TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
-			TVStory.setOtherCast(cursor.getString(9));
-			TVStory.setSynopsis(cursor.getString(10));
-			TVStory.setCrew(cursor.getString(11));
-			if (Integer.parseInt(cursor.getString(12))==0) {
-				TVStory.setSeenIt(false);
-			} else {
-				TVStory.setSeenIt(true);
-			}
-			if (Integer.parseInt(cursor.getString(13))==0) {
-				TVStory.setWantToSeeIt(false);
-			} else {
-				TVStory.setWantToSeeIt(true);
-			}
-			TVStory.setASIN(cursor.getString(14));
-			TVStory.setUserReview(cursor.getString(15));
-			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
-			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
-			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
-			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
-			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
-			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
-			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
-			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
-			TVStory.setTvstoryImage(cursor.getString(24));
-		}
+//		Cursor cursor = database.rawQuery(sql, new String[] { id + "" });
+//
+//		if (cursor.moveToNext()) {
+//			TVStory = new TVStory();
+//			TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
+//			TVStory.setTitle(cursor.getString(1));
+//			TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
+//			TVStory.setEra(cursor.getString(3));
+//			TVStory.setSeason(cursor.getString(4));
+//			TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
+//			TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
+//			TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
+//			TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
+//			TVStory.setOtherCast(cursor.getString(9));
+//			TVStory.setSynopsis(cursor.getString(10));
+//			TVStory.setCrew(cursor.getString(11));
+//			if (Integer.parseInt(cursor.getString(12))==0) {
+//				TVStory.setSeenIt(false);
+//			} else {
+//				TVStory.setSeenIt(true);
+//			}
+//			if (Integer.parseInt(cursor.getString(13))==0) {
+//				TVStory.setWantToSeeIt(false);
+//			} else {
+//				TVStory.setWantToSeeIt(true);
+//			}
+//			TVStory.setASIN(cursor.getString(14));
+//			TVStory.setUserReview(cursor.getString(15));
+//			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
+//			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
+//			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
+//			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
+//			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
+//			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
+//			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
+//			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
+//			TVStory.setTvstoryImage(cursor.getString(24));
+//		}
 		return TVStory;
 	}
 
@@ -263,46 +264,46 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
 
-        Cursor cursor = database.rawQuery(sql, null);
-
-        while (cursor.moveToNext()) {
-			TVStory = new TVStory();
-            TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
-            TVStory.setTitle(cursor.getString(1));
-            TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
-            TVStory.setEra(cursor.getString(3));
-            TVStory.setSeason(cursor.getString(4));
-            TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
-            TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
-            TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
-            TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
-            TVStory.setOtherCast(cursor.getString(9));
-            TVStory.setSynopsis(cursor.getString(10));
-            TVStory.setCrew(cursor.getString(11));
-			if (Integer.parseInt(cursor.getString(12))==0) {
-				TVStory.setSeenIt(false);
-			} else {
-				TVStory.setSeenIt(true);
-			}
-			if (Integer.parseInt(cursor.getString(13))==0) {
-				TVStory.setWantToSeeIt(false);
-			} else {
-				TVStory.setWantToSeeIt(true);
-			}
-			TVStory.setASIN(cursor.getString(14));
-			TVStory.setUserReview(cursor.getString(15));
-			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
-			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
-			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
-			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
-			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
-			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
-			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
-			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
-			TVStory.setTvstoryImage(cursor.getString(24));
-
-			searchResultTVStories.add(TVStory);
-		}
+//        Cursor cursor = database.rawQuery(sql, null);
+//
+//        while (cursor.moveToNext()) {
+//			TVStory = new TVStory();
+//            TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
+//            TVStory.setTitle(cursor.getString(1));
+//            TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
+//            TVStory.setEra(cursor.getString(3));
+//            TVStory.setSeason(cursor.getString(4));
+//            TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
+//            TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
+//            TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
+//            TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
+//            TVStory.setOtherCast(cursor.getString(9));
+//            TVStory.setSynopsis(cursor.getString(10));
+//            TVStory.setCrew(cursor.getString(11));
+//			if (Integer.parseInt(cursor.getString(12))==0) {
+//				TVStory.setSeenIt(false);
+//			} else {
+//				TVStory.setSeenIt(true);
+//			}
+//			if (Integer.parseInt(cursor.getString(13))==0) {
+//				TVStory.setWantToSeeIt(false);
+//			} else {
+//				TVStory.setWantToSeeIt(true);
+//			}
+//			TVStory.setASIN(cursor.getString(14));
+//			TVStory.setUserReview(cursor.getString(15));
+//			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
+//			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
+//			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
+//			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
+//			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
+//			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
+//			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
+//			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
+//			TVStory.setTvstoryImage(cursor.getString(24));
+//
+//			searchResultTVStories.add(TVStory);
+//		}
 		return searchResultTVStories;
 	}
 

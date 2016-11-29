@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -160,9 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
-        DatabaseReference isDataLoaded = database.getReference("isDataLoaded");
-        isDataLoaded.setValue("False");
+        myRef.setValue("Hello There, World!");
         loadListofAllStoriesTextFileIntoFirebase();
         // Read from the Firebase database
 //        DatabaseReference TVStoriesRef = database.getReference("TVStories");
@@ -193,14 +192,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     TVStory TVStory = postSnapshot.getValue(TVStory.class);
-                    System.out.println("FIREBASE " + TVStory.getStoryID() + ": " + TVStory.getTitle());
-////                    Resources res = getContext().getResources();
-//                    TypedArray tvstoryImages = getApplicationContext().getResources().obtainTypedArray(R.array.tvstoryImages);
-//                    Drawable drawable = tvstoryImages.getDrawable(TVStory.getStoryID()-1);
-//                    TVStory.setTvstoryImage().setImageDrawable(drawable);
-//                    TVStory.setTvstoryImage(drawable);
                     TVStories.add(TVStory);
                 }
+                System.out.println("FIREBASE TVSTORY LIST UPDATED");
+                Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -219,6 +214,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+        // when list item is clicked, go to TVStoryFullPageFragment
+//        firebaseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                mDatabase.child("users").child(mUserId).child("items")
+//                        .orderByChild("title")
+//                        .equalTo((String) listView.getItemAtPosition(position))
+//                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.hasChildren()) {
+//                                    DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
+////                                    firstChild.getRef().removeValue();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//            }
+//        });
 
 
 
@@ -565,7 +582,6 @@ public void onFinishDialog() {
         // Solution partially found here: http://stackoverflow.com/questions/32440604/how-to-read-a-txt-file-line-by-line-with-a-sqlite-script
         ArrayList<String[]> listofAllStoriesData = new ArrayList<String[]>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference isDataLoaded = database.getReference("isDataLoaded");
 
             try
             {
@@ -578,7 +594,7 @@ public void onFinishDialog() {
 //                line = reader.readLine();
                     // Read each line of the original data into an ArrayList
                     listofAllStoriesData.add(storyLine);
-                    System.out.println("InputStream:" + storyLine[0] + ": " + storyLine[1]);
+//                    System.out.println("InputStream:" + storyLine[0] + ": " + storyLine[1]);
                 }
                 reader.close();
                 for (String[] matrixFile : listofAllStoriesData) {
@@ -612,12 +628,11 @@ public void onFinishDialog() {
 
                 //---port information in listofAllStoriesData into Firebase DB
                 for (TVStory matrixFile : tempMatrix) {
-                // Write a message to the database
+                // Write a message to the Firebase database
                 String storyId = String.valueOf(matrixFile.getStoryID());
                 database.getReference("TVStory/" + storyId).setValue(matrixFile);
             }
             Toast.makeText(getBaseContext(), "File loaded successfully!", Toast.LENGTH_SHORT).show();
-            isDataLoaded.setValue("True");
         }
         catch (IOException ioe) {
             ioe.printStackTrace();
