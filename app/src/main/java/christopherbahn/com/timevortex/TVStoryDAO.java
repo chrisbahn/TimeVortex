@@ -223,8 +223,9 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return TVStory;
 	}
 
-	//Retrieves all TVStories that meet the given search criteria
+	//Retrieves all TVStories that meet the given search criteria. TODO This is going to be the main way the TVStories list is filtered, but by using Java and maaaybe Firebase's ordering system. You will need to pass in the ArrayList<TVStory> TVStories made by the Firebase listener in MainActivity as a parameter here. TVStories is then filtered into searchResultTVStories.
 	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm) {
+		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
 		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
 		TVStory TVStory = null;
 		String sql = null;

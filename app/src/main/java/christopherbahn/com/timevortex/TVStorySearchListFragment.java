@@ -154,7 +154,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 
 	/*
 	 * This method is invoked from MainActivity onFinishDialog() method. It is
-	 * called from CustomTVStoryDialogFragment when an employee record is updated.
+	 * called from CustomTVStoryDialogFragment when a record is updated.
 	 * This is used for communicating between fragments.
 	 */
 	public void updateView() {

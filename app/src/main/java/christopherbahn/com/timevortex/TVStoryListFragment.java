@@ -133,7 +133,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 		@Override
 		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
-			ArrayList<TVStory> TVStoryList = tvstoryDAO.getAllTVStories();
+			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm); // TODO Once it is established that this works for full-list and filtered search results, you can delete TVSearchListFragment and its associated code.
 			return TVStoryList;
 		}
 

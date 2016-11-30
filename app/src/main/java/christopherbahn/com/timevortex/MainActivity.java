@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UIExplainer = (TextView) findViewById(R.id.app_ui_explainer_tv);
         tvstoryDAO = new TVStoryDAO(this);
         SearchTerm searchTerm = new SearchTerm();
+        ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
         searchTerm.setCameFromSearchResult(false);
 
         gotoMainSearchListButton.setOnClickListener(this);
@@ -187,12 +188,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Attach a listener to read the data at our posts reference
         TVStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<TVStory> TVStories = new ArrayList<TVStory>();
+            ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     TVStory TVStory = postSnapshot.getValue(TVStory.class);
-                    TVStories.add(TVStory);
+                    allTVStories.add(TVStory);
                 }
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
                 Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
@@ -205,12 +206,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // FIREBASE CODE ENDS HERE
 
 
-//         Set up ListView
-        final ListView firebaseListView = (ListView) findViewById(R.id.firebaseListView);
-        ListAdapter fbadapter = new FBTVStoryListAdapter(TVStoryRef, TVStory.class, R.layout.test_firebase_list_item, this)
-        {
-        };
-        firebaseListView.setAdapter(fbadapter);
+//         TODO Set up ListView - the following five lines WORK to make a Firebase instant-update list. But search capability is a real problem, and TVStory info will never actually change. So, switching it to something more like old system.
+//        final ListView firebaseListView = (ListView) findViewById(R.id.firebaseListView);
+//        ListAdapter fbadapter = new FBTVStoryListAdapter(TVStoryRef, TVStory.class, R.layout.test_firebase_list_item, this)
+//        {
+//        };
+//        firebaseListView.setAdapter(fbadapter);
 
 
 
@@ -236,39 +237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        });
 //            }
 //        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
@@ -436,6 +404,7 @@ public void onFinishDialog() {
         }
         }
 
+    // called when search button is clicked on TVStorySearchFragment
     @Override
     public void onSearchButtonClicked(SearchTerm searchTerm) {
         // this method calls up a list of selected episodes based on search criteria
@@ -447,7 +416,7 @@ public void onFinishDialog() {
         switchContent(TVStorySearchListFragment, TVStorySearchListFragment.ARG_ITEM_ID);
     }
 
-
+    // called when a user saves changes to userlists
     public void onSaveButtonClicked() {
         TVStoryListFragment = new TVStoryListFragment();
         setFragmentTitle(R.string.app_name);
@@ -515,7 +484,7 @@ public void onFinishDialog() {
 
 
 
-
+// Loads data into SQLite db - now irrelevant
     public void loadListofAllStoriesTextFile() {
         // Imports data from Raw textfile(s) into the SQLite database, via an intermediary ArrayList<String[]>, which then builds TVStory objects, which are then added to the DB,
         // Solution partially found here: http://stackoverflow.com/questions/32440604/how-to-read-a-txt-file-line-by-line-with-a-sqlite-script
