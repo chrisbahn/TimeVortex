@@ -45,7 +45,8 @@ public class FBTVStoryListAdapter extends FirebaseListAdapter<TVStory> {
 
     public FBTVStoryListAdapter(Query ref, Class<TVStory> mModelClass, int layout, Activity activity) {
         super(ref, TVStory.class, layout, activity);
-        this.mUsername = mUsername;
+//        activity = getActivity();
+//        this.mUsername = mUsername;
     }
 
     /**
@@ -60,7 +61,7 @@ public class FBTVStoryListAdapter extends FirebaseListAdapter<TVStory> {
     protected void populateView(View view, TVStory TVStory)
     {
         ((ImageView)view.findViewById(R.id.list_item_doctor_image)).setImageResource(doctorImages[TVStory.getDoctor()-1]);
-        // This gets the image for each TVStory.
+//         This gets the image for each TVStory.
 //                Resources res = getContext().getResources();
 //                TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
 //        Drawable drawable = Drawable.createFromPath(TVStory.getTvstoryImage());

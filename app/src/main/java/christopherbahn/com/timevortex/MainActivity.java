@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UIExplainer = (TextView) findViewById(R.id.app_ui_explainer_tv);
         tvstoryDAO = new TVStoryDAO(this);
         SearchTerm searchTerm = new SearchTerm();
-        ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
+        final ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
         searchTerm.setCameFromSearchResult(false);
 
         gotoMainSearchListButton.setOnClickListener(this);
@@ -155,46 +155,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             UIExplainer.setVisibility(View.VISIBLE);
 		}
 
-        // todo Currently this line is commented out UNLESS a change to the original textfile database occurs and needs to be ported into the program. (Don't forget to change the DATABASE_VERSION number in DatabaseHelper.) How do I make this work so that if the SQL database already exists, this doesn't try to load in a bunch of new data on top of what's there?
+        // todo This method governs importation of txtfile into SQLite database, which will become irrelevant once Firebase is done. Currently this line is commented out UNLESS a change to the original textfile database occurs and needs to be ported into the program. (Don't forget to change the DATABASE_VERSION number in DatabaseHelper.)
 //        loadListofAllStoriesTextFile();
 
         // <%%%BEGIN FIREBASE SETUP%%%>
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello There, World!");
-        loadListofAllStoriesTextFileIntoFirebase();
-        // Read from the Firebase database
-//        DatabaseReference TVStoriesRef = database.getReference("TVStories");
-//        TVStoriesRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-
-        // FIREBASE CODE BEGINS HERE
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference TVStoryRef = mDatabase.getReference("TVStory");
+        DatabaseReference DWCharacterRef = mDatabase.getReference("DWCharacter");
+        DatabaseReference DWCrewRef = mDatabase.getReference("DWCrew");
+        DWCharacterRef.setValue("Third Doctor");
+        DWCrewRef.setValue("Jon Pertwee");
+        loadListofAllStoriesTextFileIntoFirebase();
+
+        // FIREBASE CODE BEGINS HERE
 
         // Attach a listener to read the data at our posts reference
         TVStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
+            ArrayList<TVStory> tempallTVStories = new ArrayList<TVStory>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     TVStory TVStory = postSnapshot.getValue(TVStory.class);
-                    allTVStories.add(TVStory);
+                    Toast.makeText(getBaseContext(), TVStory.getTitle(), Toast.LENGTH_LONG).show();
+                    tempallTVStories.add(TVStory);
                 }
+                allTVStories.addAll(tempallTVStories);
+                // Build the adapter
+                ListAdapter adapter = new TVStoryListAdapter(getBaseContext(), allTVStories);
+                // Configure the list view
+                ListView listView = (ListView) findViewById(R.id.firebaseListView);
+                listView.setAdapter(adapter);
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
                 Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
             }
@@ -206,69 +197,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // FIREBASE CODE ENDS HERE
 
 
-//         TODO Set up ListView - the following five lines WORK to make a Firebase instant-update list. But search capability is a real problem, and TVStory info will never actually change. So, switching it to something more like old system.
-//        final ListView firebaseListView = (ListView) findViewById(R.id.firebaseListView);
-//        ListAdapter fbadapter = new FBTVStoryListAdapter(TVStoryRef, TVStory.class, R.layout.test_firebase_list_item, this)
-//        {
-//        };
-//        firebaseListView.setAdapter(fbadapter);
+//         TODO Connect allTVStories to TVStoryListAdapter via TVStoryDAO. Although the following five lines DO work to make a Firebase instant-update list, search capability is a real problem, and TVStory info will never change as a result of user interaction, only by admin update. So, switching it to something more like old system.
+        final ListView firebaseListView = (ListView) findViewById(R.id.firebaseListView);
+        ListAdapter fbadapter = new FBTVStoryListAdapter(TVStoryRef, TVStory.class, R.layout.test_firebase_list_item, this)
+        {
+        };
+        firebaseListView.setAdapter(fbadapter);
 
 
-
-        // when list item is clicked, go to TVStoryFullPageFragment
-//        firebaseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                mDatabase.child("users").child(mUserId).child("items")
-//                        .orderByChild("title")
-//                        .equalTo((String) listView.getItemAtPosition(position))
-//                        .addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                if (dataSnapshot.hasChildren()) {
-//                                    DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
-////                                    firstChild.getRef().removeValue();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//            }
-//        });
-
-
-//        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
-//        firebaseListView.setAdapter(adapter);
-//
-//        // Use Firebase to populate the list.
-//        TVStoriesRef.child("TVStory").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                adapter.remove((String) dataSnapshot.child("title").getValue());
-//                adapter.remove((String) dataSnapshot.child("body").getValue());
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//         <%%%END FIREBASE SETUP%%%>
+        System.out.println();
+        Toast.makeText(getBaseContext(), "FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
 
 
     }

@@ -357,6 +357,102 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 
 
+
+	public String filterTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
+		// PLAN: 1) allTVStories is checked in here. 2) Iterate through searchTerm and for any positive match, add that TVStory to searchResultTVStories. 3. Check searchResultTVStories into Firebase under node searchResultTVStories. 4) Listener is triggered which checks searchResultTVStories back in from Firebase, which also orders the data asc/desc by chosen sub-node. 5. New ArrayList<TVStory> searchResultTVStories is sent to TVStoryListFragment
+
+		ArrayList<String> andAdder = new ArrayList<String>();
+
+//		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
+		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
+		TVStory TVStory = null;
+		String sql = null;
+		String sqlSelectFromTVStorys = null;
+		String sqlWhere = null;
+		String sqlOrderBy = null;
+
+		sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
+
+		// todo Best-of lists are entirely about simple sort of one column, so this will need to be written into the Firebase checkin/out
+		if (searchTerm.getBestOfLists() != null) {
+			if (searchTerm.getBestOfLists() == "BBCAmerica") {
+				sqlWhere = DataBaseHelper.COL_BESTOFBBCAMERICA + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBBCAMERICA + " ASC";
+			} else if (searchTerm.getBestOfLists() == "DWM2009") {
+				sqlWhere = DataBaseHelper.COL_BESTOFDWM2009 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2009 + " ASC";
+			} else if (searchTerm.getBestOfLists() == "DWM2014") {
+				sqlWhere = DataBaseHelper.COL_BESTOFDWM2014 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2014 + " ASC";
+			} else if (searchTerm.getBestOfLists() == "AVCTVC10") {
+				sqlWhere = DataBaseHelper.COL_BESTOFAVCTVC10 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+			} else if (searchTerm.getBestOfLists() == "Io9") {
+				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
+			} else if (searchTerm.getBestOfLists() == "LMMyles") {
+				sqlWhere = DataBaseHelper.COL_BESTOFLMMYLES + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFLMMYLES + " ASC";
+			} else if (searchTerm.getBestOfLists() == "Bahn") {
+				sqlWhere = DataBaseHelper.COL_BESTOFBAHN + " IS NOT '" + 0 + "' ";
+				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBAHN + " ASC";
+			}
+		} else {
+			sqlWhere = constructSQLWhereString(searchTerm);
+			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+		}
+
+
+		if (searchTerm.getTitle() != null) {
+			for (TVStory tvStory : allTVStories) {
+				if ("Dalek" == searchTerm.getTitle()) {
+					andAdder.add(sqlWhere);
+
+				}
+				sqlWhere = DataBaseHelper.COL_TITLE + " LIKE '%" + searchTerm.getTitle() + "%' ";
+				andAdder.add(sqlWhere);
+			}
+		}
+			if (searchTerm.getDoctor() != 0) { // 0 means no Doctor was selected
+				sqlWhere = DataBaseHelper.COL_DOCTOR + " IS '" + searchTerm.getDoctor() + "' ";
+				andAdder.add(sqlWhere);
+			}
+			if (searchTerm.getOtherCast() != null) {
+				sqlWhere = DataBaseHelper.COL_OTHERCAST + " LIKE '%" + searchTerm.getOtherCast() + "%' ";
+				System.out.println(searchTerm.getOtherCast());
+				andAdder.add(sqlWhere);
+			}
+			if (searchTerm.isWantToSeeIt()) {
+				sqlWhere = DataBaseHelper.COL_WANTTOSEEIT + " IS '" + "1" + "' ";
+				andAdder.add(sqlWhere);
+			}
+			//  SeenIt/Haven'tSeenIt/Both ("both" simply doesn't add a limiting search term)
+			if (searchTerm.getSeenIt() == "true") {
+				sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "1" + "' ";
+				andAdder.add(sqlWhere);
+			} else if (searchTerm.getSeenIt() == "false") {
+				sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "0" + "' ";
+				andAdder.add(sqlWhere);
+			}
+			if (searchTerm.getUserStarRatingNumber() != 0) {
+				sqlWhere = DataBaseHelper.COL_USERSTARRATING + " is '" + searchTerm.getUserStarRatingNumber() + "' ";
+				andAdder.add(sqlWhere);
+			}
+
+			for (int i = 0; i < andAdder.size(); i++) {
+				if (i == 0) {
+					sqlWhere = andAdder.get(i);
+				} else
+					sqlWhere = sqlWhere + " AND " + andAdder.get(i);
+			}
+
+			// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
+//		sqlWhere.replace(" AND STRINGENDER", " ");
+
+			return sqlWhere;
+		}
+
+
 	//Retrieves all hashtags and compiles them in one ArrayList for display
 	public ArrayList<String> getAllHashtags() {
 		ArrayList<String> allHashtags = new ArrayList<String>();

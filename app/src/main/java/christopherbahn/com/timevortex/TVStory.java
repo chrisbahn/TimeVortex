@@ -342,7 +342,7 @@ public class TVStory implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		// todo fix this - what is this for, exactly?
+		// todo implement this so you can pass ArrayList<TVStory> between fragments
 //		parcel.writeString(getId().toString());
 //        new ParcelUuid(getId()).writeToParcel(parcel, flags);
 //        parcel.writeString(getTitle());
