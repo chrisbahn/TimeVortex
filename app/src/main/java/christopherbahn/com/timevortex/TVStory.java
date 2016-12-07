@@ -342,14 +342,31 @@ public class TVStory implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-		// todo implement this so you can pass ArrayList<TVStory> between fragments
-//		parcel.writeString(getId().toString());
-//        new ParcelUuid(getId()).writeToParcel(parcel, flags);
-//        parcel.writeString(getTitle());
-//        parcel.writeLong(getDateCreated().getTime());
-//        parcel.writeString(String.valueOf(mHasPhoto));
-//        parcel.writeString(mTextField);
-//        parcel.writeString(mHashtags);
+		parcel.writeString(String.valueOf(getStoryID()));
+        parcel.writeString(getTitle());
+		parcel.writeString(String.valueOf(getDoctor()));
+		parcel.writeString(getEra());
+		parcel.writeString(getSeason());
+		parcel.writeString(String.valueOf(getSeasonStoryNumber()));
+		parcel.writeString(String.valueOf(getEpisodes()));
+		parcel.writeString(String.valueOf(getEpisodeLength()));
+		parcel.writeString(String.valueOf(getYearProduced()));
+		parcel.writeString(getOtherCast());
+		parcel.writeString(getSynopsis());
+		parcel.writeString(getCrew());
+		parcel.writeString(String.valueOf(seenIt()));
+		parcel.writeString(String.valueOf(wantToSeeIt()));
+		parcel.writeString(String.valueOf(getASIN()));
+		parcel.writeString(getUserReview());
+		parcel.writeString(String.valueOf(getUserStarRatingNumber()));
+		parcel.writeString(String.valueOf(getBestOfBBCAmerica()));
+		parcel.writeString(String.valueOf(getBestOfDWM2009()));
+		parcel.writeString(String.valueOf(getBestOfDWM2014()));
+		parcel.writeString(String.valueOf(getBestOfAVCTVC10()));
+		parcel.writeString(String.valueOf(getBestOfIo9()));
+		parcel.writeString(String.valueOf(getBestOfLMMyles()));
+		parcel.writeString(String.valueOf(getBestOfBahn()));
+		parcel.writeString(getTvstoryImage());
 	}
 
 	public static final Creator<TVStory> CREATOR = new Creator<TVStory>() {

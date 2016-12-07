@@ -28,6 +28,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	Activity activity;
 	ListView tvstorySearchListView;
 	ArrayList<TVStory> TVStories;
+	ArrayList<TVStory> allTVStories;
 	private SearchTerm searchTerm;
 	TVStoryListAdapter TVStoryListAdapter;
 	TVStoryDAO tvstoryDAO;
@@ -47,6 +48,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Bundle bundle = this.getArguments();
 		searchTerm = bundle.getParcelable("searchTerm");
+		allTVStories = bundle.getParcelableArrayList("allTVStories");
 		searchTerm.setCameFromSearchResult(true);
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
 		findViewsById(view);
@@ -128,7 +130,8 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 
 		@Override
 		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
-			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm);
+			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm, allTVStories);
+			Toast.makeText(activity, "made it to doInBackground", Toast.LENGTH_LONG).show();
 			return TVStoryList;
 		}
 

@@ -42,10 +42,12 @@ public class FBTVStoryListAdapter extends FirebaseListAdapter<TVStory> {
     private RatingBar userStarRating;
     int[] doctorImages = {R.drawable.doctor01, R.drawable.doctor02, R.drawable.doctor03, R.drawable.doctor04, R.drawable.doctor05, R.drawable.doctor06, R.drawable.doctor07, R.drawable.doctor08, R.drawable.doctor09, R.drawable.doctor10, R.drawable.doctor11, R.drawable.doctor12};
     int[] logoImages = {R.drawable.logodoctor01, R.drawable.logodoctor02, R.drawable.logodoctor03, R.drawable.logodoctor04, R.drawable.logodoctor05, R.drawable.logodoctor06, R.drawable.logodoctor07, R.drawable.logodoctor08, R.drawable.logodoctor09, R.drawable.logodoctor10, R.drawable.logodoctor11, R.drawable.logodoctor12};
+    private Activity mActivity;
 
     public FBTVStoryListAdapter(Query ref, Class<TVStory> mModelClass, int layout, Activity activity) {
         super(ref, TVStory.class, layout, activity);
 //        activity = getActivity();
+        mActivity = activity;
 //        this.mUsername = mUsername;
     }
 
@@ -62,9 +64,9 @@ public class FBTVStoryListAdapter extends FirebaseListAdapter<TVStory> {
     {
         ((ImageView)view.findViewById(R.id.list_item_doctor_image)).setImageResource(doctorImages[TVStory.getDoctor()-1]);
 //         This gets the image for each TVStory.
-//                Resources res = getContext().getResources();
-//                TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
-//        Drawable drawable = Drawable.createFromPath(TVStory.getTvstoryImage());
+                Resources res = mActivity.getResources();
+                TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
+        Drawable drawable = Drawable.createFromPath(TVStory.getTvstoryImage());
         ((ImageView)view.findViewById(R.id.list_item_story_image)).setImageResource(doctorImages[TVStory.getDoctor()-1]);
         ((TextView)view.findViewById(R.id.txt_listitem_title)).setText(TVStory.getStoryID()  + ": " + TVStory.getTitle());
         ((TextView)view.findViewById(R.id.txt_listitem_seasoninfo)).setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + " minutes.");

@@ -30,6 +30,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		super(context);
 	}
 
+	// Creates a new TVStory record in SQLite db
 	public long save(TVStory TVStory) {
 		ContentValues values = new ContentValues();
 //		values.put(DataBaseHelper.COL_STORYID, TVStory.getStoryID());
@@ -62,6 +63,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return '0';
 	}
 
+	// Saves changes to a currently existing TVStory record in SQLite db
 	public long update(TVStory TVStory) {
 //		ContentValues values = new ContentValues();
 //		values.put(DataBaseHelper.COL_STORYID, TVStory.getStoryID());
@@ -96,6 +98,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return '0';
 	}
 
+	// deletes a TVStory record from SQLite db
 	public int delete(TVStory TVStory) {
 		return database.delete(DataBaseHelper.TABLE_TVSTORYS, WHERE_ID_EQUALS, new String[] { TVStory.getStoryID() + "" });
 	}
@@ -176,7 +179,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return TVStories;
 	}
 
-    //Retrieves a single record with the given id
+    //Retrieves a single record with the given id -- only used with the Randomizer, could be subsumed into getSelectedTVStories().
 	public TVStory getTVStory(long id) {
 		TVStory TVStory = null;
 
@@ -223,9 +226,11 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return TVStory;
 	}
 
-	//Retrieves all TVStories that meet the given search criteria. TODO This is going to be the main way the TVStories list is filtered, but by using Java and maaaybe Firebase's ordering system. You will need to pass in the ArrayList<TVStory> TVStories made by the Firebase listener in MainActivity as a parameter here. TVStories is then filtered into searchResultTVStories.
-	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm) {
-		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
+	//Retrieves all TVStories that meet the given search criteria. TODO This is going to be the main way the TVStories list is filtered, but by using Java and maaaybe Firebase's ordering system. You will need to pass in the ArrayList<TVStory> TVStories made by the Firebase listener in MainActivity as a parameter here. TVStories is then filtered into searchResultTVStories. This should work for all search types including a list-click selection, which is really a search-by-ID that will return one and only one record. Probably useful to keep both single and multiple-return methods since they return Object and ArrayList respectively and will be dealt with differently when called.
+	// PLAN: 1) allTVStories is checked in here. 2) Iterate through searchTerm and for any positive match, add that TVStory to searchResultTVStories. 3. Check searchResultTVStories into Firebase under node searchResultTVStories. 4) Listener is triggered which checks searchResultTVStories back in from Firebase, which also orders the data asc/desc by chosen sub-node. 5. New ArrayList<TVStory> searchResultTVStories is sent to TVStoryListFragment
+
+	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
+//		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
 		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
 		TVStory TVStory = null;
 		String sql = null;
@@ -233,37 +238,42 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		String sqlWhere = null;
 		String sqlOrderBy = null;
 
-		sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
-
-		if (searchTerm.getBestOfLists() != null) {
-			if (searchTerm.getBestOfLists() == "BBCAmerica") {
-				sqlWhere = DataBaseHelper.COL_BESTOFBBCAMERICA + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBBCAMERICA + " ASC";
-			} else if (searchTerm.getBestOfLists() == "DWM2009") {
-				sqlWhere = DataBaseHelper.COL_BESTOFDWM2009 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2009 + " ASC";
-			} else if (searchTerm.getBestOfLists() == "DWM2014") {
-				sqlWhere = DataBaseHelper.COL_BESTOFDWM2014 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2014 + " ASC";
-			} else if (searchTerm.getBestOfLists() == "AVCTVC10") {
-				sqlWhere = DataBaseHelper.COL_BESTOFAVCTVC10 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-			} else if (searchTerm.getBestOfLists() == "Io9") {
-				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
-			} else if (searchTerm.getBestOfLists() == "LMMyles") {
-				sqlWhere = DataBaseHelper.COL_BESTOFLMMYLES + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFLMMYLES + " ASC";
-			} else if (searchTerm.getBestOfLists() == "Bahn") {
-				sqlWhere = DataBaseHelper.COL_BESTOFBAHN + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBAHN + " ASC";
-			}
-		} else {
-			sqlWhere = constructSQLWhereString(searchTerm);
-			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+		for (TVStory tvStory: allTVStories) {
+			searchResultTVStories.add(tvStory);
 		}
 
-		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
+//
+//			sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
+//
+//		if (searchTerm.getBestOfLists() != null) {
+//			if (searchTerm.getBestOfLists() == "BBCAmerica") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFBBCAMERICA + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBBCAMERICA + " ASC";
+//			} else if (searchTerm.getBestOfLists() == "DWM2009") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFDWM2009 + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2009 + " ASC";
+//			} else if (searchTerm.getBestOfLists() == "DWM2014") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFDWM2014 + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2014 + " ASC";
+//			} else if (searchTerm.getBestOfLists() == "AVCTVC10") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFAVCTVC10 + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+//			} else if (searchTerm.getBestOfLists() == "Io9") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
+//			} else if (searchTerm.getBestOfLists() == "LMMyles") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFLMMYLES + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFLMMYLES + " ASC";
+//			} else if (searchTerm.getBestOfLists() == "Bahn") {
+//				sqlWhere = DataBaseHelper.COL_BESTOFBAHN + " IS NOT '" + 0 + "' ";
+//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBAHN + " ASC";
+//			}
+//		} else {
+//			sqlWhere = constructSQLWhereString(searchTerm);
+//			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
+//		}
+//
+//		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
 
 //        Cursor cursor = database.rawQuery(sql, null);
 //
@@ -359,7 +369,6 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 
 	public String filterTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
-		// PLAN: 1) allTVStories is checked in here. 2) Iterate through searchTerm and for any positive match, add that TVStory to searchResultTVStories. 3. Check searchResultTVStories into Firebase under node searchResultTVStories. 4) Listener is triggered which checks searchResultTVStories back in from Firebase, which also orders the data asc/desc by chosen sub-node. 5. New ArrayList<TVStory> searchResultTVStories is sent to TVStoryListFragment
 
 		ArrayList<String> andAdder = new ArrayList<String>();
 
