@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DatabaseReference DWCrewRef = mDatabase.getReference("DWCrew");
         DWCharacterRef.setValue("Third Doctor");
         DWCrewRef.setValue("Jon Pertwee");
-        loadListofAllStoriesTextFileIntoFirebase();
+//        loadListofAllStoriesTextFileIntoFirebase();
         // <%%%END FIREBASE SETUP%%%>
 
 
@@ -196,36 +196,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        }
 
 
-////        // FIREBASE CODE BEGINS HERE
-////        TVStoryRef.addValueEventListener(new ValueEventListener() {
-//            TVStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            ArrayList<TVStory> tempallTVStories = new ArrayList<TVStory>();
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d(TAG, "on data change");
-//                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-//                    TVStory TVStory = postSnapshot.getValue(TVStory.class);
-////                    Toast.makeText(getBaseContext(), TVStory.getTitle(), Toast.LENGTH_SHORT).show();
-//                    tempallTVStories.add(TVStory);
-//                }
-//                setAllTVStories(tempallTVStories);
-////                allTVStories.addAll(tempallTVStories);
-////                onClick(gotoMainSearchListButton);
-//                // Build the adapter
-////                ListAdapter adapter = new TVStoryListAdapter(getBaseContext(), allTVStories);
-////                // Configure the list view
-////                ListView listView = (ListView) findViewById(R.id.firebaseListView);
-////                listView.setAdapter(adapter);
-//                System.out.println("FIREBASE TVSTORY LIST UPDATED");
-////                Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getBaseContext(), "in MainActivity onDataChange, FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                System.out.println("The read failed: " + databaseError.getCode());
-//            }
-//        });
-////        // FIREBASE CODE ENDS HERE
+//        // FIREBASE CODE BEGINS HERE
+//        TVStoryRef.addValueEventListener(new ValueEventListener() {
+            TVStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<TVStory> tempallTVStories = new ArrayList<TVStory>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "on data change");
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    TVStory TVStory = postSnapshot.getValue(TVStory.class);
+//                    Toast.makeText(getBaseContext(), TVStory.getTitle(), Toast.LENGTH_SHORT).show();
+                    tempallTVStories.add(TVStory);
+                }
+                setAllTVStories(tempallTVStories);
+//                allTVStories.addAll(tempallTVStories);
+//                onClick(gotoMainSearchListButton);
+                // Build the adapter
+//                ListAdapter adapter = new TVStoryListAdapter(getBaseContext(), allTVStories);
+//                // Configure the list view
+//                ListView listView = (ListView) findViewById(R.id.firebaseListView);
+//                listView.setAdapter(adapter);
+                System.out.println("FIREBASE TVSTORY LIST UPDATED");
+//                Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "in MainActivity onDataChange, FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+//        // FIREBASE CODE ENDS HERE
 
 //         TODO Connect allTVStories to TVStoryListAdapter via TVStoryDAO. Although the following five lines DO work to make a Firebase instant-update list, it isn't clickable and doesn't let the other fragments show when clicked. search capability is a real problem, and TVStory info will never change as a result of user interaction, only by admin update. So, switching it to something more like old system.
 //        final ListView firebaseListView = (ListView) findViewById(R.id.firebaseListView);
@@ -273,15 +273,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "What is Doctor Who and where to start watching it!", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_gotomainlist:
-                TVStoryListFragment = new TVStoryListFragment();
-                setFragmentTitle(R.string.app_name);
-                SearchTerm searchTerm = new SearchTerm();
-                searchTerm.setCameFromSearchResult(false);
-                Bundle bundle=new Bundle();
-                bundle.putParcelable("searchTerm", searchTerm);
-                bundle.putParcelableArrayList("allTVStories", allTVStories);
-                TVStoryListFragment.setArguments(bundle);
-                switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
+                switchContentToTVStoryListFragment();
+//                TVStoryListFragment = new TVStoryListFragment();
+//                setFragmentTitle(R.string.app_name);
+//                SearchTerm searchTerm = new SearchTerm();
+//                searchTerm.setCameFromSearchResult(false);
+//                Bundle bundle=new Bundle();
+//                bundle.putParcelable("searchTerm", searchTerm);
+//                bundle.putParcelableArrayList("allTVStories", allTVStories);
+//                TVStoryListFragment.setArguments(bundle);
+//                switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
                 return true;
             case R.id.action_search:
                 setFragmentTitle(R.string.gotosearchpage_button_label);
@@ -293,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setFragmentTitle(R.string.getrandom_button_label);
                 Random randomizer = new Random();
 //                TVStory tvStory = tvstoryDAO.getTVStory(randomizer.nextInt(allTVStories.size()));
-                searchTerm = new SearchTerm();
+                SearchTerm searchTerm = new SearchTerm();
                 searchTerm.setCameFromSearchResult(false);
                 Toast.makeText(this, "Get a random episode (and beware the Black Guardian!)", Toast.LENGTH_LONG).show();
                 Toast.makeText(this, "Randomized number: " + randomizer.nextInt(allTVStories.size()), Toast.LENGTH_LONG).show();
@@ -420,16 +421,17 @@ public void onFinishDialog() {
     @Override
     public void onClick(View view) {
         if (view == gotoMainSearchListButton) {
-            TVStoryListFragment = new TVStoryListFragment();
-            setFragmentTitle(R.string.app_name);
-            SearchTerm searchTerm = new SearchTerm();
-            searchTerm.setCameFromSearchResult(false);
-            Bundle bundle=new Bundle();
-            bundle.putParcelable("searchTerm", searchTerm);
-            bundle.putParcelableArrayList("allTVStories", allTVStories);
-            TVStoryListFragment.setArguments(bundle);
-            Toast.makeText(getBaseContext(), "at onClick gotoMainSearchListButton, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
-            switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
+            switchContentToTVStoryListFragment();
+//            TVStoryListFragment = new TVStoryListFragment();
+//            setFragmentTitle(R.string.app_name);
+//            SearchTerm searchTerm = new SearchTerm();
+//            searchTerm.setCameFromSearchResult(false);
+//            Bundle bundle=new Bundle();
+//            bundle.putParcelable("searchTerm", searchTerm);
+//            bundle.putParcelableArrayList("allTVStories", allTVStories);
+//            TVStoryListFragment.setArguments(bundle);
+//            Toast.makeText(getBaseContext(), "at onClick gotoMainSearchListButton, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+//            switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
         } else if (view == gotoSearchPageButton) {
             setFragmentTitle(R.string.gotosearchpage_button_label);
             TVStorySearchFragment = new TVStorySearchFragment();
@@ -652,6 +654,17 @@ public void onFinishDialog() {
     // This goes in onCreate, I guess?
 //    Task<String> task = Tasks.call(new putTextFileTVStoryInfoIntoFirebaseCallable());
 
-
+public void switchContentToTVStoryListFragment() {
+    TVStoryListFragment = new TVStoryListFragment();
+    setFragmentTitle(R.string.app_name);
+    SearchTerm searchTerm = new SearchTerm();
+    searchTerm.setCameFromSearchResult(false);
+    Bundle bundle=new Bundle();
+    bundle.putParcelable("searchTerm", searchTerm);
+    bundle.putParcelableArrayList("allTVStories", allTVStories);
+    TVStoryListFragment.setArguments(bundle);
+    Toast.makeText(getBaseContext(), "at onClick gotoMainSearchListButton, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+    switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
+}
 
 }

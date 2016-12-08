@@ -91,7 +91,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 //		});
 		// FIREBASE CODE ENDS HERE
 
-// TODO This is where you quit for the night. allTVStories is populated from here, and not in MainActivity. You need to wire it up so that it does not attempt to return the Listview until it knows all the data is there. Current attempt is modifed from here : https://firebase.googleblog.com/2016/10/become-a-firebase-taskmaster-part-4.html
+// TODO You need to wire this up so that it does not attempt to return the Listview until it knows all the data is there. Current attempt is modifed from here : https://firebase.googleblog.com/2016/10/become-a-firebase-taskmaster-part-4.html
 //		allTask = Tasks.whenAll(dbTask);
 //		allTask.addOnSuccessListener(new OnSuccessListener<Void>() {
 //			@Override
