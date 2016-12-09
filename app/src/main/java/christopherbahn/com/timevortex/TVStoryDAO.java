@@ -14,12 +14,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFAVC10;
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFBAHN;
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFBBCAMERICA;
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFDWM2009;
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFDWM2014;
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFIO9;
+import static christopherbahn.com.timevortex.TVStoryComparator.COMPARE_BY_BESTOFLMMYLES;
 
 public class TVStoryDAO extends TimeVortexDBDAO {
 
@@ -100,7 +110,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 	// deletes a TVStory record from SQLite db
 	public int delete(TVStory TVStory) {
-		return database.delete(DataBaseHelper.TABLE_TVSTORYS, WHERE_ID_EQUALS, new String[] { TVStory.getStoryID() + "" });
+		return database.delete(DataBaseHelper.TABLE_TVSTORYS, WHERE_ID_EQUALS, new String[]{TVStory.getStoryID() + ""});
 	}
 
 	//Creates ArrayList<TVStory> TVStories from the SQLite DB TABLE_TVSTORYS, USING query() method
@@ -179,7 +189,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return TVStories;
 	}
 
-    //Retrieves a single record with the given id -- only used with the Randomizer, could be subsumed into getSelectedTVStories().
+	//Retrieves a single record with the given id -- only used with the Randomizer, could be subsumed into getSelectedTVStories().
 	public TVStory getTVStory(long id) {
 		TVStory TVStory = null;
 
@@ -233,52 +243,17 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 //		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
 		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
 		TVStory TVStory = null;
-		String sql = null;
-		String sqlSelectFromTVStorys = null;
-		String sqlWhere = null;
-		String sqlOrderBy = null;
 
-		for (TVStory tvStory: allTVStories) {
-			searchResultTVStories.add(tvStory);
+		// TODO basic element of filter; I]'m commenting the "if" out for now so I can test orderBy instead
+		for (TVStory tvStory : allTVStories) {
+			// todo needs a way to skip filtering if you clicked on "see all episodes"
+			// todo needs a search by storyID in order to select a single episode.
+			// todo current search criteria are: title, doctor, othercast, wanttoseeit, seenit, userstarrating
+//			if (searchTerm.getSeenIt() == "true") { // or whatever the filtering criteria is
+				searchResultTVStories.add(tvStory);
+//			}
 		}
 
-//
-//			sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
-//
-//		if (searchTerm.getBestOfLists() != null) {
-//			if (searchTerm.getBestOfLists() == "BBCAmerica") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFBBCAMERICA + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBBCAMERICA + " ASC";
-//			} else if (searchTerm.getBestOfLists() == "DWM2009") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFDWM2009 + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2009 + " ASC";
-//			} else if (searchTerm.getBestOfLists() == "DWM2014") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFDWM2014 + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2014 + " ASC";
-//			} else if (searchTerm.getBestOfLists() == "AVCTVC10") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFAVCTVC10 + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-//			} else if (searchTerm.getBestOfLists() == "Io9") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
-//			} else if (searchTerm.getBestOfLists() == "LMMyles") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFLMMYLES + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFLMMYLES + " ASC";
-//			} else if (searchTerm.getBestOfLists() == "Bahn") {
-//				sqlWhere = DataBaseHelper.COL_BESTOFBAHN + " IS NOT '" + 0 + "' ";
-//				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBAHN + " ASC";
-//			}
-//		} else {
-//			sqlWhere = constructSQLWhereString(searchTerm);
-//			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-//		}
-//
-//		sql = sqlSelectFromTVStorys + sqlWhere + sqlOrderBy;
-
-//        Cursor cursor = database.rawQuery(sql, null);
-//
-//        while (cursor.moveToNext()) {
-//			TVStory = new TVStory();
 //            TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
 //            TVStory.setTitle(cursor.getString(1));
 //            TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
@@ -304,17 +279,13 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 //			TVStory.setASIN(cursor.getString(14));
 //			TVStory.setUserReview(cursor.getString(15));
 //			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
-//			TVStory.setBestOfBBCAmerica(Integer.parseInt(cursor.getString(17)));
-//			TVStory.setBestOfDWM2009(Integer.parseInt(cursor.getString(18)));
-//			TVStory.setBestOfDWM2014(Integer.parseInt(cursor.getString(19)));
-//			TVStory.setBestOfAVCTVC10(Integer.parseInt(cursor.getString(20)));
-//			TVStory.setBestOfIo9(Integer.parseInt(cursor.getString(21)));
-//			TVStory.setBestOfLMMyles(Integer.parseInt(cursor.getString(22)));
-//			TVStory.setBestOfBahn(Integer.parseInt(cursor.getString(23)));
 //			TVStory.setTvstoryImage(cursor.getString(24));
 //
 //			searchResultTVStories.add(TVStory);
 //		}
+
+		// This will order by storyID, BestOf, or whatever criteria
+		searchResultTVStories = orderTVStoriesBy(searchTerm, searchResultTVStories);
 		return searchResultTVStories;
 	}
 
@@ -340,10 +311,10 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			andAdder.add(sqlWhere);
 		}
 		//  SeenIt/Haven'tSeenIt/Both ("both" simply doesn't add a limiting search term)
-		if (searchTerm.getSeenIt()=="true") {
+		if (searchTerm.getSeenIt() == "true") {
 			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "1" + "' ";
 			andAdder.add(sqlWhere);
-		} else if (searchTerm.getSeenIt()=="false") {
+		} else if (searchTerm.getSeenIt() == "false") {
 			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "0" + "' ";
 			andAdder.add(sqlWhere);
 		}
@@ -356,7 +327,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			if (i == 0) {
 				sqlWhere = andAdder.get(i);
 			} else
-			sqlWhere = sqlWhere + " AND " + andAdder.get(i);
+				sqlWhere = sqlWhere + " AND " + andAdder.get(i);
 		}
 
 		// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
@@ -364,9 +335,6 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 		return sqlWhere;
 	}
-
-
-
 
 	public String filterTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
 
@@ -422,75 +390,156 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 				andAdder.add(sqlWhere);
 			}
 		}
-			if (searchTerm.getDoctor() != 0) { // 0 means no Doctor was selected
-				sqlWhere = DataBaseHelper.COL_DOCTOR + " IS '" + searchTerm.getDoctor() + "' ";
-				andAdder.add(sqlWhere);
-			}
-			if (searchTerm.getOtherCast() != null) {
-				sqlWhere = DataBaseHelper.COL_OTHERCAST + " LIKE '%" + searchTerm.getOtherCast() + "%' ";
-				System.out.println(searchTerm.getOtherCast());
-				andAdder.add(sqlWhere);
-			}
-			if (searchTerm.isWantToSeeIt()) {
-				sqlWhere = DataBaseHelper.COL_WANTTOSEEIT + " IS '" + "1" + "' ";
-				andAdder.add(sqlWhere);
-			}
-			//  SeenIt/Haven'tSeenIt/Both ("both" simply doesn't add a limiting search term)
-			if (searchTerm.getSeenIt() == "true") {
-				sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "1" + "' ";
-				andAdder.add(sqlWhere);
-			} else if (searchTerm.getSeenIt() == "false") {
-				sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "0" + "' ";
-				andAdder.add(sqlWhere);
-			}
-			if (searchTerm.getUserStarRatingNumber() != 0) {
-				sqlWhere = DataBaseHelper.COL_USERSTARRATING + " is '" + searchTerm.getUserStarRatingNumber() + "' ";
-				andAdder.add(sqlWhere);
-			}
+		if (searchTerm.getDoctor() != 0) { // 0 means no Doctor was selected
+			sqlWhere = DataBaseHelper.COL_DOCTOR + " IS '" + searchTerm.getDoctor() + "' ";
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.getOtherCast() != null) {
+			sqlWhere = DataBaseHelper.COL_OTHERCAST + " LIKE '%" + searchTerm.getOtherCast() + "%' ";
+			System.out.println(searchTerm.getOtherCast());
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.isWantToSeeIt()) {
+			sqlWhere = DataBaseHelper.COL_WANTTOSEEIT + " IS '" + "1" + "' ";
+			andAdder.add(sqlWhere);
+		}
+		//  SeenIt/Haven'tSeenIt/Both ("both" simply doesn't add a limiting search term)
+		if (searchTerm.getSeenIt() == "true") {
+			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "1" + "' ";
+			andAdder.add(sqlWhere);
+		} else if (searchTerm.getSeenIt() == "false") {
+			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "0" + "' ";
+			andAdder.add(sqlWhere);
+		}
+		if (searchTerm.getUserStarRatingNumber() != 0) {
+			sqlWhere = DataBaseHelper.COL_USERSTARRATING + " is '" + searchTerm.getUserStarRatingNumber() + "' ";
+			andAdder.add(sqlWhere);
+		}
 
-			for (int i = 0; i < andAdder.size(); i++) {
-				if (i == 0) {
-					sqlWhere = andAdder.get(i);
-				} else
-					sqlWhere = sqlWhere + " AND " + andAdder.get(i);
-			}
+		for (int i = 0; i < andAdder.size(); i++) {
+			if (i == 0) {
+				sqlWhere = andAdder.get(i);
+			} else
+				sqlWhere = sqlWhere + " AND " + andAdder.get(i);
+		}
 
-			// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
+		// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
 //		sqlWhere.replace(" AND STRINGENDER", " ");
 
-			return sqlWhere;
-		}
-
-
-	//Retrieves all hashtags and compiles them in one ArrayList for display
-	public ArrayList<String> getAllHashtags() {
-		ArrayList<String> allHashtags = new ArrayList<String>();
-
-		Cursor cursor = database.query(DataBaseHelper.TABLE_TVSTORYS,
-				new String[]{
-                        DataBaseHelper.COL_STORYID,
-                        DataBaseHelper.COL_TITLE,
-                        DataBaseHelper.COL_DOCTOR,
-                        DataBaseHelper.COL_ERA,
-                        DataBaseHelper.COL_SEASON,
-                        DataBaseHelper.COL_SEASONSTORYNUMBER,
-                        DataBaseHelper.COL_EPISODES,
-                        DataBaseHelper.COL_EPISODELENGTH,
-                        DataBaseHelper.COL_YEARPRODUCED,
-                        DataBaseHelper.COL_OTHERCAST,
-                        DataBaseHelper.COL_SYNOPSIS,
-                        DataBaseHelper.COL_CREW,
-                        DataBaseHelper.COL_SEENIT,
-						DataBaseHelper.COL_WANTTOSEEIT,
-						DataBaseHelper.COL_ASIN,
-						DataBaseHelper.COL_USERREVIEW,
-						DataBaseHelper.COL_USERSTARRATING
-				}, null, null, null, null, DataBaseHelper.COL_STORYID + " DESC");
-
-		while (cursor.moveToNext()) {
-			allHashtags.add(cursor.getString(6)); // todo this is left over from previous iteration of program, but it might be useful later on so I'm leaving it for now, rather than deleting
-		}
-		return allHashtags;
+		return sqlWhere;
 	}
 
-}
+	public ArrayList<TVStory> orderTVStoriesBy(SearchTerm searchTerm, ArrayList<TVStory> searchResultTVStories) {
+		// The ArrayList can be reordered after filtering with Collections.sort(), as per http://stackoverflow.com/questions/16751540/sorting-an-object-arraylist-by-an-attribute-value-in-java. This works by comparing an attribute of one TVStory against the same attribute of another TVStory, and so on down the list. You could do this by Title to sort alphabetically, by Doctor, or by a particular best-of column.
+		ArrayList<TVStory> orderedTVStories = new ArrayList<TVStory>();
+		// TODO Implement user-ranked best-of list and sort.
+
+		// The following if-filter looks for sorting searchTerm, then filters out any nulls or zeroes in that category (meaning, story wasn't ranked in list) into new ArrayList, then sort by chosen category
+		if (searchTerm.getBestOfLists() != null) {
+			if (searchTerm.getBestOfLists() == "BBCAmerica") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfBBCAmerica() != 0) {
+						orderedTVStories.add(TVStory);
+						}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFBBCAMERICA));
+					}
+				return orderedTVStories;
+				}
+			if (searchTerm.getBestOfLists() == "DWM2009") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfDWM2009() != 0) {
+						orderedTVStories.add(TVStory);
+					}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFDWM2009));
+				}
+				return orderedTVStories;
+			}
+			if (searchTerm.getBestOfLists() == "DWM2014") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfDWM2014() != 0) {
+						orderedTVStories.add(TVStory);
+					}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFDWM2014));
+				}
+				return orderedTVStories;
+			}
+			if (searchTerm.getBestOfLists() == "AVCTVC10") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfAVCTVC10() != 0) {
+						orderedTVStories.add(TVStory);
+					}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFAVC10));
+				}
+				return orderedTVStories;
+			}
+			if (searchTerm.getBestOfLists() == "Io9") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfIo9() != 0) {
+						orderedTVStories.add(TVStory);
+					}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFIO9));
+				}
+				return orderedTVStories;
+			}
+			if (searchTerm.getBestOfLists() == "LMMyles") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfLMMyles() != 0) {
+						orderedTVStories.add(TVStory);
+					}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFLMMYLES));
+				}
+				return orderedTVStories;
+			}
+			if (searchTerm.getBestOfLists() == "Bahn") {
+				for (TVStory TVStory : searchResultTVStories) {
+					if (TVStory.getBestOfBahn() != 0) {
+						orderedTVStories.add(TVStory);
+					}
+					Collections.sort(orderedTVStories, new TVStoryComparator(COMPARE_BY_BESTOFBAHN));
+				}
+				return orderedTVStories;
+			}
+
+
+
+
+			return searchResultTVStories;
+		}
+		return searchResultTVStories;
+	}
+
+
+		//Retrieves all hashtags and compiles them in one ArrayList for display
+		public ArrayList<String> getAllHashtags () {
+			ArrayList<String> allHashtags = new ArrayList<String>();
+
+			Cursor cursor = database.query(DataBaseHelper.TABLE_TVSTORYS,
+					new String[]{
+							DataBaseHelper.COL_STORYID,
+							DataBaseHelper.COL_TITLE,
+							DataBaseHelper.COL_DOCTOR,
+							DataBaseHelper.COL_ERA,
+							DataBaseHelper.COL_SEASON,
+							DataBaseHelper.COL_SEASONSTORYNUMBER,
+							DataBaseHelper.COL_EPISODES,
+							DataBaseHelper.COL_EPISODELENGTH,
+							DataBaseHelper.COL_YEARPRODUCED,
+							DataBaseHelper.COL_OTHERCAST,
+							DataBaseHelper.COL_SYNOPSIS,
+							DataBaseHelper.COL_CREW,
+							DataBaseHelper.COL_SEENIT,
+							DataBaseHelper.COL_WANTTOSEEIT,
+							DataBaseHelper.COL_ASIN,
+							DataBaseHelper.COL_USERREVIEW,
+							DataBaseHelper.COL_USERSTARRATING
+					}, null, null, null, null, DataBaseHelper.COL_STORYID + " DESC");
+
+			while (cursor.moveToNext()) {
+				allHashtags.add(cursor.getString(6)); // todo this is left over from previous iteration of program, but it might be useful later on so I'm leaving it for now, rather than deleting
+			}
+			return allHashtags;
+		}
+
+	}
+
+

@@ -218,7 +218,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                listView.setAdapter(adapter);
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
 //                Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getBaseContext(), "in MainActivity onDataChange, FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(), "in MainActivity onDataChange, FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+                switchContentToTVStoryListFragment();
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -236,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         System.out.println();
-        Toast.makeText(getBaseContext(), "at end of onCreate, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getBaseContext(), "at end of onCreate, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
 
 
     }
@@ -619,7 +621,7 @@ public void onFinishDialog() {
 //                onClick(gotoMainSearchListButton);
                     System.out.println("FIREBASE TVSTORY LIST UPDATED");
 //                Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getBaseContext(), "in MainActivity putFirebaseTVStoryInfoIntoArrayList, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getBaseContext(), "in MainActivity putFirebaseTVStoryInfoIntoArrayList, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -663,7 +665,7 @@ public void switchContentToTVStoryListFragment() {
     bundle.putParcelable("searchTerm", searchTerm);
     bundle.putParcelableArrayList("allTVStories", allTVStories);
     TVStoryListFragment.setArguments(bundle);
-    Toast.makeText(getBaseContext(), "at onClick gotoMainSearchListButton, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
+//    Toast.makeText(getBaseContext(), "at onClick gotoMainSearchListButton, allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
     switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
 }
 

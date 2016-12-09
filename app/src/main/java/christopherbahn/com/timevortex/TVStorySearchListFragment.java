@@ -131,7 +131,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 		@Override
 		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
 			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm, allTVStories);
-			Toast.makeText(activity, "made it to doInBackground", Toast.LENGTH_LONG).show();
+//			Toast.makeText(activity, "made it to doInBackground", Toast.LENGTH_LONG).show();
 			return TVStoryList;
 		}
 
