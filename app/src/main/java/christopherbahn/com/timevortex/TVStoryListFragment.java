@@ -121,7 +121,6 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		searchTerm = bundle.getParcelable("searchTerm");
 		allTVStories = bundle.getParcelableArrayList("allTVStories");
 //		searchTerm.setCameFromSearchResult(false);
-//			Toast.makeText(activity, "in TVStoryListFragment, FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
 
 		System.out.println("48: cameFromSearchResult???? " + searchTerm.cameFromSearchResult());
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
