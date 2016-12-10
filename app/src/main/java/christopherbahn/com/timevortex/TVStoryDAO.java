@@ -240,52 +240,45 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 	// PLAN: 1) allTVStories is checked in here. 2) Iterate through searchTerm and for any positive match, add that TVStory to searchResultTVStories. 3. Check searchResultTVStories into Firebase under node searchResultTVStories. 4) Listener is triggered which checks searchResultTVStories back in from Firebase, which also orders the data asc/desc by chosen sub-node. 5. New ArrayList<TVStory> searchResultTVStories is sent to TVStoryListFragment
 
 	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
-//		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
 		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
-		TVStory TVStory = null;
-
-		// TODO basic element of filter; I]'m commenting the "if" out for now so I can test orderBy instead
+		// populate searchResultTVStories, which will be filtered
 		for (TVStory tvStory : allTVStories) {
-			// todo needs a way to skip filtering if you clicked on "see all episodes"
-			// todo needs a search by storyID in order to select a single episode.
-			// todo current search criteria are: title, doctor, othercast, wanttoseeit, seenit, userstarrating
-//			if (searchTerm.getSeenIt() == "true") { // or whatever the filtering criteria is
-				searchResultTVStories.add(tvStory);
-//			}
+			searchResultTVStories.add(tvStory);
 		}
 
-//            TVStory.setStoryID(Integer.parseInt(cursor.getString(0)));
-//            TVStory.setTitle(cursor.getString(1));
-//            TVStory.setDoctor(Integer.parseInt(cursor.getString(2)));
-//            TVStory.setEra(cursor.getString(3));
-//            TVStory.setSeason(cursor.getString(4));
-//            TVStory.setSeasonStoryNumber(Integer.parseInt(cursor.getString(5)));
-//            TVStory.setEpisodes(Integer.parseInt(cursor.getString(6)));
-//            TVStory.setEpisodeLength(Integer.parseInt(cursor.getString(7)));
-//            TVStory.setYearProduced(Integer.parseInt(cursor.getString(8)));
-//            TVStory.setOtherCast(cursor.getString(9));
-//            TVStory.setSynopsis(cursor.getString(10));
-//            TVStory.setCrew(cursor.getString(11));
-//			if (Integer.parseInt(cursor.getString(12))==0) {
-//				TVStory.setSeenIt(false);
-//			} else {
-//				TVStory.setSeenIt(true);
-//			}
-//			if (Integer.parseInt(cursor.getString(13))==0) {
-//				TVStory.setWantToSeeIt(false);
-//			} else {
-//				TVStory.setWantToSeeIt(true);
-//			}
-//			TVStory.setASIN(cursor.getString(14));
-//			TVStory.setUserReview(cursor.getString(15));
-//			TVStory.setUserStarRatingNumber(Float.parseFloat(cursor.getString(16)));
-//			TVStory.setTvstoryImage(cursor.getString(24));
-//
-//			searchResultTVStories.add(TVStory);
-//		}
+		// todo DONE needs a way to skip filtering if you clicked on "see all episodes"
+		// todo needs a search by storyID in order to select a single episode.
+		// todo: basic search criteria: title, doctor, othercast. Full implementation requires partial text search for Title (so you can pull up both Peladon episodes, etc.) and an ArrayList<DWCharacter> search for Doctor and Othercast. Tackling title first.
+		// todo: User search/filter criteria: wanttoseeit, seenit, userstarrating. These should all be implemented with Firebase search in mind
+		// todo how to implement search on multiple criteria. Is iterating through categories sufficient? If not, searchTerm could have a new parameter added that would +1 every time a search criterion was chosen elsewhere, and -1 for every search criterion found and filtered here. Or is there a way to make it work without a new parameter? Yes, I think so: Add the ++ flag in the for loop below to each if instance, and only add the story to the ArrayList if it gets to the end and flag != 0.
+		if (searchTerm.cameFromSearchResult() == true) {
+			Iterator<TVStory> itr = allTVStories.iterator();
+			while (itr.hasNext()) {
+			TVStory tvStory = itr.next();
+				if (searchTerm.getTitle() != null) {
+					int isTitleSearchTermFound = tvStory.getTitle().toLowerCase().indexOf(searchTerm.getTitle().toLowerCase());
+					if (isTitleSearchTermFound == - 1) {
+						searchResultTVStories.remove(tvStory); // if title searchterm is NOT found
+					}
+				}
+				if (searchTerm.getDoctor() != 0) {
+					if (searchTerm.getDoctor() != tvStory.getDoctor()) {
+						searchResultTVStories.remove(tvStory);
+					}
+				}
+				if (searchTerm.getOtherCast() != null) {
+					int isTitleSearchTermFound = tvStory.getOtherCast().toLowerCase().indexOf(searchTerm.getOtherCast().toLowerCase());
+					if (isTitleSearchTermFound == - 1) {
+						searchResultTVStories.remove(tvStory);
+					}
+				}
+			}
 
-		// This will order by storyID, BestOf, or whatever criteria
-		searchResultTVStories = orderTVStoriesBy(searchTerm, searchResultTVStories);
+			// This will order by storyID, BestOf, or whatever criteria
+			searchResultTVStories = orderTVStoriesBy(searchTerm, searchResultTVStories);
+		} else {
+			searchResultTVStories = orderTVStoriesBy(searchTerm, allTVStories);
+		}
 		return searchResultTVStories;
 	}
 
@@ -336,103 +329,10 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return sqlWhere;
 	}
 
-	public String filterTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
-
-		ArrayList<String> andAdder = new ArrayList<String>();
-
-//		ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
-		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
-		TVStory TVStory = null;
-		String sql = null;
-		String sqlSelectFromTVStorys = null;
-		String sqlWhere = null;
-		String sqlOrderBy = null;
-
-		sqlSelectFromTVStorys = "SELECT * FROM " + DataBaseHelper.TABLE_TVSTORYS + " WHERE ";
-
-		// todo Best-of lists are entirely about simple sort of one column, so this will need to be written into the Firebase checkin/out
-		if (searchTerm.getBestOfLists() != null) {
-			if (searchTerm.getBestOfLists() == "BBCAmerica") {
-				sqlWhere = DataBaseHelper.COL_BESTOFBBCAMERICA + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBBCAMERICA + " ASC";
-			} else if (searchTerm.getBestOfLists() == "DWM2009") {
-				sqlWhere = DataBaseHelper.COL_BESTOFDWM2009 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2009 + " ASC";
-			} else if (searchTerm.getBestOfLists() == "DWM2014") {
-				sqlWhere = DataBaseHelper.COL_BESTOFDWM2014 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFDWM2014 + " ASC";
-			} else if (searchTerm.getBestOfLists() == "AVCTVC10") {
-				sqlWhere = DataBaseHelper.COL_BESTOFAVCTVC10 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-			} else if (searchTerm.getBestOfLists() == "Io9") {
-				sqlWhere = DataBaseHelper.COL_BESTOFIO9 + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFIO9 + " ASC";
-			} else if (searchTerm.getBestOfLists() == "LMMyles") {
-				sqlWhere = DataBaseHelper.COL_BESTOFLMMYLES + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFLMMYLES + " ASC";
-			} else if (searchTerm.getBestOfLists() == "Bahn") {
-				sqlWhere = DataBaseHelper.COL_BESTOFBAHN + " IS NOT '" + 0 + "' ";
-				sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_BESTOFBAHN + " ASC";
-			}
-		} else {
-			sqlWhere = constructSQLWhereString(searchTerm);
-			sqlOrderBy = "ORDER BY " + DataBaseHelper.COL_STORYID + " ASC";
-		}
-
-
-		if (searchTerm.getTitle() != null) {
-			for (TVStory tvStory : allTVStories) {
-				if ("Dalek" == searchTerm.getTitle()) {
-					andAdder.add(sqlWhere);
-
-				}
-				sqlWhere = DataBaseHelper.COL_TITLE + " LIKE '%" + searchTerm.getTitle() + "%' ";
-				andAdder.add(sqlWhere);
-			}
-		}
-		if (searchTerm.getDoctor() != 0) { // 0 means no Doctor was selected
-			sqlWhere = DataBaseHelper.COL_DOCTOR + " IS '" + searchTerm.getDoctor() + "' ";
-			andAdder.add(sqlWhere);
-		}
-		if (searchTerm.getOtherCast() != null) {
-			sqlWhere = DataBaseHelper.COL_OTHERCAST + " LIKE '%" + searchTerm.getOtherCast() + "%' ";
-			System.out.println(searchTerm.getOtherCast());
-			andAdder.add(sqlWhere);
-		}
-		if (searchTerm.isWantToSeeIt()) {
-			sqlWhere = DataBaseHelper.COL_WANTTOSEEIT + " IS '" + "1" + "' ";
-			andAdder.add(sqlWhere);
-		}
-		//  SeenIt/Haven'tSeenIt/Both ("both" simply doesn't add a limiting search term)
-		if (searchTerm.getSeenIt() == "true") {
-			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "1" + "' ";
-			andAdder.add(sqlWhere);
-		} else if (searchTerm.getSeenIt() == "false") {
-			sqlWhere = DataBaseHelper.COL_SEENIT + " IS '" + "0" + "' ";
-			andAdder.add(sqlWhere);
-		}
-		if (searchTerm.getUserStarRatingNumber() != 0) {
-			sqlWhere = DataBaseHelper.COL_USERSTARRATING + " is '" + searchTerm.getUserStarRatingNumber() + "' ";
-			andAdder.add(sqlWhere);
-		}
-
-		for (int i = 0; i < andAdder.size(); i++) {
-			if (i == 0) {
-				sqlWhere = andAdder.get(i);
-			} else
-				sqlWhere = sqlWhere + " AND " + andAdder.get(i);
-		}
-
-		// DOESN'T WORK This removes the first "AND" so that the search string doesn't start with one.
-//		sqlWhere.replace(" AND STRINGENDER", " ");
-
-		return sqlWhere;
-	}
-
+	// TODO Implement user-ranked best-of list and sort.
 	public ArrayList<TVStory> orderTVStoriesBy(SearchTerm searchTerm, ArrayList<TVStory> searchResultTVStories) {
 		// The ArrayList can be reordered after filtering with Collections.sort(), as per http://stackoverflow.com/questions/16751540/sorting-an-object-arraylist-by-an-attribute-value-in-java. This works by comparing an attribute of one TVStory against the same attribute of another TVStory, and so on down the list. You could do this by Title to sort alphabetically, by Doctor, or by a particular best-of column.
 		ArrayList<TVStory> orderedTVStories = new ArrayList<TVStory>();
-		// TODO Implement user-ranked best-of list and sort.
 
 		// The following if-filter looks for sorting searchTerm, then filters out any nulls or zeroes in that category (meaning, story wasn't ranked in list) into new ArrayList, then sort by chosen category
 		if (searchTerm.getBestOfLists() != null) {
@@ -499,10 +399,6 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 				}
 				return orderedTVStories;
 			}
-
-
-
-
 			return searchResultTVStories;
 		}
 		return searchResultTVStories;

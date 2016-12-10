@@ -390,7 +390,6 @@ public void onFinishDialog() {
         TVStoryListFragment = new TVStoryListFragment();
         setFragmentTitle(R.string.app_name);
         SearchTerm searchTerm = new SearchTerm();
-        searchTerm.setCameFromSearchResult(false);
         Bundle bundle=new Bundle();
         bundle.putParcelable("searchTerm", searchTerm);
         bundle.putParcelableArrayList("allTVStories", allTVStories);
