@@ -57,62 +57,6 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		super.onCreate(savedInstanceState);
 		activity = getActivity();
 		tvstoryDAO = new TVStoryDAO(activity);
-
-
-		// FIREBASE CODE BEGINS HERE
-//		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-//		DatabaseReference TVStoryRef = mDatabase.getReference("TVStory");
-//		TVStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//			ArrayList<TVStory> tempallTVStories = new ArrayList<TVStory>();
-//			@Override
-//			public void onDataChange(DataSnapshot dataSnapshot) {
-//                dbSource.setResult(dataSnapshot);
-//				Log.d(TAG, "on data change");
-//				for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-//					TVStory TVStory = postSnapshot.getValue(TVStory.class);
-////                    Toast.makeText(getBaseContext(), TVStory.getTitle(), Toast.LENGTH_SHORT).show();
-//					tempallTVStories.add(TVStory);
-//				}
-//				allTVStories.addAll(tempallTVStories);
-//				// Build the adapter
-////                ListAdapter adapter = new TVStoryListAdapter(getBaseContext(), allTVStories);
-////                // Configure the list view
-////                ListView listView = (ListView) findViewById(R.id.firebaseListView);
-////                listView.setAdapter(adapter);
-//				System.out.println("FIREBASE TVSTORY LIST UPDATED");
-////                Toast.makeText(getBaseContext(), "FIREBASE TVSTORY LIST UPDATED!", Toast.LENGTH_SHORT).show();
-//				Toast.makeText(activity, "in TVStoryListFragment onDataChange, FIREBASE says allTVStories has this many elements: " + allTVStories.size(), Toast.LENGTH_LONG).show();
-//			}
-//			@Override
-//			public void onCancelled(DatabaseError databaseError) {
-//				System.out.println("The read failed: " + databaseError.getCode());
-//                dbSource.setException(databaseError.toException());
-//			}
-//		});
-		// FIREBASE CODE ENDS HERE
-
-// TODO You need to wire this up so that it does not attempt to return the Listview until it knows all the data is there. Current attempt is modifed from here : https://firebase.googleblog.com/2016/10/become-a-firebase-taskmaster-part-4.html
-//		allTask = Tasks.whenAll(dbTask);
-//		allTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-//			@Override
-//			public void onSuccess(Void aVoid) {
-//				DataSnapshot dataSnapshot = (DataSnapshot) dbTask.getResult();
-//				for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-//					TVStory TVStory = postSnapshot.getValue(TVStory.class);
-////                    Toast.makeText(getBaseContext(), TVStory.getTitle(), Toast.LENGTH_SHORT).show();
-//					allTVStories.add(TVStory);
-//				}
-////				setAllTVStories(allTVStories);
-//				// do something with db data?
-////                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-//			}
-//		});
-//		allTask.addOnFailureListener(new OnFailureListener() {
-//			@Override
-//			public void onFailure(@NonNull Exception e) {
-//				// apologize profusely to the user!
-//			}
-//		});
 	}
 
 	@Override
@@ -169,7 +113,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
 		TVStory TVStory = (TVStory) parent.getItemAtPosition(position);
 
-		// todo In previous iteration, LongClick deleted a list item. I don't want the user to be able to do that, and have commented out that code, but I haven't decided if I still want to use LongClick for something else, so haven't deleted the whole thing. Possibility: This pops up a dialog where the user can add their star rating.
+		// todo In previous iteration, LongClick deleted a list item. My plan is to have this instead pop up a dialog where user can update userTVStoryInfo for the chosen TVStory without going to FullPageFragment.
 		// Use AsyncTask to delete from database
 //		tvstoryDAO.delete(TVStory);
 //		TVStoryListAdapter.remove(TVStory);
@@ -195,13 +139,8 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		}
 	}
 
-
-
-
 	public class GetTVStoryTask extends AsyncTask<SearchTerm, Void, ArrayList<TVStory>> {
-
 		private final WeakReference<Activity> activityWeakRef;
-
 		public GetTVStoryTask(Activity context) {
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
@@ -226,16 +165,11 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 						Toast.makeText(activity, "No TVStory Records", Toast.LENGTH_LONG).show();
 					}
 				}
-
 			}
 		}
 	}
 
-	/*
-	 * This method is invoked from MainActivity onFinishDialog() method. It is
-	 * called from CustomTVStoryDialogFragment when a record is updated.
-	 * This is used for communicating between fragments.
-	 */
+	// This method is invoked from MainActivity onFinishDialog() method. It is called from CustomTVStoryDialogFragment when a record is updated. This is used for communicating between fragments.
 	public void updateView() {
 		task = new GetTVStoryTask(activity);
 		task.execute(searchTerm);

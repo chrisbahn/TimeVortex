@@ -117,9 +117,10 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	Calendar dateCalendar;
 
 	private TVStory TVStory;
+	private UserTVStoryInfo userTVStoryInfo;
 	private SearchTerm searchTerm;
 	private TVStoryDAO tvstoryDAO;
-	private UpdateTVStoryTask task;
+	private UpdateUserTVStoryInfoTask task;
 	OnSearchButtonClickedListener mSearchClicked;
 	int[] doctorImages = {R.drawable.doctor01, R.drawable.doctor02, R.drawable.doctor03, R.drawable.doctor04, R.drawable.doctor05, R.drawable.doctor06, R.drawable.doctor07, R.drawable.doctor08, R.drawable.doctor09, R.drawable.doctor10, R.drawable.doctor11, R.drawable.doctor12};
 	int[] logoImages = {R.drawable.logodoctor01, R.drawable.logodoctor02, R.drawable.logodoctor03, R.drawable.logodoctor04, R.drawable.logodoctor05, R.drawable.logodoctor06, R.drawable.logodoctor07, R.drawable.logodoctor08, R.drawable.logodoctor09, R.drawable.logodoctor10, R.drawable.logodoctor11, R.drawable.logodoctor12};
@@ -367,7 +368,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 					TVStory.setWantToSeeIt(wantToSeeIt.isChecked());
 					TVStory.setUserStarRatingNumber(userStarRating.getRating());
 
-					task = new UpdateTVStoryTask(getActivity());
+					task = new UpdateUserTVStoryInfoTask(getActivity());
 					task.execute((Void) null);
 					}
 				}
@@ -406,34 +407,33 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			// todo if/then statements to catch singular/plural "episode/episodes"
 			tvstorySeasonInfo.setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + "minutes."); // era, yearProduced, season, seasonStoryNumber, episode, episodeLength
 			tvstorySynopsis.setText(TVStory.getSynopsis());
-			// todo if you want to limit the size of the synopsis in the future, here's the code
-//        if (TVStory.getSynopsis().length() > 100) {
-//            holder.tvstorySynopsis.setText(TVStory.getSynopsis().substring(0, 97) + "...");
-//        }
 			// todo getDoctor should return the text name of the character, not the numeral. getOtherCast should return only shortNames in the ListView. create a toString()?
 			// todo getCrew should return the writer only in the listview.
 			tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
-			seenIt.setChecked(TVStory.seenIt());
-			wantToSeeIt.setChecked(TVStory.wantToSeeIt());
 
-			userStarRating.setRating(TVStory.getUserStarRatingNumber());
-			EdtxtMyNotes.setText(TVStory.getUserReview());
+			// todo UserTVStoryInfo here
+//			seenIt.setChecked(TVStory.seenIt());
+//			wantToSeeIt.setChecked(TVStory.wantToSeeIt());
+//			userStarRating.setRating(TVStory.getUserStarRatingNumber());
+//			EdtxtMyNotes.setText(TVStory.getUserReview());
+
+//			iveSeenIt.setChecked(userTVStoryInfo.iveSeenIt());
+//			this.storyID = storyID;
+//			this.iveSeenIt = iveSeenIt;
+//			this.whenISawIt = whenISawIt;
+//			this.iOwnIt = iOwnIt;
+//			this.iWantToSeeIt = iWantToSeeIt;
+//			this.userReview = userReview;
+//			this.userAtoF = userAtoF;
+//			this.numberRanking = numberRanking;
 
 			int whichDoctor = TVStory.getDoctor(); // todo These two lines plus the whichDoctor() method sets mention of Doctor in cast list. Will not be needed when DWCast is implemented
 			whichDoctorIsIt(whichDoctor);
 
-//			if (Integer.parseInt(TVStory.getTvstoryImage())==0) {
-//				tvstoryImage.setImageResource(logoImages[TVStory.getDoctor()-1]);
-//			} else {
-//				tvstoryImage.setImageResource(Integer.parseInt(TVStory.getTvstoryImage()));
-//			}
 			Resources res = getContext().getResources();
 			TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
 			Drawable drawable = tvstoryImages.getDrawable(TVStory.getStoryID() - 1);
 			tvstoryImage.setImageDrawable(drawable);
-
-
-
 		}
 	}
 
@@ -441,8 +441,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
+        // This makes sure that the container activity has implemented the callback interface. If not, it throws an exception
         try {
             mSaveClicked = (OnSaveButtonClickedListener) activity;
         } catch (ClassCastException e) {
@@ -455,17 +454,17 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		}
     }
 
-    public class UpdateTVStoryTask extends AsyncTask<Void, Void, Long> {
+    public class UpdateUserTVStoryInfoTask extends AsyncTask<Void, Void, Long> {
 
 		private final WeakReference<Activity> activityWeakRef;
 
-		public UpdateTVStoryTask(Activity context) {
+		public UpdateUserTVStoryInfoTask(Activity context) {
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
 
 		@Override
 		protected Long doInBackground(Void... arg0) {
-			long result = tvstoryDAO.update(TVStory);
+			long result = tvstoryDAO.update(userTVStoryInfo);
 			return result;
 		}
 

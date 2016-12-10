@@ -68,7 +68,7 @@ import static android.content.ContentValues.TAG;
 // ADAPTED FROM Project 2: Inspirer
 // Code to close a fragment adapted from this page: http://stackoverflow.com/a/18110614
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        CustomTVStoryDialogFragment.TVStoryDialogFragmentListener,
+//        CustomTVStoryDialogFragment.TVStoryDialogFragmentListener,
         AboutDoctorWhoFragment.OnSearchButtonClickedListener,
         TVStoryFullPageFragment.OnSaveButtonClickedListener,
         TVStoryFullPageFragment.OnSearchButtonClickedListener,
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TVStoryDAO tvstoryDAO;
     private ArrayList<TVStory> tempMatrix = new ArrayList<TVStory>();
     private ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
+    private ArrayList<UserTVStoryInfo> allUserTVStoryInfo;
+    private ArrayList<UserTVStoryInfo> tempAllUserTVStoryInfo;
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
     private FBTVStoryListAdapter mFBTVStoryListAdapter;
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvstoryDAO = new TVStoryDAO(this);
         SearchTerm searchTerm = new SearchTerm();
         final ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
+        final ArrayList<UserTVStoryInfo> allUserTVStoryInfo = new ArrayList<UserTVStoryInfo>();
         searchTerm.setCameFromSearchResult(false);
 
         gotoMainSearchListButton.setOnClickListener(this);
@@ -156,20 +159,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 UIExplainer.setVisibility(View.VISIBLE);
 			}
 		} else {
-            TVStoryListFragment = new TVStoryListFragment();
-			setFragmentTitle(R.string.app_name);
-//            SearchTerm searchTerm = new SearchTerm();
-            searchTerm.setCameFromSearchResult(false);
-            Bundle bundle=new Bundle();
-            bundle.putParcelable("searchTerm", searchTerm);
-            bundle.putParcelableArrayList("allTVStories", allTVStories);
-            TVStoryListFragment.setArguments(bundle);
-			switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
+            switchContentToTVStoryListFragment();
             UIExplainer.setVisibility(View.VISIBLE);
 		}
-
-        // todo This method governs importation of txtfile into SQLite database, which will become irrelevant once Firebase is done. Currently this line is commented out UNLESS a change to the original textfile database occurs and needs to be ported into the program. (Don't forget to change the DATABASE_VERSION number in DatabaseHelper.)
-//        loadListofAllStoriesTextFile();
 
         // <%%%BEGIN FIREBASE SETUP%%%>
         // Write a message to the database
@@ -177,17 +169,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DatabaseReference TVStoryRef = mDatabase.getReference("TVStory");
         DatabaseReference DWCharacterRef = mDatabase.getReference("DWCharacter");
         DatabaseReference DWCrewRef = mDatabase.getReference("DWCrew");
-        DWCharacterRef.setValue("Third Doctor");
-        DWCrewRef.setValue("Jon Pertwee");
+        DWCharacterRef.setValue("Fourth Doctor");
+        DWCrewRef.setValue("Tom Baker");
+        DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1").child("chrisbahn");
+//        DatabaseReference UsersRef = mDatabase.getReference("Users").child(userId).child("username").setValue("");
 //        loadListofAllStoriesTextFileIntoFirebase(); // uncomment this line when there is a database change you want to port into Firebase
         // <%%%END FIREBASE SETUP%%%>
 
-//        // FIREBASE CODE BEGINS HERE
+//        // Downloads TVStory node from Firebase, and creates the allTVStories ArrayList
             TVStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<TVStory> tempallTVStories = new ArrayList<TVStory>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "on data change");
+                Log.d(TAG, "on TVStory data change");
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     TVStory TVStory = postSnapshot.getValue(TVStory.class);
                     tempallTVStories.add(TVStory);
@@ -195,14 +189,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setAllTVStories(tempallTVStories);
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
                 switchContentToTVStoryListFragment();
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-//        // FIREBASE CODE ENDS HERE
+
+        // This listens for changes to User/UserTVStoryInfo node, which are triggered either by user login or by a push-to-Firebase after user saves changes to a UserTVStoryInfo instance. When triggered, the Listener will reset any previous instance of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, and repopulate it from the newly updated Firebase data.
+        TestUserRef.addValueEventListener(new ValueEventListener() {
+            ArrayList<UserTVStoryInfo> allUserTVStoryInfo = new ArrayList<UserTVStoryInfo>();
+//            allUserTVStoryInfo.clear();
+            ArrayList<UserTVStoryInfo> tempAllUserTVStoryInfo = new ArrayList<UserTVStoryInfo>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "on User data change");
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    UserTVStoryInfo userTVStoryInfo = postSnapshot.getValue(UserTVStoryInfo.class);
+                    tempAllUserTVStoryInfo.add(userTVStoryInfo);
+                }
+                setAllUserTVStoryInfo(tempAllUserTVStoryInfo);
+//                database.getReference("Users/" + storyId).setValue(matrixFile);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+
     }
 
     @Override
@@ -305,12 +320,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		builder.create().show();
 	}
 
-@Override
-public void onFinishDialog() {
-        if (TVStoryListFragment != null) {
-        TVStoryListFragment.updateView();
-        }
-        }
+//@Override
+//public void onFinishDialog() {
+//        if (TVStoryListFragment != null) {
+//        TVStoryListFragment.updateView();
+//        }
+//        }
 
     // called when search button is clicked on TVStorySearchFragment
     @Override
@@ -325,16 +340,9 @@ public void onFinishDialog() {
         switchContent(TVStorySearchListFragment, TVStorySearchListFragment.ARG_ITEM_ID);
     }
 
-    // called when a user saves changes to userlists
+    // called when a user saves changes to UserTVStoryInfo - goes back to main list
     public void onSaveButtonClicked() {
-        TVStoryListFragment = new TVStoryListFragment();
-        setFragmentTitle(R.string.app_name);
-        SearchTerm searchTerm = new SearchTerm();
-        Bundle bundle=new Bundle();
-        bundle.putParcelable("searchTerm", searchTerm);
-        bundle.putParcelableArrayList("allTVStories", allTVStories);
-        TVStoryListFragment.setArguments(bundle);
-        switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
+        switchContentToTVStoryListFragment();
     }
 
     // helps move from the primary all-episodes list to a single-page view of one story
@@ -440,6 +448,15 @@ public void onFinishDialog() {
         this.allTVStories = allTVStories;
     }
 
+    public ArrayList<UserTVStoryInfo> getAllUserTVStoryInfo()
+    {
+        return this.allUserTVStoryInfo;
+    }
+
+    public void setAllUserTVStoryInfo(ArrayList<UserTVStoryInfo> allUserTVStoryInfo){
+        this.allUserTVStoryInfo = allUserTVStoryInfo;
+    }
+
 public void switchContentToTVStoryListFragment() {
     TVStoryListFragment = new TVStoryListFragment();
     setFragmentTitle(R.string.app_name);
@@ -477,27 +494,6 @@ public void switchContentToSearchFragment() {
     Toast.makeText(this, "Search a TVStory!", Toast.LENGTH_LONG).show();
     switchContent(TVStorySearchFragment, TVStorySearchFragment.ARG_ITEM_ID);
     }
-
-
-    public void saveUserDataToFirebase() {
-        ArrayList<String[]> listofAllStoriesData = new ArrayList<String[]>();
-        User user = new User();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-
-//            //---port information in listofAllStoriesData into Firebase DB
-//            for (UserTVStoryInfo tvStory : user) {
-//                // Write a message to the Firebase database
-////                String storyId = String.valueOf(matrixFile.getStoryID());
-////                database.getReference("TVStory/" + storyId).setValue(matrixFile);
-//            }
-//            Toast.makeText(getBaseContext(), "File loaded successfully!", Toast.LENGTH_SHORT).show();
-//        }
-//        catch (IOException ioe) {
-//            ioe.printStackTrace();
-//        }
-    }
-
 
 
 

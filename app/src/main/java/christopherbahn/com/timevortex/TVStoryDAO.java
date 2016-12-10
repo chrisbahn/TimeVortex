@@ -165,7 +165,13 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 	}
 
 
+	// Saves changes to the user's flags/ratings/reviews on a particular TVStory
+	public long update(UserTVStoryInfo userTVStoryInfo) {
 
+		return '0';
 	}
+
+
+}
 
 
