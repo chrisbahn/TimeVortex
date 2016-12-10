@@ -479,6 +479,24 @@ public void switchContentToSearchFragment() {
     }
 
 
+    public void saveUserDataToFirebase() {
+        ArrayList<String[]> listofAllStoriesData = new ArrayList<String[]>();
+        User user = new User();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+
+//            //---port information in listofAllStoriesData into Firebase DB
+//            for (UserTVStoryInfo tvStory : user) {
+//                // Write a message to the Firebase database
+////                String storyId = String.valueOf(matrixFile.getStoryID());
+////                database.getReference("TVStory/" + storyId).setValue(matrixFile);
+//            }
+//            Toast.makeText(getBaseContext(), "File loaded successfully!", Toast.LENGTH_SHORT).show();
+//        }
+//        catch (IOException ioe) {
+//            ioe.printStackTrace();
+//        }
+    }
 
 
 
