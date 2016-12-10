@@ -15,7 +15,7 @@ public class User {
 
     public String username;
     public String email;
-    public ArrayList<UserTVStoryInfo> userRankings;
+    public ArrayList<UserTVStoryInfo> userTVStoryInfo;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -42,12 +42,12 @@ public class User {
         this.email = email;
     }
 
-    public ArrayList<UserTVStoryInfo> getUserRankings() {
-        return userRankings;
+    public ArrayList<UserTVStoryInfo> getUserTVStoryInfo() {
+        return userTVStoryInfo;
     }
 
-    public void setUserRankings(ArrayList<UserTVStoryInfo> userRankings) {
-        this.userRankings = userRankings;
+    public void setUserTVStoryInfo(ArrayList<UserTVStoryInfo> userTVStoryInfo) {
+        this.userTVStoryInfo = userTVStoryInfo;
     }
 }
 // [END blog_user_class]

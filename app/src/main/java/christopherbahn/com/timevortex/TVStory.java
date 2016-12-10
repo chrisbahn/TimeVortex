@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 
 public class TVStory implements Parcelable {
-	// Adapted/refactored from Note object in Project 2
-
 	private int storyID;
 	private String title;
 	private int doctor;
@@ -76,7 +74,6 @@ public class TVStory implements Parcelable {
 		this.bestOfLMMyles = Integer.parseInt(in.readString());
 		this.bestOfBahn = Integer.parseInt(in.readString());
 		this.tvstoryImage = in.readString();
-
 	}
 
     public TVStory(int storyID, String title, int doctor, String era, String season, int seasonStoryNumber, int episodes, int episodeLength, int yearProduced, String ASIN) {

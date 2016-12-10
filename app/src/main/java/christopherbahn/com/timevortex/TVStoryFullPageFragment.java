@@ -48,6 +48,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -117,7 +118,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	Calendar dateCalendar;
 
 	private TVStory TVStory;
-	private UserTVStoryInfo userTVStoryInfo;
+	public UserTVStoryInfo userTVStoryInfo;
 	private SearchTerm searchTerm;
 	private TVStoryDAO tvstoryDAO;
 	private UpdateUserTVStoryInfoTask task;
@@ -126,6 +127,9 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	int[] logoImages = {R.drawable.logodoctor01, R.drawable.logodoctor02, R.drawable.logodoctor03, R.drawable.logodoctor04, R.drawable.logodoctor05, R.drawable.logodoctor06, R.drawable.logodoctor07, R.drawable.logodoctor08, R.drawable.logodoctor09, R.drawable.logodoctor10, R.drawable.logodoctor11, R.drawable.logodoctor12};
 
 	public static final String ARG_ITEM_ID = "tvstory_fullpage_fragment";
+
+	public TVStoryFullPageFragment() {
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

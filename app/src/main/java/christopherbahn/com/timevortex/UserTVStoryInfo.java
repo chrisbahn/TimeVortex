@@ -1,5 +1,8 @@
 package christopherbahn.com.timevortex;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -7,7 +10,7 @@ import java.util.ArrayList;
  * Created by christopherbahn on 12/10/16.
  */
 
-public class UserTVStoryInfo {
+public class UserTVStoryInfo implements Parcelable {
     // This should sync up with a corresponding TVStory object. UserTVStoryInfo.getStoryID() == TVStory.getStoryID()
 
     public Integer storyID;
@@ -34,6 +37,25 @@ public class UserTVStoryInfo {
         this.userAtoF = userAtoF;
         this.numberRanking = numberRanking;
     }
+
+    protected UserTVStoryInfo(Parcel in) {
+        iveSeenIt = in.readByte() != 0;
+        iOwnIt = in.readByte() != 0;
+        iWantToSeeIt = in.readByte() != 0;
+        userReview = in.readString();
+    }
+
+    public static final Creator<UserTVStoryInfo> CREATOR = new Creator<UserTVStoryInfo>() {
+        @Override
+        public UserTVStoryInfo createFromParcel(Parcel in) {
+            return new UserTVStoryInfo(in);
+        }
+
+        @Override
+        public UserTVStoryInfo[] newArray(int size) {
+            return new UserTVStoryInfo[size];
+        }
+    };
 
     public Integer getStoryID() {
         return storyID;
@@ -97,5 +119,18 @@ public class UserTVStoryInfo {
 
     public void setNumberRanking(Integer numberRanking) {
         this.numberRanking = numberRanking;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeByte((byte) (iveSeenIt ? 1 : 0));
+        parcel.writeByte((byte) (iOwnIt ? 1 : 0));
+        parcel.writeByte((byte) (iWantToSeeIt ? 1 : 0));
+        parcel.writeString(userReview);
     }
 }

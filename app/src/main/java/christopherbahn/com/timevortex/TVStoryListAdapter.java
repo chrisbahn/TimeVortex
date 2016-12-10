@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Locale;
 
 // todo Can the ListFragment and SearchListFragment stuff be combined? They're doing a lot of the same work, and you have multiple kinds of searching planned
-//
-// todo I wonder if most of the text here should be jettisoned in favor of the photo and title only... Most of the details are better placed on the episode pages themselves, and if you want to allow ratings/checkboxes in the list phase, might be better to give a longclick popup than clutter up the list with 300 ratings.
 
 public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 
@@ -131,22 +129,6 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 
 
         return convertView;
-	}
-
-	// Note: Not using the add and remove methods now that I am putting the episode info in via a textfile.
-	@Override
-	public void add(TVStory TVStory) {
-		TVStories.add(TVStory);
-		notifyDataSetChanged();
-		super.add(TVStory);
-	}
-
-	// Note: Not using the add and remove methods now that I am putting the episode info in via a textfile.
-	@Override
-	public void remove(TVStory TVStory) {
-		TVStories.remove(TVStory);
-		notifyDataSetChanged();
-		super.remove(TVStory);
 	}
 
 

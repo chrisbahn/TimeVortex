@@ -41,6 +41,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 	ListView tvstoryListView;
 	ArrayList<TVStory> TVStories;
 	ArrayList<TVStory> allTVStories;
+	ArrayList<UserTVStoryInfo> allUserTVStoryInfo;
 
 	TVStoryListAdapter TVStoryListAdapter;
 	TVStoryDAO tvstoryDAO;
@@ -64,6 +65,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		Bundle bundle = this.getArguments();
 		searchTerm = bundle.getParcelable("searchTerm");
 		allTVStories = bundle.getParcelableArrayList("allTVStories");
+		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
 //		searchTerm.setCameFromSearchResult(false);
 
 		System.out.println("48: cameFromSearchResult???? " + searchTerm.cameFromSearchResult());
@@ -76,8 +78,6 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 		tvstoryListView.setOnItemClickListener(this);
 		tvstoryListView.setOnItemLongClickListener(this);
-//		 TVStory n = tvstoryDAO.getTVStory(1);
-//		 Log.d("TVStory n", n.toString());
 		return view;
 	}
 
@@ -88,7 +88,6 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 	@Override
 	public void onResume() {
 		getActivity().setTitle(R.string.app_name);
-//		getActivity().getSupportActionBar().setTitle(R.string.app_name);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 
 		super.onResume();
@@ -105,7 +104,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 			arguments.putParcelable("searchTerm", searchTerm);
 			MainActivity activity = (MainActivity) getActivity();
 			activity.onListItemClicked(TVStory, searchTerm);
-			mListItemClicked.onListItemClicked(TVStory, searchTerm); // todo do you actually need both these lines, or is only one of them doing the actual work?
+//			mListItemClicked.onListItemClicked(TVStory, searchTerm); // todo do you actually need both these lines, or is only one of them doing the actual work?
 		}
 	}
 

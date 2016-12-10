@@ -171,8 +171,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DatabaseReference DWCrewRef = mDatabase.getReference("DWCrew");
         DWCharacterRef.setValue("Fourth Doctor");
         DWCrewRef.setValue("Tom Baker");
-        DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1").child("chrisbahn");
-//        DatabaseReference UsersRef = mDatabase.getReference("Users").child(userId).child("username").setValue("");
+        DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1");
+        TestUserRef.child("username").setValue("chrisbahn");
+        TestUserRef.child("email").setValue("a@b.com");
+        DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
+        DatabaseReference TestUserTVStoryInfo1Ref = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo1");
+        TestUserTVStoryInfo1Ref.child("storyID").setValue(1);
+        TestUserTVStoryInfo1Ref.child("iveSeenIt").setValue("true");
+        TestUserTVStoryInfo1Ref.child("whenISawIt").setValue("");
+        TestUserTVStoryInfo1Ref.child("iOwnIt").setValue("true");
+        TestUserTVStoryInfo1Ref.child("iWantToSeeIt").setValue("false");
+        TestUserTVStoryInfo1Ref.child("userReview").setValue("The first one.");
+        TestUserTVStoryInfo1Ref.child("userAtoF").setValue(10);
+        TestUserTVStoryInfo1Ref.child("numberRanking").setValue(50);
+
 //        loadListofAllStoriesTextFileIntoFirebase(); // uncomment this line when there is a database change you want to port into Firebase
         // <%%%END FIREBASE SETUP%%%>
 
@@ -197,9 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // This listens for changes to User/UserTVStoryInfo node, which are triggered either by user login or by a push-to-Firebase after user saves changes to a UserTVStoryInfo instance. When triggered, the Listener will reset any previous instance of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, and repopulate it from the newly updated Firebase data.
-        TestUserRef.addValueEventListener(new ValueEventListener() {
+        TestUserTVStoryInfoRef.addValueEventListener(new ValueEventListener() {
             ArrayList<UserTVStoryInfo> allUserTVStoryInfo = new ArrayList<UserTVStoryInfo>();
-//            allUserTVStoryInfo.clear();
             ArrayList<UserTVStoryInfo> tempAllUserTVStoryInfo = new ArrayList<UserTVStoryInfo>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -209,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tempAllUserTVStoryInfo.add(userTVStoryInfo);
                 }
                 setAllUserTVStoryInfo(tempAllUserTVStoryInfo);
-//                database.getReference("Users/" + storyId).setValue(matrixFile);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -336,6 +346,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle=new Bundle();
         bundle.putParcelable("searchTerm", searchTerm);
         bundle.putParcelableArrayList("allTVStories", allTVStories);
+        bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
         TVStorySearchListFragment.setArguments(bundle);
         switchContent(TVStorySearchListFragment, TVStorySearchListFragment.ARG_ITEM_ID);
     }
@@ -352,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle=new Bundle();
         bundle.putParcelable("selectedTVStory", tvStory);
         bundle.putParcelable("searchTerm", searchTerm);
+        bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
         TVStoryFullPageFragment.setArguments(bundle);
         switchContent(TVStoryFullPageFragment, TVStoryFullPageFragment.ARG_ITEM_ID);
     }
@@ -465,6 +477,7 @@ public void switchContentToTVStoryListFragment() {
     Bundle bundle=new Bundle();
     bundle.putParcelable("searchTerm", searchTerm);
     bundle.putParcelableArrayList("allTVStories", allTVStories);
+    bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
     TVStoryListFragment.setArguments(bundle);
     switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
 }
