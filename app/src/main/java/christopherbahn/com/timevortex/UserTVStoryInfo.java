@@ -3,7 +3,6 @@ package christopherbahn.com.timevortex;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +14,7 @@ public class UserTVStoryInfo implements Parcelable {
 
     public Integer storyID;
     public boolean iveSeenIt;
-    public Date whenISawIt;
+//    public Date whenISawIt;
     public boolean iOwnIt;
     public boolean iWantToSeeIt;
     private String userReview; // A space for the app user to write an opinion on the story
@@ -27,10 +26,10 @@ public class UserTVStoryInfo implements Parcelable {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public UserTVStoryInfo(Integer storyID, boolean iveSeenIt, Date whenISawIt, boolean iOwnIt, boolean iWantToSeeIt, String userReview, Integer userAtoF, Integer numberRanking) {
+    public UserTVStoryInfo(Integer storyID, boolean iveSeenIt, boolean iOwnIt, boolean iWantToSeeIt, String userReview, Integer userAtoF, Integer numberRanking) {
         this.storyID = storyID;
         this.iveSeenIt = iveSeenIt;
-        this.whenISawIt = whenISawIt;
+//        this.whenISawIt = whenISawIt;
         this.iOwnIt = iOwnIt;
         this.iWantToSeeIt = iWantToSeeIt;
         this.userReview = userReview;
@@ -65,7 +64,7 @@ public class UserTVStoryInfo implements Parcelable {
         this.storyID = storyID;
     }
 
-    public boolean isIveSeenIt() {
+    public boolean haveISeenIt() {
         return iveSeenIt;
     }
 
@@ -73,15 +72,15 @@ public class UserTVStoryInfo implements Parcelable {
         this.iveSeenIt = iveSeenIt;
     }
 
-    public Date getWhenISawIt() {
-        return whenISawIt;
-    }
+//    public Date getWhenISawIt() {
+//        return whenISawIt;
+//    }
+//
+//    public void setWhenISawIt(Date whenISawIt) {
+//        this.whenISawIt = whenISawIt;
+//    }
 
-    public void setWhenISawIt(Date whenISawIt) {
-        this.whenISawIt = whenISawIt;
-    }
-
-    public boolean isiOwnIt() {
+    public boolean doiOwnIt() {
         return iOwnIt;
     }
 
@@ -89,7 +88,7 @@ public class UserTVStoryInfo implements Parcelable {
         this.iOwnIt = iOwnIt;
     }
 
-    public boolean isiWantToSeeIt() {
+    public boolean doiWantToSeeIt() {
         return iWantToSeeIt;
     }
 

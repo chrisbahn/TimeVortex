@@ -34,6 +34,11 @@ import com.amazon.device.associates.LinkService;
 import com.amazon.device.associates.NotInitializedException;
 import com.amazon.device.associates.OpenProductPageRequest;
 import com.amazon.device.associates.OpenSearchPageRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,6 +114,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private Button saveButton;
 	private Button returnToListButton;
 	private Button resetButton;
+	private ArrayList<UserTVStoryInfo> allUserTVStoryInfo;
 
     OnSaveButtonClickedListener mSaveClicked;
 
@@ -139,6 +145,9 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		Bundle bundle = this.getArguments();
 		TVStory = bundle.getParcelable("selectedTVStory");
 		searchTerm = bundle.getParcelable("searchTerm");
+		userTVStoryInfo = bundle.getParcelable("userTVStoryInfo");
+
+
 	}
 
 	@Override
@@ -159,13 +168,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		resetButton.setVisibility(View.GONE);
 
 		getRatings();
-
-
-
-
-
-
-
 
 		textviewErrorItunes.setVisibility(View.GONE);
 
@@ -235,12 +237,12 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		resetButton.setOnClickListener(this);
 		seenIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				TVStory.setSeenIt(isChecked);
+				userTVStoryInfo.setIveSeenIt(isChecked);
 			}
 		});
 		wantToSeeIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				TVStory.setWantToSeeIt(isChecked);
+				userTVStoryInfo.setiWantToSeeIt(isChecked);
 			}
 		});
 		addListenerOnRatingBar();
@@ -415,12 +417,20 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			// todo getCrew should return the writer only in the listview.
 			tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
 
-			// todo UserTVStoryInfo here
-//			seenIt.setChecked(TVStory.seenIt());
-//			wantToSeeIt.setChecked(TVStory.wantToSeeIt());
-//			userStarRating.setRating(TVStory.getUserStarRatingNumber());
-//			EdtxtMyNotes.setText(TVStory.getUserReview());
+			int whichDoctor = TVStory.getDoctor(); // todo These two lines plus the whichDoctor() method sets mention of Doctor in cast list. Will not be needed when DWCast is implemented
+			whichDoctorIsIt(whichDoctor);
 
+			Resources res = getContext().getResources();
+			TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
+			Drawable drawable = tvstoryImages.getDrawable(TVStory.getStoryID() - 1);
+			tvstoryImage.setImageDrawable(drawable);
+		}
+		if (userTVStoryInfo != null) {
+			// todo UserTVStoryInfo here
+			seenIt.setChecked(userTVStoryInfo.haveISeenIt());
+			wantToSeeIt.setChecked(userTVStoryInfo.doiWantToSeeIt());
+//			userStarRating.setRating(userTVStoryInfo.getUserAtoF());
+			EdtxtMyNotes.setText(userTVStoryInfo.getUserReview());
 //			iveSeenIt.setChecked(userTVStoryInfo.iveSeenIt());
 //			this.storyID = storyID;
 //			this.iveSeenIt = iveSeenIt;
@@ -430,14 +440,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 //			this.userReview = userReview;
 //			this.userAtoF = userAtoF;
 //			this.numberRanking = numberRanking;
-
-			int whichDoctor = TVStory.getDoctor(); // todo These two lines plus the whichDoctor() method sets mention of Doctor in cast list. Will not be needed when DWCast is implemented
-			whichDoctorIsIt(whichDoctor);
-
-			Resources res = getContext().getResources();
-			TypedArray tvstoryImages = res.obtainTypedArray(R.array.tvstoryImages);
-			Drawable drawable = tvstoryImages.getDrawable(TVStory.getStoryID() - 1);
-			tvstoryImage.setImageDrawable(drawable);
 		}
 	}
 
@@ -483,9 +485,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	}
 
 	public class RequestITunesSearchResultTask extends AsyncTask<String, String, String> {
-
 		private final WeakReference<Activity> activityWeakRef;
-
 		public RequestITunesSearchResultTask(Activity context) {
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
@@ -493,7 +493,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		@Override
 		protected String doInBackground(String...urls) {
 			String responseString = null;
-
 			try {
 				URL url = new URL(urls[0]); // use the first argument supplied
 				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -501,14 +500,11 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 				InputStream responseStream = new BufferedInputStream(connection.getInputStream());
 				InputStreamReader streamReader = new InputStreamReader(responseStream);
 				StringBuffer buffer = new StringBuffer();
-
 				int c;
-
 				while ( (c = streamReader.read() ) != -1) {
 					// cast c to a char and append to the buffer
 					buffer.append( (char) c);
 				}
-
 				responseString = buffer.toString();
 				Log.i("ITUNES", "String is " + responseString);
 			} catch (Exception e) {
@@ -520,11 +516,9 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 		@Override
 		protected void onPostExecute(String result) {
-
 			Log.i(TAG, "starting onpostexecute");
 			if (result != null) {
 				try {
-
 					JSONObject object = new JSONObject(result);
 					JSONArray resultsArray = object.getJSONArray("results");
 					JSONObject iTunesTopResult = resultsArray.getJSONObject(0);
@@ -535,7 +529,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 					String artworkUrl100 = iTunesTopResult.getString("artworkUrl100"); // todo use this to replace default image
 					textviewErrorItunes.setVisibility(View.VISIBLE);
 					textviewErrorItunes.setText(collectionViewUrl);
-
 				} catch (JSONException e) {
 					Log.e(TAG, "parsing error, check schema?", e);
 					textviewErrorItunes.setVisibility(View.VISIBLE);

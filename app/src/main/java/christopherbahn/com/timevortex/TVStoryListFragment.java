@@ -65,10 +65,10 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		Bundle bundle = this.getArguments();
 		searchTerm = bundle.getParcelable("searchTerm");
 		allTVStories = bundle.getParcelableArrayList("allTVStories");
-		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
+//		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
 //		searchTerm.setCameFromSearchResult(false);
 
-		System.out.println("48: cameFromSearchResult???? " + searchTerm.cameFromSearchResult());
+//		System.out.println("In TVStoryListFragment, allUserTVStoryInfo has " + allUserTVStoryInfo.size() + " elements. The first userReview is " + allUserTVStoryInfo.get(0).getUserReview());
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
 		findViewsById(view);
 
@@ -96,15 +96,17 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 	@Override
 	public void onItemClick(AdapterView<?> list, View arg1, int position, long arg3) {
 		TVStory TVStory = (TVStory) list.getItemAtPosition(position);
+//		UserTVStoryInfo userTVStoryInfo = allUserTVStoryInfo.get(TVStory.getStoryID()-1);
+		UserTVStoryInfo userTVStoryInfo = new UserTVStoryInfo();
 
 		if (TVStory != null) {
 			Bundle arguments = new Bundle();
 			System.out.println("82: cameFromSearchResult???? " + searchTerm.cameFromSearchResult());
 			arguments.putParcelable("selectedTVStory", TVStory);
 			arguments.putParcelable("searchTerm", searchTerm);
+			arguments.putParcelable("userTVStoryInfo", userTVStoryInfo);
 			MainActivity activity = (MainActivity) getActivity();
 			activity.onListItemClicked(TVStory, searchTerm);
-//			mListItemClicked.onListItemClicked(TVStory, searchTerm); // todo do you actually need both these lines, or is only one of them doing the actual work?
 		}
 	}
 
@@ -161,7 +163,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 						TVStoryListAdapter = new TVStoryListAdapter(activity, TVStoryList);
 						tvstoryListView.setAdapter(TVStoryListAdapter);
 					} else {
-						Toast.makeText(activity, "No TVStory Records", Toast.LENGTH_LONG).show();
+//						Toast.makeText(activity, "No TVStory Records", Toast.LENGTH_LONG).show();
 					}
 				}
 			}
