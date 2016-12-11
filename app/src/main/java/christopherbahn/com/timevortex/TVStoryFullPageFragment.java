@@ -368,11 +368,11 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		else if (view == returnToListButton||view == saveButton) {
 				if (view == saveButton) {
 					// this saves whatever user-editable data was changed
-					TVStory.setUserReview(EdtxtMyNotes.getText().toString());
-					TVStory.setUserStarRatingNumber(userStarRating.getRating());
-					TVStory.setSeenIt(seenIt.isChecked());
-					TVStory.setWantToSeeIt(wantToSeeIt.isChecked());
-					TVStory.setUserStarRatingNumber(userStarRating.getRating());
+					userTVStoryInfo.setUserReview(EdtxtMyNotes.getText().toString());
+//					userTVStoryInfo.setUserStarRatingNumber(userStarRating.getRating());
+					userTVStoryInfo.setIveSeenIt(seenIt.isChecked());
+					userTVStoryInfo.setiWantToSeeIt(wantToSeeIt.isChecked());
+					userTVStoryInfo.setUserAtoF(0);
 
 					task = new UpdateUserTVStoryInfoTask(getActivity());
 					task.execute((Void) null);
@@ -431,15 +431,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			wantToSeeIt.setChecked(userTVStoryInfo.doiWantToSeeIt());
 //			userStarRating.setRating(userTVStoryInfo.getUserAtoF());
 			EdtxtMyNotes.setText(userTVStoryInfo.getUserReview());
-//			iveSeenIt.setChecked(userTVStoryInfo.iveSeenIt());
-//			this.storyID = storyID;
-//			this.iveSeenIt = iveSeenIt;
-//			this.whenISawIt = whenISawIt;
-//			this.iOwnIt = iOwnIt;
-//			this.iWantToSeeIt = iWantToSeeIt;
-//			this.userReview = userReview;
-//			this.userAtoF = userAtoF;
-//			this.numberRanking = numberRanking;
 		}
 	}
 

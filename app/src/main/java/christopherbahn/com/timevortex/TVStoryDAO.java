@@ -167,6 +167,15 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 
 	// Saves changes to the user's flags/ratings/reviews on a particular TVStory
 	public long update(UserTVStoryInfo userTVStoryInfo) {
+		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+		DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(userTVStoryInfo.getStoryID()));
+		TestUserTVStoryInfoChildrenRef.child("storyID").setValue(userTVStoryInfo.getStoryID());
+		TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(userTVStoryInfo.haveISeenIt());
+		TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(userTVStoryInfo.doiOwnIt());
+		TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(userTVStoryInfo.doiWantToSeeIt());
+		TestUserTVStoryInfoChildrenRef.child("userReview").setValue(userTVStoryInfo.getUserReview());
+		TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(userTVStoryInfo.getUserAtoF());
+		TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(userTVStoryInfo.getNumberRanking());
 
 		return '0';
 	}

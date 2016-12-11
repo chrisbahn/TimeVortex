@@ -184,14 +184,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TestUserRef.child("username").setValue("chrisbahn");
         TestUserRef.child("email").setValue("a@b.com");
         DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-        DatabaseReference TestUserTVStoryInfo1Ref = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child("1");
-        TestUserTVStoryInfo1Ref.child("storyID").setValue(1);
-        TestUserTVStoryInfo1Ref.child("iveSeenIt").setValue(true);
-        TestUserTVStoryInfo1Ref.child("iOwnIt").setValue(true);
-        TestUserTVStoryInfo1Ref.child("iWantToSeeIt").setValue(true);
-        TestUserTVStoryInfo1Ref.child("userReview").setValue("The first one. A policeman makes his rounds through the evening fog of November 23, 1963. As he passes by a junkyard ...");
-        TestUserTVStoryInfo1Ref.child("userAtoF").setValue(10);
-        TestUserTVStoryInfo1Ref.child("numberRanking").setValue(50);
 
 //        loadListofAllStoriesTextFileIntoFirebase(); // uncomment this line when there is a database change you want to port into Firebase
         // <%%%END FIREBASE SETUP%%%>
@@ -209,9 +201,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 setAllTVStories(tempallTVStories);
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
+                // Creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
+                FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
+                for (TVStory TVStory : tempallTVStories) {
+                    Log.d("UTVSInfo creation: ", TVStory.toString());
+                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
+                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
+                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
+                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
+                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
+                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
+                }
+
                 switchContentToTVStoryListFragment();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
@@ -348,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switchContentToTVStoryListFragment();
     }
 
-    // when you click on a TVStory in a list, this launches a single-TVstory FullPageFragment todo This works if the UserTVStoryInfo child node for this TVStory has been pre-populated, but crashes the program on nulls. How to get past this? May be related to the duplicate List/SearchList listener issue. Either duplicate the FIrebase wrapper in onSearchListItemClicked or finally take the time to kill that whole section. Or: Prepopulate user info on program launch, or perhaps User signup
+    // when you click on a TVStory in a list, this launches a single-TVstory FullPageFragment todo This works if the UserTVStoryInfo child node for this TVStory has been pre-populated, but crashes the program on nulls. How to get past this? May be related to the duplicate List/SearchList listener issue. Either duplicate the FIrebase wrapper in onSearchListItemClicked or finally take the time to kill that whole section. Or: Prepopulate user info on program launch, or perhaps User signup. Or, find a way to skip-if-null
     public void onListItemClicked(final TVStory tvStory, final SearchTerm searchTerm) {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
@@ -366,6 +372,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bundle.putParcelable("userTVStoryInfo", userTVStoryInfo);
                 TVStoryFullPageFragment.setArguments(bundle);
                 System.out.println("In MainActivity onListItemClicked, userTVStoryInfo's user review says: " + userTVStoryInfo.getUserReview());
+                Log.d("onListItemClicked", tvStory.toString());
                 switchContent(TVStoryFullPageFragment, TVStoryFullPageFragment.ARG_ITEM_ID);
             }
             @Override
@@ -392,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bundle.putParcelable("searchTerm", searchTerm);
                 bundle.putParcelable("userTVStoryInfo", userTVStoryInfo);
                 TVStoryFullPageFragment.setArguments(bundle);
+                Log.d("onListItemClicked", tvStory.toString());
                 System.out.println("In MainActivity onListItemClicked, userTVStoryInfo's user review says: " + userTVStoryInfo.getUserReview());
                 switchContent(TVStoryFullPageFragment, TVStoryFullPageFragment.ARG_ITEM_ID);
             }
