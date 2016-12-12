@@ -9,12 +9,10 @@
         <string name="listitem_seasoninfo">Season and episode info goes here</string>
         <string name="listitem_synopsis">A short description of the episode</string>
         <string name="listitem_castandcrew">Cast and crew info</string>
-        <string name="listitem_checkbox_seenit">Seen it?</string>
-    <string name="listitem_checkbox_wanttoseeit">Want to see it?</string>
+        <string name="listitem_checkbox_seenit">I\'ve seen this</string>
+    <string name="listitem_checkbox_wanttoseeit">On my watchlist</string>
+    <string name="listitem_checkbox_inmycollection">In my collection</string>
 
-
-
-    <!-- Strings specifically written for TimeVortex program-->
 
     <string name="mynotes_title_label">My notes</string>
     <string name="mynotes_edittext_hint">Take notes, or write your own review here!</string>
@@ -59,7 +57,6 @@
     <string name="textviewBestOfLMMyles">L.M. Myles \n2014</string>
     <string name="textviewBestOfBahn">Time Vortex \nranking</string>
 
-    <!-- Strings from Inspirer program, unchanged -->
 <string name="update">Update</string>
     <string name="search_results">Search Results</string>
     <string name="search">Search</string>

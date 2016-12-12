@@ -172,15 +172,25 @@
                 android:padding="6dp"
                 android:textColor="@color/white" />
 
-            <!-- wantToSeeIt? -->
-            <CheckBox
-                android:id="@+id/checkBox_listitem_wanttoseeit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/listitem_checkbox_wanttoseeit"
-                android:layout_toRightOf="@+id/checkBox_listitem_seenit"
-                android:padding="6dp"
-                android:textColor="@color/white" />
+                <!-- wantToSeeIt? -->
+                <CheckBox
+                    android:id="@+id/checkBox_listitem_wanttoseeit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listitem_checkbox_wanttoseeit"
+                    android:layout_toRightOf="@+id/checkBox_listitem_seenit"
+                    android:padding="6dp"
+                    android:textColor="@color/white" />
+
+                <!-- wantToSeeIt? -->
+                <CheckBox
+                    android:id="@+id/checkBox_listitem_iOwnIt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listitem_checkbox_inmycollection"
+                    android:layout_toRightOf="@+id/checkBox_listitem_wanttoseeit"
+                    android:padding="6dp"
+                    android:textColor="@color/white" />
         </LinearLayout>
 
         <!-- user-generated star rating -->

@@ -76,6 +76,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private TextView tvstoryCastAndCrew;
 	private CheckBox seenIt;
 	private CheckBox wantToSeeIt;
+	private CheckBox iOwnIt;
 	private TextView TVuserStarRatingTitle;
 	private RatingBar userStarRating;
 	private float userStarRatingNumber; // app user's rating of the episode
@@ -146,8 +147,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		TVStory = bundle.getParcelable("selectedTVStory");
 		searchTerm = bundle.getParcelable("searchTerm");
 		userTVStoryInfo = bundle.getParcelable("userTVStoryInfo");
-
-
+		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
 	}
 
 	@Override
@@ -245,6 +245,11 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 				userTVStoryInfo.setiWantToSeeIt(isChecked);
 			}
 		});
+		iOwnIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				userTVStoryInfo.setiOwnIt(isChecked);
+			}
+		});
 		addListenerOnRatingBar();
 		imageButtonBestOfBBCAmerica.setOnClickListener(this);
 		imageButtonBestOfDWM2009.setOnClickListener(this);
@@ -294,6 +299,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		tvstoryCastAndCrew = (TextView) rootView.findViewById(R.id.txt_fullpagetvstory_castandcrew);
 		seenIt = (CheckBox) rootView.findViewById(R.id.checkBox_listitem_seenit);
 		wantToSeeIt = (CheckBox) rootView.findViewById(R.id.checkBox_listitem_wanttoseeit);
+		iOwnIt = (CheckBox) rootView.findViewById(R.id.checkBox_listitem_iOwnIt);
 		TVuserStarRatingTitle = (TextView) rootView.findViewById(R.id.textview_myrating);
 		userStarRating = (RatingBar) rootView.findViewById(R.id.UserStarRatingBar);
 		TVMyNotesTitle = (TextView) rootView.findViewById(R.id.textview_mynotes_title);
@@ -372,7 +378,9 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 //					userTVStoryInfo.setUserStarRatingNumber(userStarRating.getRating());
 					userTVStoryInfo.setIveSeenIt(seenIt.isChecked());
 					userTVStoryInfo.setiWantToSeeIt(wantToSeeIt.isChecked());
+					userTVStoryInfo.setiOwnIt(iOwnIt.isChecked());
 					userTVStoryInfo.setUserAtoF(0);
+					allUserTVStoryInfo.set(userTVStoryInfo.getStoryID()-1,userTVStoryInfo);
 
 					task = new UpdateUserTVStoryInfoTask(getActivity());
 					task.execute((Void) null);
@@ -429,6 +437,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			// todo UserTVStoryInfo here
 			seenIt.setChecked(userTVStoryInfo.haveISeenIt());
 			wantToSeeIt.setChecked(userTVStoryInfo.doiWantToSeeIt());
+			iOwnIt.setChecked(userTVStoryInfo.doiOwnIt());
 //			userStarRating.setRating(userTVStoryInfo.getUserAtoF());
 			EdtxtMyNotes.setText(userTVStoryInfo.getUserReview());
 		}
@@ -470,7 +479,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			if (activityWeakRef.get() != null
 					&& !activityWeakRef.get().isFinishing()) {
 				if (result != -1)
-					Toast.makeText(activityWeakRef.get(), "TVStory Saved", Toast.LENGTH_LONG).show();
+					Toast.makeText(activityWeakRef.get(), "userTVStoryInfo Saved", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

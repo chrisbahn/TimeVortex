@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.test.MoreAsserts;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,6 +61,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 	private ImageButton WeepingAngelsImageButton;
 
 	private CheckBox checkBoxWantToSeeIt;
+	private CheckBox checkBoxInMyCollection;
 	private RadioGroup radioGroupSeenIt;
 	private RadioButton radioButtonSeenItYes;
 	private RadioButton radioButtonSeenItNo;
@@ -77,7 +79,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 	DatePickerDialog datePickerDialog;
 	Calendar dateCalendar;
 
-	SearchTerm searchTerm = new SearchTerm(); // this collects all the search parameters that tell TVStoryDAO which SQLite fields to search
+	SearchTerm searchTerm = new SearchTerm(); // this collects all the search parameters that tell TVStoryDAO how to narrow down the returned list
 	TVStory TVStory = null;
 	private TVStoryDAO tvstoryDAO;
     OnSearchButtonClickedListener mSearchClicked;
@@ -133,7 +135,11 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 				searchTerm.setWantToSeeIt(isChecked);
 			}
 		});
-
+		checkBoxInMyCollection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				searchTerm.setWantToSeeIt(isChecked);
+			}
+		});
 		radioGroupSeenIt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (radioButtonSeenItYes.isChecked()) {
@@ -143,6 +149,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 				} else if (radioButtonSeenItAll.isChecked()) {
 					searchTerm.setSeenIt("everything");
 				}
+				Log.d("radioGroupSeenIt: ", searchTerm.getSeenIt());
 			}
 		});
 
@@ -204,6 +211,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 		WeepingAngelsImageButton = (ImageButton) rootView.findViewById(R.id.imageButtonWeepingAngels);
 
 		checkBoxWantToSeeIt = (CheckBox) rootView.findViewById(R.id.checkBoxWantToSeeIt);
+		checkBoxInMyCollection = (CheckBox) rootView.findViewById(R.id.checkBoxInMyCollection);
 		radioGroupSeenIt = (RadioGroup) rootView.findViewById(R.id.radioGroupSeenIt);
 		radioButtonSeenItYes = (RadioButton) rootView.findViewById(R.id.radioButtonSeenItYes);
 		radioButtonSeenItNo = (RadioButton) rootView.findViewById(R.id.radioButtonSeenItNo);
@@ -433,8 +441,6 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 		Doctor11ImageButton.setBackgroundColor(Color.rgb(10,23,72));
 		Doctor12ImageButton.setBackgroundColor(Color.rgb(10,23,72));
 	}
-
-
 	public void clearOtherCastImageButtons() {
 		DaleksImageButton.setBackgroundColor(Color.rgb(10,23,72));
 		CybermenImageButton.setBackgroundColor(Color.rgb(10,23,72));

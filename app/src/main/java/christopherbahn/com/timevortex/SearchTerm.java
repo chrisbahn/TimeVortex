@@ -21,11 +21,13 @@ public class SearchTerm implements Parcelable {
     private String crew;
     private String seenIt; // NOT boolean so I can get three states: true/false/both
     private boolean wantToSeeIt;
+    private boolean iOwnIt;
     private String userReview; // A space for the app user to write an opinion on the story
     private float userStarRatingNumber; // app user's rating of the episode
     private String bestOfLists;
     private String rankingsHowMany;
     private String rankingsCriticLists;
+
 
     public SearchTerm() {
         super();
@@ -47,6 +49,7 @@ public class SearchTerm implements Parcelable {
         this.crew = in.readString();
         this.seenIt = (in.readString());
         this.wantToSeeIt = Boolean.parseBoolean(in.readString());
+        this.iOwnIt = Boolean.parseBoolean(in.readString());
         this.userReview = in.readString();
         this.userStarRatingNumber = Float.parseFloat(in.readString());
         this.bestOfLists = in.readString();
@@ -69,6 +72,7 @@ public class SearchTerm implements Parcelable {
         this.crew = null;
         this.seenIt = seenIt;
         this.wantToSeeIt = wantToSeeIt;
+        this.iOwnIt = iOwnIt;
         this.userReview = userReview;
         this.userStarRatingNumber = userStarRatingNumber;
         this.bestOfLists = bestOfLists;
@@ -180,6 +184,14 @@ public class SearchTerm implements Parcelable {
         this.wantToSeeIt = wantToSeeIt;
     }
 
+    public boolean isIOwnIt() {
+        return iOwnIt;
+    }
+
+    public void setiOwnIt(boolean iOwnIt) {
+        this.iOwnIt = iOwnIt;
+    }
+
     public String getUserReview() {
         return userReview;
     }
@@ -227,7 +239,7 @@ public class SearchTerm implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        // todo may need to set this up as in TVStory's writeToParcel method
+        // todo set this up as in TVStory's writeToParcel method
 //		parcel.writeString(getId().toString());
 //        new ParcelUuid(getId()).writeToParcel(parcel, flags);
 //        parcel.writeString(getTitle());

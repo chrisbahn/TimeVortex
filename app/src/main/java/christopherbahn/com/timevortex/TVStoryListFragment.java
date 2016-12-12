@@ -65,7 +65,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		Bundle bundle = this.getArguments();
 		searchTerm = bundle.getParcelable("searchTerm");
 		allTVStories = bundle.getParcelableArrayList("allTVStories");
-//		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
+		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
 //		searchTerm.setCameFromSearchResult(false);
 
 //		System.out.println("In TVStoryListFragment, allUserTVStoryInfo has " + allUserTVStoryInfo.size() + " elements. The first userReview is " + allUserTVStoryInfo.get(0).getUserReview());
@@ -148,7 +148,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 
 		@Override
 		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
-			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm, allTVStories); // TODO Once it is established that this works for full-list and filtered search results, you can delete TVSearchListFragment and its associated code.
+			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm, allTVStories, allUserTVStoryInfo);
 			return TVStoryList;
 		}
 
@@ -156,7 +156,7 @@ public class TVStoryListFragment extends Fragment implements OnItemClickListener
 		protected void onPostExecute(ArrayList<TVStory> TVStoryList) {
 			if (activityWeakRef.get() != null
 					&& !activityWeakRef.get().isFinishing()) {
-				Log.d("TVStories", TVStoryList.toString());
+				Log.d("TVStoryList", TVStoryList.toString());
 				TVStories = TVStoryList;
 				if (TVStoryList != null) {
 					if (TVStoryList.size() != 0) {

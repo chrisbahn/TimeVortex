@@ -40,19 +40,20 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		super(context);
 	}
 
-	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories) {
+	public ArrayList<TVStory> getSelectedTVStories(SearchTerm searchTerm, ArrayList<TVStory> allTVStories, ArrayList<UserTVStoryInfo> allUserTVStoryInfo) {
 		ArrayList<TVStory> searchResultTVStories = new ArrayList<TVStory>();
 		// populate searchResultTVStories, which will be filtered
 		for (TVStory tvStory : allTVStories) {
 			searchResultTVStories.add(tvStory);
 		}
 		// todo: basic search criteria: title, doctor, othercast. Full implementation requires partial text search for Title (so you can pull up both Peladon episodes, etc.) and an ArrayList<DWCharacter> search for Doctor and Othercast.
-		// todo: User search/filter criteria: wanttoseeit, seenit, userstarrating. These should all be implemented with Firebase search in mind
+		// todo: User search/filter criteria: wanttoseeit, seenit, userstarrating. These should all be implemented with Firebase search in mind. THE BEST WAY TO DO THIS, I THINK, IS TO MAKE ArrayList<UserTVStoryInfo> allUserTVStoryInfo. Otherwise you have a maze of Listeners. Repopulate allUserTVStoryInfo every time TVStoryDAO.update() is called. Not quite how I made FullPageFragment work, though... In fact I avoided creating allUserTVStoryInfo. Hmmm..... You'd need to create it anyway if you want any user-created info to show up on a list.
 		if (searchTerm.cameFromSearchResult() == true) {
 			Iterator<TVStory> itr = allTVStories.iterator();
 			while (itr.hasNext()) {
 			TVStory tvStory = itr.next();
-				if (searchTerm.getTitle() != null) {
+				UserTVStoryInfo userTVStoryinfo = allUserTVStoryInfo.get(tvStory.getStoryID()-1);
+ 				if (searchTerm.getTitle() != null) {
 					int isTitleSearchTermFound = tvStory.getTitle().toLowerCase().indexOf(searchTerm.getTitle().toLowerCase());
 					if (isTitleSearchTermFound == - 1) {
 						searchResultTVStories.remove(tvStory); // if title searchterm is NOT found
@@ -69,6 +70,27 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 						searchResultTVStories.remove(tvStory);
 					}
 				}
+				if (searchTerm.getSeenIt() == "true") {
+					if (userTVStoryinfo.haveISeenIt() == false) {
+						searchResultTVStories.remove(tvStory);
+					}
+				}
+				if (searchTerm.getSeenIt() == "false") {
+					if (userTVStoryinfo.haveISeenIt() == true) {
+						searchResultTVStories.remove(tvStory);
+					}
+				}
+				if (searchTerm.isWantToSeeIt() == true) {
+					if (userTVStoryinfo.doiWantToSeeIt() == false) {
+						searchResultTVStories.remove(tvStory);
+					}
+				}
+				if (searchTerm.isIOwnIt() == true) {
+					if (userTVStoryinfo.doiOwnIt() == false) {
+						searchResultTVStories.remove(tvStory);
+					}
+				}
+
 			}
 			// This will order by storyID, BestOf, or whatever criteria
 			searchResultTVStories = orderTVStoriesBy(searchTerm, searchResultTVStories);
@@ -176,7 +198,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		TestUserTVStoryInfoChildrenRef.child("userReview").setValue(userTVStoryInfo.getUserReview());
 		TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(userTVStoryInfo.getUserAtoF());
 		TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(userTVStoryInfo.getNumberRanking());
-
+		Log.d("update UTVI", String.valueOf(userTVStoryInfo.getStoryID()) + " " + String.valueOf(userTVStoryInfo.haveISeenIt()) + " " + userTVStoryInfo.getUserReview());
 		return '0';
 	}
 

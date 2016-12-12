@@ -24,15 +24,17 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/headline"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
-        <TextView android:id="@+id/textview_search_by_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/search_by_title_label"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-        <EditText android:id="@+id/edittext_search_by_title"
+            android:layout_marginBottom="8dp" />
+
+            <TextView android:id="@+id/textview_search_by_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search_by_title_label"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText android:id="@+id/edittext_search_by_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -40,8 +42,7 @@
             android:layout_below="@+id/textview_search_textfield"
             android:hint="@string/search_by_title_hint"
             android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/white" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -59,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lists I&apos;ve made:"
+                android:text="My lists:"
                 android:id="@+id/textViewMyListsHeader"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -69,8 +70,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Shows on my watchlist"
+                android:text="@string/listitem_checkbox_wanttoseeit"
                 android:id="@+id/checkBoxWantToSeeIt" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/listitem_checkbox_inmycollection"
+                android:id="@+id/checkBoxInMyCollection" />
 
             <RadioGroup
                 android:id="@+id/radioGroupSeenIt"

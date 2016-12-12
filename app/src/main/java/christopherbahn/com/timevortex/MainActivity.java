@@ -70,7 +70,6 @@ import static android.content.ContentValues.TAG;
 // todo Ranked lists of episodes. 1) DIY one made by user. Ideally, this would be a drag-and-drop list of titles that the user can move a selected item up and down. 2) "Professional" rankings: DWMagazine, io9, etc., all of which get pulled into an aggregate best-of list.
 
 
-// ADAPTED FROM Project 2: Inspirer
 // Code to close a fragment adapted from this page: http://stackoverflow.com/a/18110614
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
 //        CustomTVStoryDialogFragment.TVStoryDialogFragmentListener,
@@ -95,8 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TVStoryDAO tvstoryDAO;
     private ArrayList<TVStory> tempMatrix = new ArrayList<TVStory>();
     private ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
-    private ArrayList<UserTVStoryInfo> allUserTVStoryInfo;
-    private ArrayList<UserTVStoryInfo> tempAllUserTVStoryInfo;
+    private ArrayList<UserTVStoryInfo> allUserTVStoryInfo = new ArrayList<UserTVStoryInfo>();
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
     private FBTVStoryListAdapter mFBTVStoryListAdapter;
@@ -201,21 +199,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 setAllTVStories(tempallTVStories);
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
-                // Creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
+                // Following section creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-                for (TVStory TVStory : tempallTVStories) {
-                    Log.d("UTVSInfo creation: ", TVStory.toString());
-                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
-                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
-                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
-                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
-                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
-                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
-                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
-                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
-                }
+                TestUserTVStoryInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+
+                        } else {
+                    for (TVStory TVStory : tempallTVStories) {
+                        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                        DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+                        TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
+                        TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
+                        TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
+                        TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
+                        TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
+                        TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+                        TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
+                        // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
+                        UserTVStoryInfo utvi = new UserTVStoryInfo();
+                        utvi.setStoryID(TVStory.getStoryID());
+                        utvi.setIveSeenIt(false);
+                        utvi.setiOwnIt(false);
+                        utvi.setiWantToSeeIt(false);
+                        utvi.setUserReview("");
+                        utvi.setUserAtoF(0);
+                        utvi.setNumberRanking(0);
+                        allUserTVStoryInfo.add(utvi);
+                    }
+
+                }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("The read failed: " + databaseError.getCode());
+                    }
+                });
+
+
+
+//                // todo Problem: The UTVSInfo node and allUserTVStoryInfo creation work OK while the program is running BUT clear the decks anytime the program is restarted! Maybe can fix it with this code: https://gist.github.com/anantn/4323949 which checks if a given named node already exists. FIRST fix search-by-UTVI
+//                for (TVStory TVStory : tempallTVStories) {
+//                    Log.d("UTVSInfo creation: ", TVStory.toString());
+//                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+//                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
+//                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
+//                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
+//                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
+//                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
+//                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+//                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
+//                    // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
+//                        UserTVStoryInfo utvi = new UserTVStoryInfo();
+//                        utvi.setStoryID(TVStory.getStoryID());
+//                        utvi.setIveSeenIt(false);
+//                        utvi.setiOwnIt(false);
+//                        utvi.setiWantToSeeIt(false);
+//                        utvi.setUserReview("");
+//                        utvi.setUserAtoF(0);
+//                        utvi.setNumberRanking(0);
+//                        allUserTVStoryInfo.add(utvi);
+//                }
+                setAllUserTVStoryInfo(allUserTVStoryInfo);
                 switchContentToTVStoryListFragment();
             }
             @Override
@@ -345,6 +393,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle = new Bundle();
         bundle.putParcelable("searchTerm", searchTerm);
         bundle.putParcelableArrayList("allTVStories", allTVStories);
+        bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
         TVStorySearchListFragment.setArguments(bundle);
         switchContent(TVStorySearchListFragment, TVStorySearchListFragment.ARG_ITEM_ID);
     }
@@ -354,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switchContentToTVStoryListFragment();
     }
 
-    // when you click on a TVStory in a list, this launches a single-TVstory FullPageFragment todo This works if the UserTVStoryInfo child node for this TVStory has been pre-populated, but crashes the program on nulls. How to get past this? May be related to the duplicate List/SearchList listener issue. Either duplicate the FIrebase wrapper in onSearchListItemClicked or finally take the time to kill that whole section. Or: Prepopulate user info on program launch, or perhaps User signup. Or, find a way to skip-if-null
+    // when you click on a TVStory in a list, this launches a single-TVstory FullPageFragment
     public void onListItemClicked(final TVStory tvStory, final SearchTerm searchTerm) {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
@@ -363,13 +412,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "on User data change");
                 UserTVStoryInfo userTVStoryInfo = dataSnapshot.child(String.valueOf(tvStory.getStoryID())).getValue(UserTVStoryInfo.class);
-                System.out.println("In tvstory_fullpage_fragment TestUserTVStoryInfoRef.addValueEventListener, userTVStoryInfo review says: " + userTVStoryInfo.getUserReview());
                 TVStoryFullPageFragment = new TVStoryFullPageFragment();
                 setFragmentTitle(R.string.app_name);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("selectedTVStory", tvStory);
                 bundle.putParcelable("searchTerm", searchTerm);
                 bundle.putParcelable("userTVStoryInfo", userTVStoryInfo);
+                bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
                 TVStoryFullPageFragment.setArguments(bundle);
                 System.out.println("In MainActivity onListItemClicked, userTVStoryInfo's user review says: " + userTVStoryInfo.getUserReview());
                 Log.d("onListItemClicked", tvStory.toString());
@@ -391,13 +440,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "on User data change");
                 UserTVStoryInfo userTVStoryInfo = dataSnapshot.child(String.valueOf(tvStory.getStoryID())).getValue(UserTVStoryInfo.class);
-                System.out.println("In tvstory_fullpage_fragment TestUserTVStoryInfoRef.addValueEventListener, userTVStoryInfo review says: " + userTVStoryInfo.getUserReview());
                 TVStoryFullPageFragment = new TVStoryFullPageFragment();
                 setFragmentTitle(R.string.app_name);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("selectedTVStory", tvStory);
                 bundle.putParcelable("searchTerm", searchTerm);
                 bundle.putParcelable("userTVStoryInfo", userTVStoryInfo);
+                bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
                 TVStoryFullPageFragment.setArguments(bundle);
                 Log.d("onListItemClicked", tvStory.toString());
                 System.out.println("In MainActivity onListItemClicked, userTVStoryInfo's user review says: " + userTVStoryInfo.getUserReview());
@@ -504,6 +553,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bundle bundle = new Bundle();
         bundle.putParcelable("searchTerm", searchTerm);
         bundle.putParcelableArrayList("allTVStories", allTVStories);
+        bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
         TVStoryListFragment.setArguments(bundle);
         switchContent(TVStoryListFragment, TVStoryListFragment.ARG_ITEM_ID);
     }
@@ -512,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setFragmentTitle(R.string.getrandom_button_label);
         Random randomizer = new Random();
         TVStory tvStory = allTVStories.get(randomizer.nextInt(allTVStories.size()));
-        UserTVStoryInfo userTVStoryInfo = allUserTVStoryInfo.get(tvStory.getStoryID());
+        UserTVStoryInfo userTVStoryInfo = allUserTVStoryInfo.get(tvStory.getStoryID()-1);
         SearchTerm searchTerm = new SearchTerm();
         searchTerm.setCameFromSearchResult(false);
         searchTerm.setStoryID(randomizer.nextInt(allTVStories.size()));
@@ -531,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void switchContentToSearchFragment() {
         setFragmentTitle(R.string.gotosearchpage_button_label);
         TVStorySearchFragment = new TVStorySearchFragment();
-        Toast.makeText(this, "Search a TVStory!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Search for a TVStory!", Toast.LENGTH_LONG).show();
         switchContent(TVStorySearchFragment, TVStorySearchFragment.ARG_ITEM_ID);
     }
 

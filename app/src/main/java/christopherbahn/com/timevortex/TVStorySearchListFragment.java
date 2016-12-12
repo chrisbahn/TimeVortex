@@ -29,6 +29,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	ListView tvstorySearchListView;
 	ArrayList<TVStory> TVStories;
 	ArrayList<TVStory> allTVStories;
+	ArrayList<UserTVStoryInfo> allUserTVStoryInfo;
 	private SearchTerm searchTerm;
 	TVStoryListAdapter TVStoryListAdapter;
 	TVStoryDAO tvstoryDAO;
@@ -49,6 +50,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 		Bundle bundle = this.getArguments();
 		searchTerm = bundle.getParcelable("searchTerm");
 		allTVStories = bundle.getParcelableArrayList("allTVStories");
+		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
 		searchTerm.setCameFromSearchResult(true);
 		View view = inflater.inflate(R.layout.fragment_tvstory_list, container, false);
 		findViewsById(view);
@@ -121,17 +123,14 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	}
 
 	public class GetTVStoryTask extends AsyncTask<SearchTerm, Void, ArrayList<TVStory>> {
-
 		private final WeakReference<Activity> activityWeakRef;
-
 		public GetTVStoryTask(Activity context) {
 			this.activityWeakRef = new WeakReference<Activity>(context);
 		}
 
 		@Override
 		protected ArrayList<TVStory> doInBackground(SearchTerm... params) {
-			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm, allTVStories);
-			Toast.makeText(activity, "made it to doInBackground", Toast.LENGTH_LONG).show();
+			ArrayList<TVStory> TVStoryList = tvstoryDAO.getSelectedTVStories(searchTerm, allTVStories, allUserTVStoryInfo);
 			return TVStoryList;
 		}
 
@@ -139,15 +138,14 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 		protected void onPostExecute(ArrayList<TVStory> TVStoryList) {
 			if (activityWeakRef.get() != null
 					&& !activityWeakRef.get().isFinishing()) {
-				Log.d("TVStories", TVStoryList.toString());
+				Log.d("TVStorySearchList", TVStoryList.toString());
 				TVStories = TVStoryList;
 				if (TVStoryList != null) {
 					if (TVStoryList.size() != 0) {
 						TVStoryListAdapter = new TVStoryListAdapter(activity, TVStoryList);
 						tvstorySearchListView.setAdapter(TVStoryListAdapter);
 					} else {
-						Toast.makeText(activity, "No TVStory Records", Toast.LENGTH_LONG).show();
-						// todo it might be nice to have something else show up here, so that you don't get a blank screen
+//						Toast.makeText(activity, "No TVStory Records", Toast.LENGTH_LONG).show();
 					}
 				}
 
