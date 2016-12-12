@@ -47,7 +47,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 			searchResultTVStories.add(tvStory);
 		}
 		// todo: basic search criteria: title, doctor, othercast. Full implementation requires partial text search for Title (so you can pull up both Peladon episodes, etc.) and an ArrayList<DWCharacter> search for Doctor and Othercast.
-		// todo: User search/filter criteria: wanttoseeit, seenit, userstarrating. These should all be implemented with Firebase search in mind. THE BEST WAY TO DO THIS, I THINK, IS TO MAKE ArrayList<UserTVStoryInfo> allUserTVStoryInfo. Otherwise you have a maze of Listeners. Repopulate allUserTVStoryInfo every time TVStoryDAO.update() is called. Not quite how I made FullPageFragment work, though... In fact I avoided creating allUserTVStoryInfo. Hmmm..... You'd need to create it anyway if you want any user-created info to show up on a list.
+		// todo: User search/filter criteria: userstarrating.
 		if (searchTerm.cameFromSearchResult() == true) {
 			Iterator<TVStory> itr = allTVStories.iterator();
 			while (itr.hasNext()) {

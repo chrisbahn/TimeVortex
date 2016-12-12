@@ -199,27 +199,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 setAllTVStories(tempallTVStories);
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
+
                 // Following section creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-                TestUserTVStoryInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()) {
-
-                        } else {
-                    for (TVStory TVStory : tempallTVStories) {
-                        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-                        DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
-                        TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
-                        TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
-                        TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
-                        TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
-                        TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
-                        TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
-                        TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
-                        // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
+//                // todo Problem: The UTVSInfo node and allUserTVStoryInfo creation work OK while the program is running, meaning that user reviews etc are saved throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo.
+                for (TVStory TVStory : tempallTVStories) {
+//                    Log.d("UTVSInfo creation: ", TVStory.toString());
+                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
+                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
+                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
+                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
+                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
+                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
+                    // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
                         UserTVStoryInfo utvi = new UserTVStoryInfo();
                         utvi.setStoryID(TVStory.getStoryID());
                         utvi.setIveSeenIt(false);
@@ -229,40 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         utvi.setUserAtoF(0);
                         utvi.setNumberRanking(0);
                         allUserTVStoryInfo.add(utvi);
-                    }
-
                 }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        System.out.println("The read failed: " + databaseError.getCode());
-                    }
-                });
-
-
-
-//                // todo Problem: The UTVSInfo node and allUserTVStoryInfo creation work OK while the program is running BUT clear the decks anytime the program is restarted! Maybe can fix it with this code: https://gist.github.com/anantn/4323949 which checks if a given named node already exists. FIRST fix search-by-UTVI
-//                for (TVStory TVStory : tempallTVStories) {
-//                    Log.d("UTVSInfo creation: ", TVStory.toString());
-//                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
-//                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
-//                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
-//                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
-//                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
-//                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
-//                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
-//                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
-//                    // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
-//                        UserTVStoryInfo utvi = new UserTVStoryInfo();
-//                        utvi.setStoryID(TVStory.getStoryID());
-//                        utvi.setIveSeenIt(false);
-//                        utvi.setiOwnIt(false);
-//                        utvi.setiWantToSeeIt(false);
-//                        utvi.setUserReview("");
-//                        utvi.setUserAtoF(0);
-//                        utvi.setNumberRanking(0);
-//                        allUserTVStoryInfo.add(utvi);
-//                }
                 setAllUserTVStoryInfo(allUserTVStoryInfo);
                 switchContentToTVStoryListFragment();
             }
