@@ -35,9 +35,7 @@ import android.widget.Toast;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -80,8 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TVStoryFullPageFragment.OnSearchButtonClickedListener,
         TVStoryListFragment.OnListItemClickedListener,
         TVStorySearchFragment.OnSearchButtonClickedListener,
-        TVStorySearchListFragment.onSearchListItemClickedListener,
-        GoogleApiClient.OnConnectionFailedListener {
+        TVStorySearchListFragment.onSearchListItemClickedListener {
 
     private Fragment contentFragment;
     private TVStoryListFragment TVStoryListFragment;
@@ -101,41 +98,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
     private FBTVStoryListAdapter mFBTVStoryListAdapter;
-    private String mUsername;
-    private String mPhotoUrl;
-    public static final String ANONYMOUS = "anonymous";
-    // Firebase instance variables
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Set default username is anonymous.
-        mUsername = ANONYMOUS;
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return;
-        } else {
-            mUsername = mFirebaseUser.getDisplayName();
-            if (mFirebaseUser.getPhotoUrl() != null) {
-                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-            }
-        }
 
         gotoMainSearchListButton = (Button) findViewById(R.id.gotomainsearchlist_button);
         gotoSearchPageButton = (Button) findViewById(R.id.gotosearchpage_button);
@@ -263,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */).build();
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -303,11 +276,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_random:
                 goToRandomTVStory();
                 return true;
-            case R.id.sign_out_menu:
-                mFirebaseAuth.signOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                mUsername = ANONYMOUS;
-                startActivity(new Intent(this, SignInActivity.class));
+            case R.id.action_logout:
+                goToRandomTVStory();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -601,13 +571,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onStart() {
         super.onStart();
 
-        // Check if user is signed in.
-        // TODO: Add code to check if user is signed in.
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        mGoogleApiClient.connect();
-        AppIndex.AppIndexApi.start(mGoogleApiClient, getIndexApiAction());
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
@@ -616,15 +583,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(mGoogleApiClient, getIndexApiAction());
-        mGoogleApiClient.disconnect();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 }

@@ -27,6 +27,10 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom|withText"
         android:title="@string/getrandom_button_label"/>
+    <item android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        android:title="@string/action_logout"
+        android:showAsAction="ifRoom|withText"></item>
 
     <item
         android:id="@+id/sign_out_menu"
