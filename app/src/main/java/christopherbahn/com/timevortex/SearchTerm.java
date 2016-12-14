@@ -239,7 +239,6 @@ public class SearchTerm implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        // todo set this up as in TVStory's writeToParcel method
 //		parcel.writeString(getId().toString());
 //        new ParcelUuid(getId()).writeToParcel(parcel, flags);
 //        parcel.writeString(getTitle());

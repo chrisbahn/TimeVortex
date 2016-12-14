@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+// NOTE: Not yet implemented.
+
+
 /**
  * Created by christopherbahn on 12/9/15.
  */
@@ -40,7 +43,6 @@ public class DWCharacter implements Parcelable {
 
     @Override
     public String toString() {
-        // todo fix this
         return "[" + characterID + ": " + name + "]";
 //        return "TVStory [id=" + mId +
 //                ", title=" + mTitle +
@@ -80,7 +82,6 @@ public class DWCharacter implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        // todo fix this
 //		parcel.writeString(getId().toString());
 //        new ParcelUuid(getId()).writeToParcel(parcel, flags);
 //        parcel.writeString(getTitle());

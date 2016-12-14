@@ -12,8 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-// todo implement TABLE_DWCHARACTERS
-// todo implement TABLE_DWCREW
+// NOTE: This class is a leftover from the previous version of this program that used a SQLite database, and  is no longer being used
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -21,8 +20,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 17;
 
 	static final String KEY_ROWID = "_id";
-	protected static final String TABLE_DWCHARACTERS = "dwcharacters_table"; // TODO Implement this; currently program uses just a String
-	protected static final String TABLE_DWCREW = "dwcrew_table"; // TODO Implement this; currently program uses just a String
+	protected static final String TABLE_DWCHARACTERS = "dwcharacters_table";
+	protected static final String TABLE_DWCREW = "dwcrew_table";
 	protected static final String TABLE_TVSTORYS = "tvstorys_table";
 
 	// TVSTORYS database
@@ -35,9 +34,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     protected static final String COL_EPISODES = "episodes";
     protected static final String COL_EPISODELENGTH = "episodelength";
     protected static final String COL_YEARPRODUCED = "yearproduced";
-    protected static final String COL_OTHERCAST = "othercast"; // TODO Implement ArrayList functionality
+    protected static final String COL_OTHERCAST = "othercast";
     protected static final String COL_SYNOPSIS = "synopsis";
-    protected static final String COL_CREW = "crew"; // TODO Implement ArrayList functionality
+    protected static final String COL_CREW = "crew";
     protected static final String COL_SEENIT = "seenit";
 	protected static final String COL_WANTTOSEEIT = "wanttoseeit";
 	protected static final String COL_ASIN = "asin";

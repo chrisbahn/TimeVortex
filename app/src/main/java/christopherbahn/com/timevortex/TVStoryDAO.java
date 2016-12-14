@@ -46,8 +46,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		for (TVStory tvStory : allTVStories) {
 			searchResultTVStories.add(tvStory);
 		}
-		// todo: basic search criteria: title, doctor, othercast. Full implementation requires partial text search for Title (so you can pull up both Peladon episodes, etc.) and an ArrayList<DWCharacter> search for Doctor and Othercast.
-		// todo: User search/filter criteria: userstarrating.
+		// Can search by three TVStory criteria (title, doctor, othercast), and three UserTVStoryInfo criteria, the seenit/ewanttoseeit/iownit buttons. Full implementation will include ArrayList<DWCharacter> search for Doctor and Othercast, and searches by user/critic rating.
 		if (searchTerm.cameFromSearchResult() == true) {
 			Iterator<TVStory> itr = allTVStories.iterator();
 			while (itr.hasNext()) {
@@ -111,9 +110,8 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 		return searchResultTVStories;
 	}
 
-	// TODO Implement user-ranked best-of list and sort.
 	public ArrayList<TVStory> orderTVStoriesBy(SearchTerm searchTerm, ArrayList<TVStory> searchResultTVStories) {
-		// The ArrayList can be reordered after filtering with Collections.sort(), as per http://stackoverflow.com/questions/16751540/sorting-an-object-arraylist-by-an-attribute-value-in-java. This works by comparing an attribute of one TVStory against the same attribute of another TVStory, and so on down the list. You could do this by Title to sort alphabetically, by Doctor, or by a particular best-of column.
+		// Reorders an ArrayList by a chosen criteria (title, storyID, best-of ranking, etc) by using Collections.sort() and the TVStoryComparator class.
 		ArrayList<TVStory> orderedTVStories = new ArrayList<TVStory>();
 
 		// The following if-filter looks for sorting searchTerm, then filters out any nulls or zeroes in that category (meaning, story wasn't ranked in list) into new ArrayList, then sort by chosen category
@@ -187,7 +185,7 @@ public class TVStoryDAO extends TimeVortexDBDAO {
 	}
 
 
-	// Saves changes to the user's flags/ratings/reviews on a particular TVStory
+	// Saves changes to the user's flags/ratings/reviews on a particular TVStory back to the Firebase node. The ArrayList also saves this information and will continue to control display of UserTVStoryInfo while the user is logged in, but when the user logs out, and then comes back and logs in again, the Firebase node will then create a new ArrayList with the saved information.
 	public long update(UserTVStoryInfo userTVStoryInfo) {
 		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 		DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(userTVStoryInfo.getStoryID()));

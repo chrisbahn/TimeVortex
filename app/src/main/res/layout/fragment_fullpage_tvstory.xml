@@ -210,7 +210,6 @@
             android:padding="6dp"
             />
 
-        <!-- TODO aggregate star rating -->
 
 
         <TextView android:id="@+id/textview_mynotes_title"

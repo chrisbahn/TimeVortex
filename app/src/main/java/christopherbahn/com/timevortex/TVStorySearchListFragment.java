@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+// TVStoryListFragment controls calling the entire allTVSTories list of episodes, wuch as when you click on "See All Episodes" button at the top of the page. TVStorySearchListFragment handles any search that returns only a subset of that list
 
 public class TVStorySearchListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
 
@@ -96,7 +97,7 @@ public class TVStorySearchListFragment extends Fragment implements OnItemClickLi
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
 		TVStory TVStory = (TVStory) parent.getItemAtPosition(position);
 
-		// todo In previous iteration, LongClick deleted a list item. I don't want the user to be able to do that, and have commented out that code, but I haven't decided if I still want to use LongClick for something else, so haven't deleted the whole thing.
+		// todo In future iteration, this will pop up a dialog on an episode list so user can set UserTVStoryInfo for a chosen episode without leaving the list and going to FullPageFragment.
 		// Use AsyncTask to delete from database
 //		tvstoryDAO.delete(TVStory);
 //		TVStoryListAdapter.remove(TVStory);

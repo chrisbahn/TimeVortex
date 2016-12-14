@@ -26,8 +26,6 @@ import java.util.Locale;
 
 
 
-// todo Add buttons to call up ranked top-10 and top-20 lists of episodes.
-// todo Wire up a few other-reading website popups.
 public class AboutDoctorWhoFragment extends Fragment implements OnClickListener {
 
 	// UI references

@@ -80,7 +80,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	private TextView TVuserStarRatingTitle;
 	private RatingBar userStarRating;
 	private float userStarRatingNumber; // app user's rating of the episode
-	// TODO compile and add "professional" ratings based on critical reviews and best-of lists
 
 	private TextView TVMyNotesTitle;
 	private ImageView tvstoryImage;
@@ -171,7 +170,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 
 		textviewErrorItunes.setVisibility(View.GONE);
 
-		//todo move to its own method, or to listener ---STORE TO SEARCH IMAGEBUTTONS---
+			// ASIN is an Amazon search term that calls up a specific product, in this case the DVD of the TVStory, if it exists.
 			asin = TVStory.getASIN();
 
 		amazonImageButton.setOnClickListener(new View.OnClickListener() {
@@ -258,23 +257,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		imageButtonBestOfIo9.setOnClickListener(this);
 		imageButtonBestOfLMMyles.setOnClickListener(this);
 		imageButtonBestOfBahn.setOnClickListener(this);
-	}
-
-	protected void resetAllFields() {
-//		EdtxtEnterTitle.setText("");
-//		EdtxtEnterTextfield.setText("");
-//		EdtxtEnterHashtags.setText("");
-
-	}
-
-	private void setTVStory() {// todo this would create a new episode, which we don't want. I should erase this, yes?
-		TVStory = new TVStory();
-//		TVStory.setId(randomUUID());
-//		TVStory.setTitle(EdtxtEnterTitle.getText().toString());
-//		TVStory.setTextField(EdtxtEnterTextfield.getText().toString());
-//		TVStory.setHashtags(EdtxtEnterHashtags.getText().toString());
-//			Date date = new Date();
-//        TVStory.setDateCreated(date);
 	}
 
 	@Override
@@ -418,14 +400,11 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		if (TVStory != null) {
 			// this method sets the values seen on this page to match the TVStory being called
 			tvstoryTitle.setText(TVStory.getStoryID()  + ": " + TVStory.getTitle()); // story title, and storyID
-			// todo if/then statements to catch singular/plural "episode/episodes"
 			tvstorySeasonInfo.setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + "minutes."); // era, yearProduced, season, seasonStoryNumber, episode, episodeLength
 			tvstorySynopsis.setText(TVStory.getSynopsis());
-			// todo getDoctor should return the text name of the character, not the numeral. getOtherCast should return only shortNames in the ListView. create a toString()?
-			// todo getCrew should return the writer only in the listview.
-			tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
-
-			int whichDoctor = TVStory.getDoctor(); // todo These two lines plus the whichDoctor() method sets mention of Doctor in cast list. Will not be needed when DWCast is implemented
+			// The following three lines plus the whichDoctor() method sets mention of Doctor in cast list. Will be implemented differently when DWCharacter class is implemented
+ 			tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
+			int whichDoctor = TVStory.getDoctor();
 			whichDoctorIsIt(whichDoctor);
 
 			Resources res = getContext().getResources();
@@ -434,7 +413,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 			tvstoryImage.setImageDrawable(drawable);
 		}
 		if (userTVStoryInfo != null) {
-			// todo UserTVStoryInfo here
+			// This is where UserTVStoryInfo is set for display
 			seenIt.setChecked(userTVStoryInfo.haveISeenIt());
 			wantToSeeIt.setChecked(userTVStoryInfo.doiWantToSeeIt());
 			iOwnIt.setChecked(userTVStoryInfo.doiOwnIt());
@@ -526,7 +505,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 					iTunesCollectionViewUrl = collectionViewUrl;
 					String longDescription = iTunesTopResult.getString("longDescription");
 					tvstorySynopsis.setText(longDescription + " (Synopsis taken from iTunes.)");
-					String artworkUrl100 = iTunesTopResult.getString("artworkUrl100"); // todo use this to replace default image
+					String artworkUrl100 = iTunesTopResult.getString("artworkUrl100");
 					textviewErrorItunes.setVisibility(View.VISIBLE);
 					textviewErrorItunes.setText(collectionViewUrl);
 				} catch (JSONException e) {
@@ -582,7 +561,6 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	}
 
 
-	// todo A kludgy and temporary way to change the cast info. Will be rewritten!
 	private void whichDoctorIsIt(int whichDoctor){
 		if (whichDoctor==1) {
 			tvstoryCastAndCrew.setText("First Doctor (William Hartnell)");

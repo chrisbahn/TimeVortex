@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-// todo This page is a clone of the Search fragment, and is linked to fragment_rankings_page.xml, both of which I need to convert into a full-fledged page to deal with robust rankings requests.
+// todo NOTE: Not yet implemented. This page is currently just a clone of the Search fragment and will be extensively rewritten, and is linked to fragment_rankings_page.xml.
 
 public class TVStoryRankingsFragment extends Fragment implements OnClickListener {
 
@@ -265,7 +265,6 @@ public class TVStoryRankingsFragment extends Fragment implements OnClickListener
 			mSearchClicked.onSearchButtonClicked(searchTerm);
 		}
 
-		// todo put the handling of ImageButtons in a method? it's very repetitive
 		if (view == Doctor01ImageButton) {
 			clearDoctorImageButtons();
 			if (searchTerm.getDoctor()!=1) {

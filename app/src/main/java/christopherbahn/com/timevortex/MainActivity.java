@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Following section creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-//                // todo Problem: The UTVSInfo node and allUserTVStoryInfo creation work OK while the program is running, meaning that user reviews etc are saved throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo.
+//                // todo The UserTVStoryInfo Firebase node and allUserTVStoryInfo creation work well while the program is running, meaning that user reviews etc are persistent throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo.
                 for (TVStory TVStory : tempallTVStories) {
 //                    Log.d("UTVSInfo creation: ", TVStory.toString());
                     DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
@@ -577,7 +577,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
+                .setName("Time Vortex")
                 // TODO: Make sure this auto-generated URL is correct.
                 .setUrl(Uri.parse("http://christopherbahn.com"))
                 .build();

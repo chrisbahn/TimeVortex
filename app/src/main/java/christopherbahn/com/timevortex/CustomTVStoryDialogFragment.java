@@ -17,7 +17,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-// NOTE: This class is a leftover from the previous version I did for Project 2. It's not being used here right now, but I haven't deleted it because I want to keep the dialog functionality if I find a use for it in a later iteration.
+// NOTE: This class is a leftover from the previous version I did for Project 2. It's not being used here right now, but I have plans to use it when the User functions are set up.
 
 public class CustomTVStoryDialogFragment extends DialogFragment {
 
@@ -32,7 +32,6 @@ public class CustomTVStoryDialogFragment extends DialogFragment {
 //	private CheckBox wantToSeeIt;
 //	private TextView TVuserStarRatingTitle;
 //	private RatingBar userStarRating;
-//	// TODO aggregate star rating
 //	private TextView TVMyNotesTitle;
 //	private EditText EdtxtMyNotes;
 //	private TextView TVTextfield;
@@ -127,7 +126,7 @@ public class CustomTVStoryDialogFragment extends DialogFragment {
 //
 //	private void setValue() {
 //		if (TVStory != null) {
-//			// todo this is what you use to set the values seen on this page to match the TVStory being called
+//			// this is what you use to set the values seen on this page to match the TVStory being called
 ////            EdtxtEnterTitle.setText(TVStory.getTitle());
 ////            EdtxtEnterTextfield.setText(TVStory.getTextField());
 ////            EdtxtEnterHashtags.setText(TVStory.getHashtags());

@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-// todo Can the ListFragment and SearchListFragment stuff be combined? They're doing a lot of the same work, and you have multiple kinds of searching planned
 
 public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 
@@ -46,7 +45,6 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
         CheckBox seenIt;
         CheckBox wantToSeeIt;
         RatingBar userStarRating;
-        // TODO aggregate star rating
     }
 
     @Override
@@ -89,16 +87,9 @@ public class TVStoryListAdapter extends ArrayAdapter<TVStory> {
 		}
 		TVStory TVStory = (TVStory) getItem(position);
         holder.tvstoryTitle.setText(TVStory.getStoryID()  + ": " + TVStory.getTitle()); // story title, and maybe also storyID
-        // todo if/then statements to catch singular/plural "episode/episodes"
         holder.tvstorySeasonInfo.setText(TVStory.getYearProduced()  + ". " + TVStory.getSeason() + " #" + TVStory.getSeasonStoryNumber() + " (" + TVStory.getEra()  + " era). " + TVStory.getEpisodes() + " episodes. " + (TVStory.getEpisodes()*TVStory.getEpisodeLength()) + " minutes."); // era, yearProduced, season, seasonStoryNumber, episode, episodeLength
         holder.tvstorySynopsis.setText(TVStory.getSynopsis());
 		holder.tvstorySynopsis.setVisibility(View.GONE); // not visible in main (all-items) list
-        // todo might be good to limit the size of the synopsis, but they're all blank now anyway so this is for later
-//        if (TVStory.getSynopsis().length() > 100) {
-//            holder.tvstorySynopsis.setText(TVStory.getSynopsis().substring(0, 97) + "...");
-//        }
-        // todo getDoctor should return the text name of the character, not the numeral. getOtherCast should return only shortNames in the ListView. create a toString()?
-        // todo getCrew should return the writer only in the listview.
 		holder.tvstoryCastAndCrew.setText(TVStory.getDoctor() + ", " + TVStory.getOtherCast() + ", " + TVStory.getCrew());
 		holder.tvstoryCastAndCrew.setVisibility(View.GONE); // not visible in main (all-items) list
 

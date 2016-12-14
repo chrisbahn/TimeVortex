@@ -31,9 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-// TODO Add "reset all search fields" button
-// TODO Add selectors to the ImageButtons so that they visually change when clicked: http://developer.android.com/reference/android/widget/ImageButton.html Too time-consuming to do it now.
-
 
 public class TVStorySearchFragment extends Fragment implements OnClickListener {
 
@@ -237,8 +234,6 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 		}
 
 
-
-		// todo put the handling of ImageButtons in a method? it's very repetitive
 		if (view == Doctor01ImageButton) {
 			clearDoctorImageButtons();
 			if (searchTerm.getDoctor()!=1) {
