@@ -137,7 +137,7 @@ public class TVStorySearchFragment extends Fragment implements OnClickListener {
 		});
 		checkBoxInMyCollection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				searchTerm.setWantToSeeIt(isChecked);
+				searchTerm.setiOwnIt(isChecked);
 			}
 		});
 		radioGroupSeenIt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
