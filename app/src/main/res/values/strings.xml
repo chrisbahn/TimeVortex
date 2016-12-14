@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<string name="app_name">Time Vortex</string>
+    <string name="app_name">Time Vortex</string>
     <string name="app_title">Time Vortex</string>
     <string name="app_subtitle">Navigating the history of <i>Doctor Who</i></string>
 
     <string name="listitem_title">1: An Unearthly Child/10,000 B.C.</string>
-        <string name="listitem_seasoninfo">Season and episode info goes here</string>
-        <string name="listitem_synopsis">A short description of the episode</string>
-        <string name="listitem_castandcrew">Cast and crew info</string>
-        <string name="listitem_checkbox_seenit">I\'ve seen this</string>
+    <string name="listitem_seasoninfo">Season and episode info goes here</string>
+    <string name="listitem_synopsis">A short description of the episode</string>
+    <string name="listitem_castandcrew">Cast and crew info</string>
+    <string name="listitem_checkbox_seenit">I\'ve seen this</string>
     <string name="listitem_checkbox_wanttoseeit">On my watchlist</string>
     <string name="listitem_checkbox_inmycollection">In my collection</string>
 
@@ -57,14 +57,35 @@
     <string name="textviewBestOfLMMyles">L.M. Myles \n2014</string>
     <string name="textviewBestOfBahn">Time Vortex \nranking</string>
 
-<string name="update">Update</string>
+    <string name="update">Update</string>
     <string name="search_results">Search Results</string>
     <string name="search">Search</string>
-<string name="add">Add</string>
-<string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="loading">Loading...</string>
+
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="emailpassword_status_fmt">Email User: %s</string>
+    <string name="emailpassword_title_text">Email and Password</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+
+
 
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="login_button_label">Login</string>
+    <string name="sign_up_text">Sign Up!</string>
+    <string name="sign_up_button_label">Sign Up</string>
+    <string name="signup_error_message">Please make sure you enter an email address and password!</string>
+    <string name="signup_error_title">Error!</string>
+    <string name="signup_success">Account successfully created! You can now Login.</string>
+    <string name="login_error_message">Please make sure you enter an email address and password!</string>
+    <string name="login_error_title">Error!</string>
+    <string name="action_logout">Logout</string>
 
 </resources>

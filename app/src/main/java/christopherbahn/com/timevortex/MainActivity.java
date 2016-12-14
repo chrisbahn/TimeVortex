@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private DatabaseReference mDatabase;
     private FBTVStoryListAdapter mFBTVStoryListAdapter;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private String mUserId;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -109,6 +114,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize Firebase Auth and Database Reference
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        if (mFirebaseUser == null) {
+            // Not logged in, launch the Log In activity
+            Log.d("mFirebaseUser == null","User not logged in: Must log in!");
+            loadLogInView();
+        } else {
+            mUserId = mFirebaseUser.getUid();
+            Log.d("mFirebaseUser != null","User logged in: Welcome!");
 
         gotoMainSearchListButton = (Button) findViewById(R.id.gotomainsearchlist_button);
         gotoSearchPageButton = (Button) findViewById(R.id.gotosearchpage_button);
@@ -215,19 +233,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
                     TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
                     // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
-                        UserTVStoryInfo utvi = new UserTVStoryInfo();
-                        utvi.setStoryID(TVStory.getStoryID());
-                        utvi.setIveSeenIt(false);
-                        utvi.setiOwnIt(false);
-                        utvi.setiWantToSeeIt(false);
-                        utvi.setUserReview("");
-                        utvi.setUserAtoF(0);
-                        utvi.setNumberRanking(0);
-                        allUserTVStoryInfo.add(utvi);
+                    UserTVStoryInfo utvi = new UserTVStoryInfo();
+                    utvi.setStoryID(TVStory.getStoryID());
+                    utvi.setIveSeenIt(false);
+                    utvi.setiOwnIt(false);
+                    utvi.setiWantToSeeIt(false);
+                    utvi.setUserReview("");
+                    utvi.setUserAtoF(0);
+                    utvi.setNumberRanking(0);
+                    allUserTVStoryInfo.add(utvi);
                 }
                 setAllUserTVStoryInfo(allUserTVStoryInfo);
                 switchContentToTVStoryListFragment();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
@@ -237,7 +256,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
+            }
+        }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -276,6 +296,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_random:
                 goToRandomTVStory();
                 return true;
+            case R.id.action_logout: {
+//                mFirebaseUser.signOut()
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -582,5 +606,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+
+    private void loadLogInView() {
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
