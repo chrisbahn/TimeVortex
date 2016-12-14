@@ -65,12 +65,6 @@ import static android.R.id.message;
 import static android.content.ContentValues.TAG;
 
 
-// todo  DWCharacter and DWCrew objects which represent people who worked on the series. Used to populate cast lists, character profiles, and implement certain kinds of search
-// todo add images. Picture thumbnail on all TVStory, DWCharacter and DWCrew objects.
-// todo Ranked lists of episodes. 1) DIY one made by user. Ideally, this would be a drag-and-drop list of titles that the user can move a selected item up and down. 2) "Professional" rankings: DWMagazine, io9, etc., all of which get pulled into an aggregate best-of list.
-
-
-// Code to close a fragment adapted from this page: http://stackoverflow.com/a/18110614
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
 //        CustomTVStoryDialogFragment.TVStoryDialogFragmentListener,
         AboutDoctorWhoFragment.OnSearchButtonClickedListener,
@@ -127,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             loadLogInView();
         } else {
             mUserId = mFirebaseUser.getUid();
-            Log.d("mFirebaseUser != null","User logged in: Welcome!");
+            Log.d("mFirebaseUser != null","User " + mUserId + " logged in: Welcome!");
 
         gotoMainSearchListButton = (Button) findViewById(R.id.gotomainsearchlist_button);
         gotoSearchPageButton = (Button) findViewById(R.id.gotosearchpage_button);
@@ -298,7 +292,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 goToRandomTVStory();
                 return true;
             case R.id.action_logout: {
-//                mFirebaseUser.signOut()
+                mFirebaseAuth.signOut();
+                Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 return true;
             }
         }
@@ -581,7 +579,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Thing object = new Thing.Builder()
                 .setName("Main Page") // TODO: Define a title for the content shown.
                 // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .setUrl(Uri.parse("http://christopherbahn.com"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)
                 .setObject(object)
