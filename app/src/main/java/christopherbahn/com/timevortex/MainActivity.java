@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUserId;
+    private String mUserName;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     /**
