@@ -55,8 +55,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // TODO Add something here that will get passed to MainActivity informing it of a new user. If (and only if) there is a new user, the User's personal allUserTVStoryInfo node and ArrayList will be created.
+                                        // TODO Add something here that will get passed to MainActivity informing it of a new user. If (and only if) there is a new user, the User's personal allUserTVStoryInfo node and ArrayList will be created. Lee p. 61.
                                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                        Bundle signUpExtras = new Bundle();
+                                        signUpExtras.putBoolean("New user", true);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);

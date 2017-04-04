@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String mUserId;
     private String mUserName;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private boolean isNewUser = false;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -120,8 +121,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("mFirebaseUser == null","User not logged in: Must log in!");
             loadLogInView();
         } else {
+//            intent.putExtra("New user", true);
+        Bundle signUpExtras = getIntent().getExtras();
+        isNewUser = signUpExtras.getBoolean("New user");
             mUserId = mFirebaseUser.getUid();
-            Log.d("mFirebaseUser != null","User " + mUserId + " logged in: Welcome!");
+            if (isNewUser) {
+                Log.d("mFirebaseUser != null","User " + mUserId + " is a new user: Welcome!");
+            } else {
+                Log.d("mFirebaseUser != null","User " + mUserId + " is back again: Welcome!");
+            }
 
         gotoMainSearchListButton = (Button) findViewById(R.id.gotomainsearchlist_button);
         gotoSearchPageButton = (Button) findViewById(R.id.gotosearchpage_button);
@@ -191,10 +199,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DatabaseReference DWCrewRef = mDatabase.getReference("DWCrew");
         DWCharacterRef.setValue("Fourth Doctor");
         DWCrewRef.setValue("Tom Baker");
-        DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1");
-        TestUserRef.child("username").setValue("chrisbahn");
-        TestUserRef.child("email").setValue("a@b.com");
-        DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
 
 //        loadListofAllStoriesTextFileIntoFirebase(); // uncomment this line when there is a database change you want to port into Firebase
         // <%%%END FIREBASE SETUP%%%>
@@ -215,8 +219,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // Following section creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1");
+                TestUserRef.child("username").setValue("chrisbahn");
+                TestUserRef.child("email").setValue("a@b.com");
                 DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-//                // todo The UserTVStoryInfo Firebase node and allUserTVStoryInfo creation work well while the program is running, meaning that user reviews etc are persistent throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo.
+//                // todo The UserTVStoryInfo Firebase node and allUserTVStoryInfo creation work well while the program is running, meaning that user reviews etc are persistent throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo. The interaction with Firebase to create/retrieve basic user data (profile info) should probably happen in LoginActivity/SignUpActivity and be passed via the Intent bundle. Existing allUserTVStoryInfo can be downloaded during LoginActivity also, but creating new allUserTVStoryInfo should happen here, because it requires a complete allTVStories ArrayList to match up properly. You could also check to see if an existing allUserTVStoryInfo is the same length as allTVStories; if not, this means new material (like a new season) has been added. If I change details of a TVStory item, like adding the cast list, that should not affect allUserTVStoryInfo either way. That may change when DWCharacter and DWCrew are added, depending on the new setup interacts, so keep it in mind.
                 for (TVStory TVStory : tempallTVStories) {
 //                    Log.d("UTVSInfo creation: ", TVStory.toString());
                     DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
@@ -614,4 +621,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+
 }

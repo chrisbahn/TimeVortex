@@ -8,8 +8,6 @@ import java.util.ArrayList;
  * Created by christopherbahn on 11/17/16.
  */
 
-// [START blog_user_class]
-
 @IgnoreExtraProperties
 public class User {
 
@@ -50,4 +48,3 @@ public class User {
         this.userTVStoryInfo = userTVStoryInfo;
     }
 }
-// [END blog_user_class]

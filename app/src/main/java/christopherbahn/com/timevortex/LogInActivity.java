@@ -68,6 +68,8 @@ public class LogInActivity extends AppCompatActivity {
                                         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        Bundle signUpExtras = new Bundle();
+                                        signUpExtras.putBoolean("New user", false);
                                         startActivity(intent);
                                     } else {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(LogInActivity.this);
