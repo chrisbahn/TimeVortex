@@ -21,6 +21,7 @@ public class LogInActivity extends AppCompatActivity {
     protected EditText emailEditText;
     protected EditText passwordEditText;
     protected Button logInButton;
+    protected TextView loginTextView;
     protected TextView signUpTextView;
     private FirebaseAuth mFirebaseAuth;
 
@@ -32,6 +33,7 @@ public class LogInActivity extends AppCompatActivity {
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+        loginTextView = (TextView) findViewById(R.id.loginText_tv);
         signUpTextView = (TextView) findViewById(R.id.signUpText);
         emailEditText = (EditText) findViewById(R.id.emailField);
         passwordEditText = (EditText) findViewById(R.id.passwordField);

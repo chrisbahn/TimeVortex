@@ -78,6 +78,14 @@
             android:text="@string/getrandom_button_label"
             />
     </LinearLayout>
+        <LinearLayout android:id="@+id/user_info_row_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/tardisblue"
+        android:layout_centerHorizontal="true">
     <TextView
         android:id="@+id/app_ui_explainer_tv"
         android:layout_width="wrap_content"
@@ -90,6 +98,19 @@
         android:textStyle="bold"
         android:textSize="10dp"
         android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/current_login_info_tv"
+            android:text="@string/current_login_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ui_buttons_layout"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:paddingBottom="16dp"
+            android:textStyle="bold"
+            android:textSize="10dp" />
+    </LinearLayout>
 
         <ListView
             android:id="@+id/firebaseListView"

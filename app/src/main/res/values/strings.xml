@@ -27,6 +27,8 @@
     <string name="gotomainsearchlist_button_label">See All Episodes</string>
     <string name="gotosearchpage_button_label">Search Episodes</string>
     <string name="app_ui_explainer">Click a list item to see full version.</string>
+    <string name="current_login_info">Current login info: Not logged in.</string>
+
     <string name="button_save_user_changeslabel">Save My Changes</string>
     <string name="button_return_to_list_label">Return To List</string>
     <string name="reset">Exterminate User Data</string>
@@ -79,7 +81,9 @@
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
     <string name="login_button_label">Login</string>
-    <string name="sign_up_text">Sign Up!</string>
+    <string name="loginText_tv">Returning user? Log in below.</string>
+    <string name="sign_up_text">New user? Click here to sign up!</string>
+    <string name="sign_up_instructions">Enter email and password to sign up! You will be able to customize your profile on your user page.</string>
     <string name="sign_up_button_label">Sign Up</string>
     <string name="signup_error_message">Please make sure you enter an email address and password!</string>
     <string name="signup_error_title">Error!</string>

@@ -34,11 +34,14 @@ import com.amazon.device.associates.LinkService;
 import com.amazon.device.associates.NotInitializedException;
 import com.amazon.device.associates.OpenProductPageRequest;
 import com.amazon.device.associates.OpenSearchPageRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.ChildEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -131,6 +134,10 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 	OnSearchButtonClickedListener mSearchClicked;
 	int[] doctorImages = {R.drawable.doctor01, R.drawable.doctor02, R.drawable.doctor03, R.drawable.doctor04, R.drawable.doctor05, R.drawable.doctor06, R.drawable.doctor07, R.drawable.doctor08, R.drawable.doctor09, R.drawable.doctor10, R.drawable.doctor11, R.drawable.doctor12};
 	int[] logoImages = {R.drawable.logodoctor01, R.drawable.logodoctor02, R.drawable.logodoctor03, R.drawable.logodoctor04, R.drawable.logodoctor05, R.drawable.logodoctor06, R.drawable.logodoctor07, R.drawable.logodoctor08, R.drawable.logodoctor09, R.drawable.logodoctor10, R.drawable.logodoctor11, R.drawable.logodoctor12};
+	private FirebaseAuth mFirebaseAuth;
+	private FirebaseUser mFirebaseUser;
+	private String mUserId;
+
 
 	public static final String ARG_ITEM_ID = "tvstory_fullpage_fragment";
 
@@ -147,6 +154,10 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		searchTerm = bundle.getParcelable("searchTerm");
 		userTVStoryInfo = bundle.getParcelable("userTVStoryInfo");
 		allUserTVStoryInfo = bundle.getParcelableArrayList("allUserTVStoryInfo");
+		mFirebaseAuth = FirebaseAuth.getInstance();
+		mFirebaseUser = mFirebaseAuth.getCurrentUser();
+		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+		mUserId = mFirebaseUser.getUid();
 	}
 
 	@Override
@@ -355,7 +366,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 		}
 		else if (view == returnToListButton||view == saveButton) {
 				if (view == saveButton) {
-					// this saves whatever user-editable data was changed
+					// this saves whatever user-editable data was changed to the UTVI object
 					userTVStoryInfo.setUserReview(EdtxtMyNotes.getText().toString());
 //					userTVStoryInfo.setUserStarRatingNumber(userStarRating.getRating());
 					userTVStoryInfo.setIveSeenIt(seenIt.isChecked());
@@ -363,9 +374,21 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 					userTVStoryInfo.setiOwnIt(iOwnIt.isChecked());
 					userTVStoryInfo.setUserAtoF(0);
 					allUserTVStoryInfo.set(userTVStoryInfo.getStoryID()-1,userTVStoryInfo);
-
 					task = new UpdateUserTVStoryInfoTask(getActivity());
 					task.execute((Void) null);
+					Log.i("UTVI CHANGE", "IN UTVI Story " + (userTVStoryInfo.getStoryID()-1) + ", seenIt is now " + seenIt.isChecked()+ ", userReview is now " + EdtxtMyNotes.getText().toString() + " and mUserId is " + mUserId);
+
+					// this saves whatever user-editable data was changed to the user's Firebase node. TODO Changes and being saved simultaneously to both mUserId and "1" nodes. Why is "1" triggered?
+					FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+					DatabaseReference mUserIdUserRef = mDatabase.getReference("Users").child(mUserId);
+					DatabaseReference mUserIdUserTVStoryInfoRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo");
+					DatabaseReference mUserIdUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+					mUserIdUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(seenIt.isChecked());
+					mUserIdUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(iOwnIt.isChecked());
+					mUserIdUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(wantToSeeIt.isChecked());
+					mUserIdUserTVStoryInfoChildrenRef.child("userReview").setValue(EdtxtMyNotes.getText().toString());
+					mUserIdUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+					mUserIdUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
 					}
 				}
 
@@ -485,7 +508,7 @@ public class TVStoryFullPageFragment extends Fragment implements OnClickListener
 					buffer.append( (char) c);
 				}
 				responseString = buffer.toString();
-				Log.i("ITUNES", "String is " + responseString);
+//				Log.i("ITUNES", "String is " + responseString);
 			} catch (Exception e) {
 				Log.e(TAG, "error doinbackground", e);
 				// todo Catch and handle exceptions separately - for parsing the URL, for the conection, for processing the response stream

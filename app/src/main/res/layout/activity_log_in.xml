@@ -9,13 +9,42 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LogInActivity" >
 
+    <LinearLayout android:id="@+id/login_or_signup_row"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/tardisblue"
+        android:layout_centerHorizontal="true">
+    <TextView
+        android:id="@+id/loginText_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginText_tv"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:paddingBottom="16dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/signUpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/headline"
+        android:textStyle="bold"
+        android:text="@string/sign_up_text" />
+</LinearLayout>
+
     <EditText
         android:id="@+id/emailField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:ems="10"
+        android:layout_below="@+id/login_or_signup_row"
         android:inputType="textEmailAddress"
         android:hint="@string/email_hint" >
 
@@ -40,13 +69,5 @@
         android:layout_below="@+id/passwordField"
         android:text="@string/login_button_label" />
 
-    <TextView
-        android:id="@+id/signUpText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="69dp"
-        android:text="@string/sign_up_text" />
 
 </RelativeLayout>

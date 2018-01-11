@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button getRandomEpisodeButton;
     private Button AboutDoctorWhoButton;
     private TextView UIExplainer;
+    private TextView CurrentLoginInfo;
     private TVStoryDAO tvstoryDAO;
     private ArrayList<TVStory> tempMatrix = new ArrayList<TVStory>();
     private ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
@@ -96,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseUser mFirebaseUser;
     private String mUserId;
     private String mUserName;
+    private String mUserEmail;
+    private String mUserDisplayName;
+    private String mUserPhotoUrl;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private boolean isNewUser = false;
 
@@ -123,8 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
 //            intent.putExtra("New user", true);
         Bundle signUpExtras = getIntent().getExtras();
-        isNewUser = signUpExtras.getBoolean("New user");
-            mUserId = mFirebaseUser.getUid();
+//        isNewUser = signUpExtras.getBoolean("New user"); // TODO This line is supposed to flag whether a new user has come from the SignUpActivity or an old user has come from LogInActivity, but it's not working and is causing the program to crash. The line below is a temporary fix.
+        isNewUser = false;
+            mUserId = mFirebaseUser.getUid(); // TODO This is where you would either create a new User or download existing User's information, including mUserName. mUserId == User.userUID
+            mUserEmail = mFirebaseUser.getEmail();
+            mUserDisplayName = mFirebaseUser.getDisplayName();
+            mUserPhotoUrl = String.valueOf(mFirebaseUser.getPhotoUrl());
             if (isNewUser) {
                 Log.d("mFirebaseUser != null","User " + mUserId + " is a new user: Welcome!");
             } else {
@@ -136,6 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getRandomEpisodeButton = (Button) findViewById(R.id.getrandom_button);
         AboutDoctorWhoButton = (Button) findViewById(R.id.aboutdoctorwho_button);
         UIExplainer = (TextView) findViewById(R.id.app_ui_explainer_tv);
+        CurrentLoginInfo = (TextView) findViewById(R.id.current_login_info_tv);
+        CurrentLoginInfo.setText("Welcome " + mUserDisplayName + " " + mUserId); //
+
         tvstoryDAO = new TVStoryDAO(this);
         SearchTerm searchTerm = new SearchTerm();
         final ArrayList<TVStory> allTVStories = new ArrayList<TVStory>();
@@ -197,8 +208,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DatabaseReference TVStoryRef = mDatabase.getReference("TVStory");
         DatabaseReference DWCharacterRef = mDatabase.getReference("DWCharacter");
         DatabaseReference DWCrewRef = mDatabase.getReference("DWCrew");
-        DWCharacterRef.setValue("Fourth Doctor");
-        DWCrewRef.setValue("Tom Baker");
+        DWCharacterRef.setValue("Twelfth Doctor");
+        DWCrewRef.setValue("Peter Capaldi");
 
 //        loadListofAllStoriesTextFileIntoFirebase(); // uncomment this line when there is a database change you want to port into Firebase
         // <%%%END FIREBASE SETUP%%%>
@@ -218,22 +229,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.out.println("FIREBASE TVSTORY LIST UPDATED");
 
                 // Following section creates a set of UserTVStoryInfo nodes for a User to match up with allTVStories. These are called on later to save UserTVStoryInfo data
+//                FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+//                DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1");
+//                TestUserRef.child("username").setValue("chrisbahn");
+//                TestUserRef.child("email").setValue("chrisbahnchrisbahn@gmail.com");
+//
+//
+//                DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
+////                // todo The UserTVStoryInfo Firebase node and allUserTVStoryInfo creation work well while the program is running, meaning that user reviews etc are persistent throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo. The interaction with Firebase to create/retrieve basic user data (profile info) should probably happen in LoginActivity/SignUpActivity and be passed via the Intent bundle. Existing allUserTVStoryInfo can be downloaded during LoginActivity also, but creating new allUserTVStoryInfo should happen here, because it requires a complete allTVStories ArrayList to match up properly. You could also check to see if an existing allUserTVStoryInfo is the same length as allTVStories; if not, this means new material (like a new season) has been added. If I change details of a TVStory item, like adding the cast list, that should not affect allUserTVStoryInfo either way. That may change when DWCharacter and DWCrew are added, depending on the new setup interacts, so keep it in mind.
+//                for (TVStory TVStory : tempallTVStories) {
+////                    Log.d("UTVSInfo creation: ", TVStory.toString());
+//                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+//                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
+//                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
+//                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
+//                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
+//                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
+//                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+//                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
+//                    // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
+//                    UserTVStoryInfo utvi = new UserTVStoryInfo();
+//                    utvi.setStoryID(TVStory.getStoryID());
+//                    utvi.setIveSeenIt(false);
+//                    utvi.setiOwnIt(false);
+//                    utvi.setiWantToSeeIt(false);
+//                    utvi.setUserReview("");
+//                    utvi.setUserAtoF(0);
+//                    utvi.setNumberRanking(0);
+//                    allUserTVStoryInfo.add(utvi);
+//                }
+//                setAllUserTVStoryInfo(allUserTVStoryInfo);
+
+
+                // TODO This section tests whether you can create a User child node using the mUserId variable; if so, you now have a way to connect a user's login to his/her UTVI and etc.
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference TestUserRef = mDatabase.getReference("Users").child("1");
-                TestUserRef.child("username").setValue("chrisbahn");
-                TestUserRef.child("email").setValue("a@b.com");
-                DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-//                // todo The UserTVStoryInfo Firebase node and allUserTVStoryInfo creation work well while the program is running, meaning that user reviews etc are persistent throughout the program's lifetime, BUT because of the way this is set up, the node and ArrayList are both cleared and begun anew anytime the program is restarted. This issue can be fixed when User accounts are set up, because in that case I can force a new allUserTVStoryInfo node&ArrayList to be made only on creation of new User account, and otherwise it loads the User's saved allUserTVStoryInfo. The interaction with Firebase to create/retrieve basic user data (profile info) should probably happen in LoginActivity/SignUpActivity and be passed via the Intent bundle. Existing allUserTVStoryInfo can be downloaded during LoginActivity also, but creating new allUserTVStoryInfo should happen here, because it requires a complete allTVStories ArrayList to match up properly. You could also check to see if an existing allUserTVStoryInfo is the same length as allTVStories; if not, this means new material (like a new season) has been added. If I change details of a TVStory item, like adding the cast list, that should not affect allUserTVStoryInfo either way. That may change when DWCharacter and DWCrew are added, depending on the new setup interacts, so keep it in mind.
+                DatabaseReference mUserIdUserRef = mDatabase.getReference("Users").child(mUserId);
+                mUserIdUserRef.child("username").setValue("ptroughton");
+                mUserIdUserRef.child("email").setValue(mFirebaseUser.getEmail());
+                DatabaseReference mUserIdUserTVStoryInfoRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo");
                 for (TVStory TVStory : tempallTVStories) {
 //                    Log.d("UTVSInfo creation: ", TVStory.toString());
-                    DatabaseReference TestUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
-                    TestUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
-                    TestUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
-                    TestUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
-                    TestUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
-                    TestUserTVStoryInfoChildrenRef.child("userReview").setValue("");
-                    TestUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
-                    TestUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
+                    DatabaseReference mUserIdUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo").child(String.valueOf(TVStory.getStoryID()));
+                    mUserIdUserTVStoryInfoChildrenRef.child("storyID").setValue(TVStory.getStoryID());
+                    mUserIdUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(false);
+                    mUserIdUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(false);
+                    mUserIdUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(false);
+                    mUserIdUserTVStoryInfoChildrenRef.child("userReview").setValue("");
+                    mUserIdUserTVStoryInfoChildrenRef.child("userAtoF").setValue(0);
+                    mUserIdUserTVStoryInfoChildrenRef.child("numberRanking").setValue(0);
                     // Also creates a default set of ArrayList<UserTVStoryInfo> allUserTVStoryInfo, with everything set to zero/blank, which gives an anchoring point for the search function so we can avoid a maze of Listeners
                     UserTVStoryInfo utvi = new UserTVStoryInfo();
                     utvi.setStoryID(TVStory.getStoryID());
@@ -246,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     allUserTVStoryInfo.add(utvi);
                 }
                 setAllUserTVStoryInfo(allUserTVStoryInfo);
+
                 switchContentToTVStoryListFragment();
             }
 
@@ -393,13 +437,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // called when a user saves changes to UserTVStoryInfo - goes back to main list
     public void onSaveButtonClicked() {
         switchContentToTVStoryListFragment();
-    }
+        System.out.println("SAVE BUTTON CLICKED ");
+            }
 
-    // when you click on a TVStory in a list, this launches a single-TVstory FullPageFragment
+
+            // when you click on a TVStory in a list, this launches a single-TVstory FullPageFragment
     public void onListItemClicked(final TVStory tvStory, final SearchTerm searchTerm) {
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-        TestUserTVStoryInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+					DatabaseReference mUserIdUserRef = mDatabase.getReference("Users").child(mUserId);
+					DatabaseReference mUserIdUserTVStoryInfoRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo");
+
+        mUserIdUserTVStoryInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "on User data change");
@@ -413,6 +461,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bundle.putParcelableArrayList("allUserTVStoryInfo", allUserTVStoryInfo);
                 TVStoryFullPageFragment.setArguments(bundle);
                 System.out.println("In MainActivity onListItemClicked, userTVStoryInfo's user review says: " + userTVStoryInfo.getUserReview());
+
+					DatabaseReference mUserIdUserTVStoryInfoChildrenRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo").child(String.valueOf(tvStory.getStoryID()));
+					mUserIdUserTVStoryInfoChildrenRef.child("iveSeenIt").setValue(userTVStoryInfo.haveISeenIt());
+					mUserIdUserTVStoryInfoChildrenRef.child("iOwnIt").setValue(userTVStoryInfo.doiOwnIt());
+                    mUserIdUserTVStoryInfoChildrenRef.child("iWantToSeeIt").setValue(userTVStoryInfo.doiWantToSeeIt());
+					mUserIdUserTVStoryInfoChildrenRef.child("userReview").setValue(userTVStoryInfo.getUserReview());
+					mUserIdUserTVStoryInfoChildrenRef.child("userAtoF").setValue(userTVStoryInfo.getUserAtoF());
+					mUserIdUserTVStoryInfoChildrenRef.child("numberRanking").setValue(userTVStoryInfo.getNumberRanking());
+
                 Log.d("onListItemClicked", tvStory.toString());
                 switchContent(TVStoryFullPageFragment, TVStoryFullPageFragment.ARG_ITEM_ID);
             }
@@ -426,8 +483,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // helps move from the primary all-episodes list to a single-page view of one story
     public void onSearchListItemClicked(final TVStory tvStory, final SearchTerm searchTerm) {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference TestUserTVStoryInfoRef = mDatabase.getReference("Users").child("1").child("UserTVStoryInfo");
-        TestUserTVStoryInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference mUserIdUserTVStoryInfoRef = mDatabase.getReference("Users").child(mUserId).child("UserTVStoryInfo");
+        mUserIdUserTVStoryInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "on User data change");
@@ -578,6 +635,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -600,6 +658,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         client.connect();
         AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
